@@ -7,11 +7,13 @@ public class Enchere {
     private LocalDateTime dateEnchere;
     private int montantEnchere;
     private Utilisateur utilisateur;
+    private ArticleVendu articleVendu;
 
-    public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur utilisateur) {
+    public Enchere(LocalDateTime dateEnchere, int montantEnchere, Utilisateur utilisateur, ArticleVendu articleVendu) {
         this.dateEnchere = dateEnchere;
         this.montantEnchere = montantEnchere;
         this.utilisateur = utilisateur;
+        this.articleVendu = articleVendu;
     }
 
     public LocalDateTime getDateEnchere() {
@@ -38,12 +40,21 @@ public class Enchere {
         this.utilisateur = utilisateur;
     }
 
+    public ArticleVendu getArticleVendu() {
+        return articleVendu;
+    }
+
+    public void setArticleVendu(ArticleVendu articleVendu) {
+        this.articleVendu = articleVendu;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Enchere{");
         sb.append("dateEnchere=").append(dateEnchere);
         sb.append(", montantEnchere=").append(montantEnchere);
         sb.append(", utilisateur=").append(utilisateur);
+        sb.append(", articleVendu=").append(articleVendu);
         sb.append('}');
         return sb.toString();
     }
@@ -52,11 +63,11 @@ public class Enchere {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Enchere enchere = (Enchere) o;
-        return montantEnchere == enchere.montantEnchere && Objects.equals(dateEnchere, enchere.dateEnchere) && Objects.equals(utilisateur, enchere.utilisateur);
+        return montantEnchere == enchere.montantEnchere && Objects.equals(dateEnchere, enchere.dateEnchere) && Objects.equals(utilisateur, enchere.utilisateur) && Objects.equals(articleVendu, enchere.articleVendu);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateEnchere, montantEnchere, utilisateur);
+        return Objects.hash(dateEnchere, montantEnchere, utilisateur, articleVendu);
     }
 }
