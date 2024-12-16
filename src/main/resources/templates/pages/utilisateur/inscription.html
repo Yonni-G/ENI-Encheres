@@ -1,7 +1,7 @@
 <!-- src/main/resources/templates/index.html -->
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,43 +13,22 @@
 
 <h1>Mon profil</h1>
 <form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
-    <div>
-        <div>
-            <div th:if="${#fields.hasErrors('pseudo')}" class="error">
-                <ul>
-                    <li th:each="err : ${#fields.errors('pseudo')}" th:text="${err}"></li>
-                </ul>
-            </div>
-            <label for="pseudo">Pseudo : </label><input required id="pseudo" th:field="*{pseudo}" />
 
-            <div th:if="${#fields.hasErrors('pseudo')}" class="error">
-                <ul>
-                    <li th:each="err : ${#fields.errors('pseudo')}" th:text="${err}"></li>
-                </ul>
-            </div>
-            <label for="nom">Nom : </label><input required id="nom" th:field="*{nom}" />
-        </div>
+    <table>
+        <tr th:if="${#fields.hasErrors('pseudo')}">
+            <td>Erreur Pseudo : </td><td th:errors="*{pseudo}">popo</td>
+        </tr>
+        <tr th:if="${#fields.hasErrors('nom')}">
+            <td>Erreur Nom : </td><td th:errors="*{nom}"></td>
+        </tr>
 
-        <br />
-
-        <div>
-            <div th:if="${#fields.hasErrors('prenom')}" class="error">
-                <ul>
-                    <li th:each="err : ${#fields.errors('prenom')}" th:text="${err}"></li>
-                </ul>
-            </div>
-            <label for="prenom">Prénom : </label><input required id="prenom" th:field="*{prenom}" />
-
-            <div th:if="${#fields.hasErrors('email')}" class="error">
-                <ul>
-                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
-                </ul>
-            </div>
-            <label for="email">Email : </label><input required id="email" th:field="*{email}" />
-        </div>
+        <tr>
+            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/></td>
+            <td><label for="nom">*Nom : </label><input required id="nom" th:field="*{nom}" /></td>
+        </tr>
+    </table>
 
 
-    </div>
     <p><button type="submit">Créer</button></p>
 </form>
 <!--

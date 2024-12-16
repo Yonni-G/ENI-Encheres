@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UtilisateurController {
@@ -17,10 +18,10 @@ public class UtilisateurController {
         return "pages/utilisateur/inscription";
     }
 
-    @GetMapping("/inscription")
-    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controUser, Model model) {
-        if(controUser.hasErrors()) {
-
+    @PostMapping("/inscription")
+    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, Model model) {
+        if(controlUser.hasErrors()) {
+            return "pages/utilisateur/inscription";
         }
         return "pages/utilisateur/inscription";
     }

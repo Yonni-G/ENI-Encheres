@@ -1,19 +1,56 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 public class Utilisateur {
 
     private int noUtilisateur;
+
+    @NotNull
+    @NotEmpty
+    @Size(min=4, max=20)
     private String pseudo;
+
+    @NotNull
+    @NotEmpty
+    @Size(min=2)
     private String nom;
+
+    @NotNull
+    @NotEmpty
+    @Size(min=2)
     private String prenom;
+
+    @NotNull
+    @NotEmpty
+    @Email
     private String email;
+
     private String telephone;
+
+    @NotNull
+    @NotEmpty
+    @Size(min=8)
     private String rue;
+
+    @NotNull
+    @NotEmpty
     private String codePostal;
+
+    @NotNull
+    @NotEmpty
+    @Size(min=8)
     private String ville;
+
+    @NotNull
+    @Size(min=8)
     private String motDePasse;
+
     private int credit;
     private boolean administrateur;
 
