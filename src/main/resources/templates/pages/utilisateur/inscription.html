@@ -11,11 +11,61 @@
 <!-- Inclure le fragment header -->
 <div th:replace="fragments/header :: header"></div>
 
-<div>
-    <h2>Welcome to ENI-Encheres</h2>
-    <p>Your online auction platform.</p>
-</div>
+<h1>Mon profil</h1>
+<form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
+    <div>
+        <div>
+            <div th:if="${#fields.hasErrors('pseudo')}" class="error">
+                <ul>
+                    <li th:each="err : ${#fields.errors('pseudo')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <label for="pseudo">Pseudo : </label><input required id="pseudo" th:field="*{pseudo}" />
 
+            <div th:if="${#fields.hasErrors('pseudo')}" class="error">
+                <ul>
+                    <li th:each="err : ${#fields.errors('pseudo')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <label for="nom">Nom : </label><input required id="nom" th:field="*{nom}" />
+        </div>
+
+        <br />
+
+        <div>
+            <div th:if="${#fields.hasErrors('prenom')}" class="error">
+                <ul>
+                    <li th:each="err : ${#fields.errors('prenom')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <label for="prenom">Prénom : </label><input required id="prenom" th:field="*{prenom}" />
+
+            <div th:if="${#fields.hasErrors('email')}" class="error">
+                <ul>
+                    <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <label for="email">Email : </label><input required id="email" th:field="*{email}" />
+        </div>
+
+
+    </div>
+    <p><button type="submit">Créer</button></p>
+</form>
+<!--
+private int noUtilisateur;
+private String pseudo;
+private String nom;
+private String prenom;
+private String email;
+private String telephone;
+private String rue;
+private String codePostal;
+private String ville;
+private String motDePasse;
+private int credit;
+private boolean administrateur;
+-->
 <!-- Inclure le fragment footer -->
 <div th:replace="fragments/footer :: footer"></div>
 </body>
