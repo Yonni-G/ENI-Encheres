@@ -17,6 +17,9 @@ public class ArticleVendu {
     private Retrait lieuRetrait;
     private Categorie categorieArticle;
 
+    public ArticleVendu() {
+    }
+
     public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente, Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
