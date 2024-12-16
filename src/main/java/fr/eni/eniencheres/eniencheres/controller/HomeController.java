@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping({"/", "/encheres"})
     public String accueil() {
-        return "encheres"; //TODO: créer vue 'encheres'
+        return "encheres";
     }
 
 }
