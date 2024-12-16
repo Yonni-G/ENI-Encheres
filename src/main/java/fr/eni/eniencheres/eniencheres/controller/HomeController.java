@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping({"/", "/encheres"})
     public String accueil() {
-        return "encheres";
+        return "pages/encheres/encheres";
     }
 
 }
