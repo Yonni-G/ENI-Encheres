@@ -11,17 +11,17 @@ INSERT INTO articles_vendus
 (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
 VALUES
     -- Catégorie : Informatique
-    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2024-12-10', '2024-12-20', 3000, NULL, 1, 1),
-    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2024-12-12', '2024-12-18', 800, NULL, 2, 1),
+    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2024-12-10', '2024-12-20', 3000, 3000, 1, 1),
+    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2024-12-12', '2024-12-18', 800, 800, 2, 1),
     -- Catégorie : Ameublement
-    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, NULL, 3, 2),
-    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, NULL, 4, 2),
+    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, 1500, 3, 2),
+    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, 1000, 4, 2),
     -- Catégorie : Vêtements
-    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10', '2024-12-15', 1200, NULL, 5, 3),
-    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09', '2024-12-19', 700, NULL, 6, 3),
+    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10', '2024-12-15', 1200, 1200, 5, 3),
+    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09', '2024-12-19', 700, 700, 6, 3),
     -- Catégorie : Sports & Loisirs
-    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08', '2024-12-18', 500, NULL, 7, 4),
-    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07', '2024-12-17', 5000, NULL, 8, 4);
+    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08', '2024-12-18', 500, 500, 7, 4),
+    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07', '2024-12-17', 5000, 5000, 8, 4);
 
 -- Jeu d'essai Utilisateurs généré par IA pour test
 INSERT INTO Utilisateurs
