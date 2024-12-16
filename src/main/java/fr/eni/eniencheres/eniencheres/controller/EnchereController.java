@@ -14,9 +14,10 @@ public class EnchereController {
 
     @GetMapping({"/", "/encheres"})
     public String accueil(Model model) {
-
+        // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", repository.findAllCategories());
-
+        // Ajout à la vue de la liste des articles vendus
+        model.addAttribute("articles", repository.findAllArticleVendu());
         return "pages/encheres/encheres";
     }
 

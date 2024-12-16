@@ -23,11 +23,11 @@
 
     <div class="article">
         <img src="" alt="image-article" />
-        <ul>
-            <li><em>Nom article</em></li>
-            <li>Prix: 210 points</li>
-            <li>Fin de l'enchère: 10/08/2018</li>
-            <li>Vendeur: jojo44</li>
+        <ul th:each="article : ${articles}">
+            <li th:text="*{article.nomArticle}"></li>
+            <li>Prix: <span th:text="*{article.prixVente}"></span></li>
+            <li>Fin de l'enchère: <span th:text="*{article.dateFinEncheres}"></span></li>
+            <li>Vendeur: <span></span></li>
         </ul>
     </div>
 </main>
