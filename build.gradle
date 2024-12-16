@@ -23,10 +23,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre8'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
