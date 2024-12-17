@@ -29,28 +29,26 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     public UserDetails loadUserByUsername(String pseudo) {
 
-        // on recupere l'utilisateur s'il existe
-        Utilisateur utilisateur =  utilisateurService.getUtilisateur(pseudo);
-        //String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
-
-        if(utilisateur != null) {
+        Utilisateur utilisateur;
+        try {
+            // on recupere l'utilisateur s'il existe
+            utilisateur = utilisateurService.getUtilisateur(pseudo);
+            //String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
+           // if (utilisateur != null) {
             UserDetails user = User.builder()
                     .username(pseudo)
                     .password(utilisateur.getMotDePasse())
-                    //.roles(utilisateur.getRole())
+                    .roles(utilisateur.isAdministrateur() ? "ADMIN" : "USER")
                     .build();
 
-            return user;
-        } else throw new UtilisateurExceptions.UtilisateurNonTrouve();
+                return user;
+           // }
+        }
+        catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        }
+
     }
-
-//			User.builder()
-//			.username(username)
-//			.password("popo") // a aller cherche en bdd
-//			.roles("USER", "ADMIN") // a aller chercher en bdd
-//			.build();
-
-    //return user;
 
 }
 

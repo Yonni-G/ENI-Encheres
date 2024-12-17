@@ -37,7 +37,7 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public Utilisateur getUtilisateur(String pseudo) {
-        System.out.println(passwordEncoder.encode("admin"));
+
         try {
             return utilisateurRepository.getUtilisateur(pseudo);
         } catch (EmptyResultDataAccessException e) {

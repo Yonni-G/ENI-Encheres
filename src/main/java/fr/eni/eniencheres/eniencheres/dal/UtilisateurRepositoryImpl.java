@@ -61,16 +61,11 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         Map<String, Object> params = new HashMap<>();
         params.put("pseudo", pseudo);
 
-        Utilisateur utilisateur = null;
-        //try {
-            return namedParameterJdbcTemplate.queryForObject(
-                    sql,
-                    params,
-                    new BeanPropertyRowMapper<>(Utilisateur.class)
-            );
-//        } catch (EmptyResultDataAccessException e) {
-//            throw new UtilisateurExceptions.UtilisateurNonTrouve();
-//        }
+        return namedParameterJdbcTemplate.queryForObject(
+                sql,
+                params,
+                new BeanPropertyRowMapper<>(Utilisateur.class)
+        );
     }
 
     @Override
