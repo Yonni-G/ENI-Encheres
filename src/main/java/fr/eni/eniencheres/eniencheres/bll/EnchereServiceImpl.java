@@ -25,6 +25,11 @@ public class EnchereServiceImpl implements EnchereService {
     }
 
     @Override
+    public ArticleVendu findArticleById(Integer noArticle) {
+        return repository.findArticleById(noArticle);
+    }
+
+    @Override
     public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie) {
         return repository.findArticleByCategorieId(noCategorie);
     }
