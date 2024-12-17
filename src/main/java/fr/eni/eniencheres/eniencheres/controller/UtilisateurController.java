@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UtilisateurController {
@@ -40,8 +41,13 @@ public class UtilisateurController {
         return "pages/utilisateur/inscription";
     }
 
+    @PostMapping("/annulation")
+    public String annulationPost() {
+        return "redirect:/";
+    }
     @PostMapping("/inscription")
     public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, Model model) {
+
         if(controlUser.hasErrors()) {
             return "pages/utilisateur/inscription";
         }
@@ -61,6 +67,9 @@ public class UtilisateurController {
 //            model.addAttribute("message", "Une erreur interne est survenue.");
 //            return "utilisateur/erreur";  // Page d'erreur générique
 //        }
+
+        // arrivé ici la création du compte utilisateur a réussie
+
         return "pages/utilisateur/inscription";
     }
 }
