@@ -4,6 +4,7 @@ import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,6 +24,8 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     private static final Logger log = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
     JdbcTemplate jdbcTemplate;
 
     public UtilisateurRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
