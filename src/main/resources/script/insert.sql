@@ -1,10 +1,26 @@
 -- Script de création de la base de données ENCHERES
 --   type : SQL Server 2012
 
--- Supprimer les tables si elles existent avant de les recréer
--- DROP TABLE IF EXISTS articles_vendus
+-- Supprimer les contraintes dans l'ordre des dépendances
+ALTER TABLE ENCHERES DROP CONSTRAINT encheres_articles_vendus_fk;
+ALTER TABLE ARTICLES_VENDUS DROP CONSTRAINT encheres_utilisateur_fk;
+ALTER TABLE ARTICLES_VENDUS DROP CONSTRAINT articles_vendus_categories_fk;
+ALTER TABLE ARTICLES_VENDUS DROP CONSTRAINT ventes_utilisateur_fk;
+ALTER TABLE RETRAITS DROP CONSTRAINT retraits_articles_vendus_fk;
 
--- TODO: ajouter les DROP CONSTRAINT avant les DROP TABLE
+-- Supprimer les clés primaires
+ALTER TABLE CATEGORIES DROP CONSTRAINT categorie_pk;
+ALTER TABLE ENCHERES DROP CONSTRAINT enchere_pk;
+ALTER TABLE RETRAITS DROP CONSTRAINT retrait_pk;
+ALTER TABLE UTILISATEURS DROP CONSTRAINT utilisateur_pk;
+ALTER TABLE ARTICLES_VENDUS DROP CONSTRAINT articles_vendus_pk;
+
+-- Supprimer les tables
+DROP TABLE ENCHERES;
+DROP TABLE RETRAITS;
+DROP TABLE ARTICLES_VENDUS;
+DROP TABLE UTILISATEURS;
+DROP TABLE CATEGORIES;
 
 -- Créer les tables et ajouter les contraintes PK et FK
 CREATE TABLE CATEGORIES (
@@ -101,20 +117,20 @@ VALUES
 
 -- Jeu d'essai Articles_vendus généré par IA pour test
 INSERT INTO articles_vendus
-(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie)
+(nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, lien_image)
 VALUES
     -- Catégorie : Informatique
-    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2024-12-10', '2024-12-20', 3000, 3000, 1, 1),
-    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2024-12-12', '2024-12-18', 800, 800, 2, 1),
+    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2024-12-10', '2024-12-20', 3000, 3000, 1, 1, '/images/ordinateur_port.jpg'),
+    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2024-12-12', '2024-12-18', 800, 800, 2, 1, '/images/clavier_mec.jpg'),
     -- Catégorie : Ameublement
-    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, 1500, 3, 2),
-    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, 1000, 4, 2),
+    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, 1500, 3, 2, '/images/canape.webp'),
+    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, 1000, 4, 2, '/images/table_basse.avif'),
     -- Catégorie : Vêtements
-    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10', '2024-12-15', 1200, 1200, 5, 3),
-    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09', '2024-12-19', 700, 700, 6, 3),
+    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10', '2024-12-15', 1200, 1200, 5, 3, '/images/veste_cuir.jpg'),
+    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09', '2024-12-19', 700, 700, 6, 3, '/images/sneakers.webp'),
     -- Catégorie : Sports & Loisirs
-    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08', '2024-12-18', 500, 500, 7, 4),
-    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07', '2024-12-17', 5000, 5000, 8, 4);
+    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08', '2024-12-18', 500, 500, 7, 4, '/images/raquette_de_tennis.avif'),
+    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07', '2024-12-17', 5000, 5000, 8, 4, '/images/velo_route.jpg');
 
 -- Jeu d'essai Utilisateurs généré par IA pour test
 INSERT INTO Utilisateurs
