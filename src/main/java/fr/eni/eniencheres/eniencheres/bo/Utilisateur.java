@@ -1,9 +1,6 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.Objects;
 
@@ -11,9 +8,10 @@ public class Utilisateur {
 
     private int noUtilisateur;
 
-    @NotNull
-    @NotEmpty
-    @Size(min=4, max=20)
+    // Validation avec une regex alphanumérique
+    @NotNull(message = "Le pseudo ne peut pas être vide")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Le pseudo doit être alphanumérique (lettres et chiffres seulement).")
+    @Size(min = 3, max = 20, message = "Le pseudo doit avoir entre 3 et 20 caractères.")
     private String pseudo;
 
     @NotNull
