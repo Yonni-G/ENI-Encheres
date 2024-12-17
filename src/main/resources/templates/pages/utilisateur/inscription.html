@@ -14,27 +14,39 @@
 <h1>Mon profil</h1>
 <form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
 
-    <table>
-        <tr th:if="${#fields.hasErrors('pseudo')}">
-            <td>Erreur Pseudo : </td><td th:errors="*{pseudo}">popo</td>
-        </tr>
-        <tr th:if="${#fields.hasErrors('nom')}">
-            <td>Erreur Nom : </td><td th:errors="*{nom}"></td>
-        </tr>
+    <table border="bordered">
 
         <tr>
-            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/></td>
-            <td><label for="nom">*Nom : </label><input required id="nom" th:field="*{nom}" /></td>
+            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
+            <td><label for="nom">*nom : </label><input required id="nom" th:field="*{nom}"/><br /><span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span></td>
         </tr>
+        <tr>
+
+        <tr>
+            <td><label for="prenom">*Prénom : </label><input required id="prenom" th:field="*{prenom}"/><br /><span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span></td>
+            <td><label for="email">*email : </label><input type="email "required id="email" th:field="*{email}"/><br /><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="telephone">*telephone : </label><input required id="telephone" th:field="*{telephone}"/><br /><span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span></td>
+            <td><label for="rue">*rue : </label><input required id="rue" th:field="*{rue}"/><br /><span th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="codePostal">*codePostal : </label><input required id="codePostal" th:field="*{codePostal}"/><br /><span th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}"></span></td>
+            <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="motDePasse">*motDePasse : </label><input type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
+            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input type="password" required id="motDePasseConfirmation" /></td>
+
+        </tr>
+
     </table>
 
 
     <p><button type="submit">Créer</button></p>
 </form>
 <!--
-private int noUtilisateur;
-private String pseudo;
-private String nom;
+
 private String prenom;
 private String email;
 private String telephone;
