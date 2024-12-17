@@ -46,11 +46,18 @@ public class UtilisateurController {
         return "redirect:/";
     }
     @PostMapping("/inscription")
-    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, Model model) {
+    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("motDePasseConfirmation") String motDePasseConfirmation, Model model) {
 
         if(controlUser.hasErrors()) {
             return "pages/utilisateur/inscription";
         }
+
+        // on controle que les 2 mots de passe coincident
+        if(!utilisateur.getMotDePasse().equals(motDePasseConfirmation)) {
+            model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
+            return "pages/utilisateur/inscription";
+        }
+
         try {
             // ici le formulaire est valide => on tente d'ajouter l'utilisateur en BDD
             utilisateurService.add(utilisateur);

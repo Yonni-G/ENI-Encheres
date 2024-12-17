@@ -38,7 +38,7 @@
         </tr>
         <tr>
             <td><label for="motDePasse">*motDePasse : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
-            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" /></td>
+            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" name="motDePasseConfirmation" /></td>
 
         </tr>
 

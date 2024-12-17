@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class UtilisateurServiceImpl implements UtilisateurService{
 
     private UtilisateurRepository utilisateurRepository;
+    //private final PasswordEncoder passwordEncoder;
 
     public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
         this.utilisateurRepository = utilisateurRepository;
