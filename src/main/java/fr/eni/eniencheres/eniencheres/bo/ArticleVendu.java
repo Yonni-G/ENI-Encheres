@@ -1,5 +1,7 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -36,6 +38,8 @@ public class ArticleVendu {
         this.lieuRetrait = lieuRetrait;
         this.categorieArticle = categorieArticle;
     }
+
+
 
     public int getNoArticle() {
         return noArticle;

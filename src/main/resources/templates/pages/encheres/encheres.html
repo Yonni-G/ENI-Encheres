@@ -27,8 +27,8 @@
             <ul>
                 <li><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></li>
                 <li th:text="*{article.nomArticle}"></li>
-                <li>Prix : <span th:text="*{article.prixVente}"></span></li>
-                <li>Fin de l'enchère : <span th:text="*{article.dateFinEncheres}"></span></li>
+                <li>Prix : <span th:text="*{article.prixVente}"></span> points</li>
+                <li>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></li>
                 <li>Vendeur : <span></span></li>
             </ul>
         </div>
