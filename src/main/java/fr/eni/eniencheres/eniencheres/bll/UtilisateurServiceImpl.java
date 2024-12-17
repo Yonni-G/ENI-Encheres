@@ -22,4 +22,9 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
         }
     }
+
+    @Override
+    public Utilisateur getUtilisateur(String pseudo) {
+        return utilisateurRepository.getUtilisateur(pseudo);
+    }
 }

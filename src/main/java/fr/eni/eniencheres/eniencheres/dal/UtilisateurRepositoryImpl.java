@@ -5,10 +5,15 @@ import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
@@ -39,5 +44,27 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             // Si l'exception concerne une autre colonne ou une autre contrainte
             throw e; // Propager l'exception originale
         }
+    }
+
+    @Override
+    public Utilisateur getUtilisateur(String pseudo) {
+
+        String sql = "SELECT * FROM utilisateurs WHERE pseudo = :pseudo";
+        // Paramètres à passer à la requête
+        Map<String, Object> params = new HashMap<>();
+        params.put("pseudo", pseudo);
+
+        Utilisateur utilisateur = null;
+        try {
+            utilisateur = namedParameterJdbcTemplate.queryForObject(
+                    sql,
+                    params,
+                    new BeanPropertyRowMapper<>(Utilisateur.class)
+            );
+        } catch (EmptyResultDataAccessException e) {
+            // Gérer l'absence de résultat
+            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        }
+        return utilisateur;
     }
 }
