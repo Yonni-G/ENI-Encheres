@@ -14,12 +14,19 @@
 
     <h2>Filtres</h2>
     <div>
-        <input type="search" placeholder="Le nom de l'article contient..." /><button type="submit">Rechercher</button> <br />
-        <label>Catégorie : </label>
-        <select>
-            <option selected>Toutes</option>
-            <option th:each="categorie : ${categories}" th:value="*{categorie.noCategorie}"><span th:text="*{categorie.libelle}"></span></option>
-        </select>
+        <form method="get" action="/encheres">
+            <input type="search" name="nom" th:value="${param.nom}" placeholder="Le nom de l'article contient..." /> <br />
+            <label>Catégories : </label>
+            <select name="noCategorie">
+                <option value="" th:selected="${param.noCategorie == null}">Toutes</option>
+                <option th:each="categorie : ${categories}"
+                        th:value="*{categorie.noCategorie}"
+                        th:selected="${param.noCategorie == categorie.noCategorie}"
+                        th:text="*{categorie.libelle}">
+                </option>
+            </select>
+            <button type="submit">Rechercher</button>
+        </form>
     </div>
 
     <div id="container-article">

@@ -8,4 +8,10 @@ import java.util.List;
 public interface EnchereService {
     List<Categorie> findAllCategories();
     List<ArticleVendu> findAllArticleVendu();
+
+    List<ArticleVendu> findArticleByCategorieId(Integer noCategorie);
+
+    List<ArticleVendu> findArticleByNom(String nom);
+
+    List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom);
 }

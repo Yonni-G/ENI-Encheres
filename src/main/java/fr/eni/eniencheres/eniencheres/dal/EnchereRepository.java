@@ -8,4 +8,12 @@ import java.util.List;
 public interface EnchereRepository {
     public List<Categorie> findAllCategories();
     public List<ArticleVendu> findAllArticleVendu();
+
+    List<ArticleVendu> findArticleByCategorieId(Integer noCategorie);
+
+    // Récupérer la liste des articles contenant le nom "[%nom%]"
+    List<ArticleVendu> findArticleByNom(String nom);
+
+    // Récupérer la liste des articles en fonction du nom et de la catégorie
+    List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom);
 }

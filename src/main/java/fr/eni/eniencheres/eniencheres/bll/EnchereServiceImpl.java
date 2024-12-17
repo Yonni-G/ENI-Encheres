@@ -23,4 +23,19 @@ public class EnchereServiceImpl implements EnchereService {
     public List<ArticleVendu> findAllArticleVendu() {
         return repository.findAllArticleVendu();
     }
+
+    @Override
+    public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie) {
+        return repository.findArticleByCategorieId(noCategorie);
+    }
+
+    @Override
+    public List<ArticleVendu> findArticleByNom(String nom) {
+        return repository.findArticleByNom(nom);
+    }
+
+    @Override
+    public List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom){
+        return repository.findArticleByNomAndCategorieId(noCategorie, nom);
+    }
 }

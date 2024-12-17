@@ -30,4 +30,24 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         List<ArticleVendu> articleVendus = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleVendu.class));
         return articleVendus;
     }
+
+    // Récupérer la liste des articles appartenant à la catégorie "[noCategorie]"
+    @Override
+    public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie){
+        String sql = "SELECT * FROM articles_vendus WHERE no_categorie = ?";
+        return jdbcTemplate.query(sql, new Object[]{noCategorie}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+    }
+    // Récupérer la liste des articles contenant le nom "[%nom%]"
+    @Override
+    public List<ArticleVendu> findArticleByNom(String nom) {
+        String sql = "SELECT * FROM articles_vendus WHERE nom_article LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%"}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+    }
+
+    // Récupérer la liste des articles en fonction du nom et de la catégorie
+    @Override
+    public List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom) {
+        String sql = "SELECT * FROM articles_vendus WHERE nom_article LIKE ? AND no_categorie = ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%", noCategorie}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+    }
 }
