@@ -1,0 +1,70 @@
+<!-- src/main/resources/templates/index.html -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENI-Encheres - Inscription</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<!-- Inclure le fragment header -->
+<header th:replace="fragments/header :: header"></header>
+
+<h1>Mon profil</h1>
+<h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
+
+<form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
+
+    <table border="bordered">
+
+        <tr>
+            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
+            <td><label for="nom">*nom : </label><input required id="nom" th:field="*{nom}"/><br /><span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span></td>
+        </tr>
+        <tr>
+
+        <tr>
+            <td><label for="prenom">*Prénom : </label><input required id="prenom" th:field="*{prenom}"/><br /><span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span></td>
+            <td><label for="email">*email : </label><input type="email" required id="email" th:field="*{email}"/><br /><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="telephone">*telephone : </label><input required id="telephone" th:field="*{telephone}"/><br /><span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span></td>
+            <td><label for="rue">*rue : </label><input required id="rue" th:field="*{rue}"/><br /><span th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="codePostal">*codePostal : </label><input required id="codePostal" th:field="*{codePostal}"/><br /><span th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}"></span></td>
+            <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
+        </tr>
+        <tr>
+            <td><label for="motDePasse">*motDePasse : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
+            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" name="motDePasseConfirmation" /></td>
+
+        </tr>
+
+    </table>
+
+
+    <p><button type="submit">Créer</button> </p>
+</form>
+<!-- formulaire d'annulation -->
+<form th:action="@{/annulation}" method="post">
+    <button type="submit">Annuler</button>
+</form>
+<!--
+
+private String prenom;
+private String email;
+private String telephone;
+private String rue;
+private String codePostal;
+private String ville;
+private String motDePasse;
+private int credit;
+private boolean administrateur;
+-->
+<!-- Inclure le fragment footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

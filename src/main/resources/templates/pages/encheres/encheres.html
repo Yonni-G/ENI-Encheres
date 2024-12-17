@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enchères</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header th:replace="fragments/header :: header"></header>
+
+<main>
+    <h1>Liste des enchères</h1>
+
+    <h2>Filtres</h2>
+    <div>
+        <form method="get" action="/encheres">
+            <input type="search" name="nom" th:value="${param.nom}" placeholder="Le nom de l'article contient..." /> <br />
+            <label>Catégories : </label>
+            <select name="noCategorie">
+                <option value="" th:selected="${param.noCategorie == null}">Toutes</option>
+                <option th:each="categorie : ${categories}"
+                        th:value="*{categorie.noCategorie}"
+                        th:selected="${param.noCategorie == categorie.noCategorie}"
+                        th:text="*{categorie.libelle}">
+                </option>
+            </select>
+            <button type="submit">Rechercher</button>
+        </form>
+    </div>
+
+    <div id="container-article">
+        <div class="article" th:each="article : ${articles}">
+
+            <div class="images-box"><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></div>
+            <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
+                <p th:text="*{article.nomArticle}"></p>
+            </a>
+            <p>Prix : <span th:text="*{article.prixVente}"></span> points</p>
+            <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
+            <p>Vendeur : <span></span></p>
+
+        </div>
+    </div>
+
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

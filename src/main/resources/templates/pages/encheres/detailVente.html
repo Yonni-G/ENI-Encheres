@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enchères ENI</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+
+    <h2>Détail vente n°<span th:text="${noArticle}"></span></h2>
+
+   <!-- <img th:src="${}"> -->
+
+    <footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
