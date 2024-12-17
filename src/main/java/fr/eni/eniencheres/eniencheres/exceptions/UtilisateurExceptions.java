@@ -15,5 +15,14 @@ public class UtilisateurExceptions {
             super("Le pseudo est déjà utilisé.");
         }
     }
+
+
+    // Exception pour un utilisateur inexistant
+    public static class UtilisateurNonTrouve extends RuntimeException {
+        public UtilisateurNonTrouve() {
+            super("Mot de passe et/ou pseudo incorrects !");
+        }
+    }
+
 }
 

@@ -21,6 +21,10 @@ public class UtilisateurController {
         this.utilisateurService = utilisateurService;
     }
 
+//    @PostMapping("/login")
+//    String loginPost() {
+//
+//    }
     @GetMapping("/inscription")
     public String UtilisateurInscriptionGet(Model model) {
 
