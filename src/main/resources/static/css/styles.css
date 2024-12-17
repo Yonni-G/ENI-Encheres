@@ -44,14 +44,17 @@ footer a {
     height: 300px;
     border: 1px solid black;
     margin: 10px;
-}
-
-#container-article ul li {
-    list-style: none;
     text-align: center;
 }
-.images-articles {
-    width: 150px;
+.images-box {
+    width: 200px;
+    height: 150px;
+    margin: 0 auto;
+}
+.images-box img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
 }
 
 .error {
