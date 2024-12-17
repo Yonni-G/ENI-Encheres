@@ -20,7 +20,7 @@ public class UtilisateurExceptions {
     // Exception pour un utilisateur inexistant
     public static class UtilisateurNonTrouve extends RuntimeException {
         public UtilisateurNonTrouve() {
-            super("Mot de passe et/ou pseudo incorrects !");
+            super("Mot de passe et/ou pseudo incorrects !!");
         }
     }
 

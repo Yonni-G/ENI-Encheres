@@ -34,23 +34,23 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     @Override
     public void add(Utilisateur utilisateur) {
-        log.debug(utilisateur.toString());
+        //log.debug(utilisateur.toString());
         utilisateur.setAdministrateur(false);
         utilisateur.setCredit(0);
 
         String sql = "INSERT INTO utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_Postal, ville, mot_de_passe) VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse)";
-        try {
+        //try {
             namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
-        }catch (DuplicateKeyException e) {
-            // Vérification du message pour savoir si c'est le pseudo ou l'email
-            if (e.getMessage().contains("unique_pseudo")) {
-                throw new UtilisateurExceptions.PseudoDejaExistant();
-            } else if (e.getMessage().contains("unique_email")) {
-                throw new UtilisateurExceptions.EmailDejaExistant();
-            }
-            // Si l'exception concerne une autre colonne ou une autre contrainte
-            throw e; // Propager l'exception originale
-        }
+//        } catch (DuplicateKeyException e) {
+//            // Vérification du message pour savoir si c'est le pseudo ou l'email
+//            if (e.getMessage().contains("unique_pseudo")) {
+//                throw new UtilisateurExceptions.PseudoDejaExistant();
+//            } else if (e.getMessage().contains("unique_email")) {
+//                throw new UtilisateurExceptions.EmailDejaExistant();
+//            }
+//            // Si l'exception concerne une autre colonne ou une autre contrainte
+//            throw e; // Propager l'exception originale
+//        }
     }
 
     @Override
@@ -62,17 +62,15 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         params.put("pseudo", pseudo);
 
         Utilisateur utilisateur = null;
-        try {
-            utilisateur = namedParameterJdbcTemplate.queryForObject(
+        //try {
+            return namedParameterJdbcTemplate.queryForObject(
                     sql,
                     params,
                     new BeanPropertyRowMapper<>(Utilisateur.class)
             );
-        } catch (EmptyResultDataAccessException e) {
-            // Gérer l'absence de résultat
-            throw new UtilisateurExceptions.UtilisateurNonTrouve();
-        }
-        return utilisateur;
+//        } catch (EmptyResultDataAccessException e) {
+//            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+//        }
     }
 
     @Override
