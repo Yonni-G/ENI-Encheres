@@ -9,6 +9,9 @@ public interface EnchereRepository {
     public List<Categorie> findAllCategories();
     public List<ArticleVendu> findAllArticleVendu();
 
+    // Récupérer les détails d'un article en fonction de l'id
+    ArticleVendu findArticleById(Integer noArticle);
+
     List<ArticleVendu> findArticleByCategorieId(Integer noCategorie);
 
     // Récupérer la liste des articles contenant le nom "[%nom%]"

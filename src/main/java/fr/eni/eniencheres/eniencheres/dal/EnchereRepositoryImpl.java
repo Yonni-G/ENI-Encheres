@@ -31,6 +31,13 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         return articleVendus;
     }
 
+    // Récupérer les détails d'un article en fonction de l'id
+    @Override
+    public ArticleVendu findArticleById(Integer noArticle) {
+        String sql = "SELECT * FROM articles_vendus WHERE no_article = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ArticleVendu.class), noArticle);
+    }
+
     // Récupérer la liste des articles appartenant à la catégorie "[noCategorie]"
     @Override
     public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie){

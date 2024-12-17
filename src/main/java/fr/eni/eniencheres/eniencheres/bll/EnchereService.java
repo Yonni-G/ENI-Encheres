@@ -9,6 +9,8 @@ public interface EnchereService {
     List<Categorie> findAllCategories();
     List<ArticleVendu> findAllArticleVendu();
 
+    ArticleVendu findArticleById(Integer noArticle);
+
     List<ArticleVendu> findArticleByCategorieId(Integer noCategorie);
 
     List<ArticleVendu> findArticleByNom(String nom);
