@@ -12,6 +12,8 @@
 <div th:replace="fragments/header :: header"></div>
 
 <h1>Mon profil</h1>
+<h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
+
 <form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
 
     <table border="bordered">
@@ -24,7 +26,7 @@
 
         <tr>
             <td><label for="prenom">*Prénom : </label><input required id="prenom" th:field="*{prenom}"/><br /><span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span></td>
-            <td><label for="email">*email : </label><input type="email "required id="email" th:field="*{email}"/><br /><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
+            <td><label for="email">*email : </label><input type="email" required id="email" th:field="*{email}"/><br /><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
         </tr>
         <tr>
             <td><label for="telephone">*telephone : </label><input required id="telephone" th:field="*{telephone}"/><br /><span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span></td>
@@ -35,15 +37,19 @@
             <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
         </tr>
         <tr>
-            <td><label for="motDePasse">*motDePasse : </label><input type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
-            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input type="password" required id="motDePasseConfirmation" /></td>
+            <td><label for="motDePasse">*motDePasse : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
+            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" name="motDePasseConfirmation" /></td>
 
         </tr>
 
     </table>
 
 
-    <p><button type="submit">Créer</button></p>
+    <p><button type="submit">Créer</button> </p>
+</form>
+<!-- formulaire d'annulation -->
+<form th:action="@{/annulation}" method="post">
+    <button type="submit">Annuler</button>
 </form>
 <!--
 
