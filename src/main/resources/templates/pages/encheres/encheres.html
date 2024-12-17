@@ -31,13 +31,13 @@
 
     <div id="container-article">
         <div class="article" th:each="article : ${articles}">
-            <ul>
-                <li><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></li>
-                <li th:text="*{article.nomArticle}"></li>
-                <li>Prix : <span th:text="*{article.prixVente}"></span> points</li>
-                <li>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></li>
-                <li>Vendeur : <span></span></li>
-            </ul>
+
+                <p><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></p>
+                <p th:text="*{article.nomArticle}"></p>
+                <p>Prix : <span th:text="*{article.prixVente}"></span> points</p>
+                <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
+                <p>Vendeur : <span></span></p>
+
         </div>
     </div>
 
