@@ -5,16 +5,20 @@ import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
     private static final Logger log = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    JdbcTemplate jdbcTemplate;
 
     public UtilisateurRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -39,5 +43,11 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             // Si l'exception concerne une autre colonne ou une autre contrainte
             throw e; // Propager l'exception originale
         }
+    }
+
+    @Override
+    public List<Utilisateur> findAll() {
+        String sql = "SELECT * FROM utilisateurs";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 }
