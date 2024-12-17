@@ -4,6 +4,8 @@ import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.UtilisateurRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
 
@@ -26,5 +28,10 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     @Override
     public Utilisateur getUtilisateur(String pseudo) {
         return utilisateurRepository.getUtilisateur(pseudo);
+    }
+
+    @Override
+    public List<Utilisateur> findAll() {
+        return utilisateurRepository.findAll();
     }
 }
