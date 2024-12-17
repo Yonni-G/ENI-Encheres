@@ -1,5 +1,7 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,6 +14,7 @@ public class ArticleVendu {
     private int miseAPrix;
     private int prixVente;
     private boolean etatVente;
+    private String lien_image;
     private Utilisateur acheteur;
     private Utilisateur vendeur;
     private Retrait lieuRetrait;
@@ -20,7 +23,7 @@ public class ArticleVendu {
     public ArticleVendu() {
     }
 
-    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente, Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
+    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente,String lien_image , Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
         this.description = description;
@@ -29,11 +32,14 @@ public class ArticleVendu {
         this.miseAPrix = miseAPrix;
         this.prixVente = prixVente;
         this.etatVente = etatVente;
+        this.lien_image = lien_image;
         this.acheteur = acheteur;
         this.vendeur = vendeur;
         this.lieuRetrait = lieuRetrait;
         this.categorieArticle = categorieArticle;
     }
+
+
 
     public int getNoArticle() {
         return noArticle;
@@ -131,6 +137,14 @@ public class ArticleVendu {
         this.categorieArticle = categorieArticle;
     }
 
+    public String getLien_image() {
+        return lien_image;
+    }
+
+    public void setLien_image(String lien_image) {
+        this.lien_image = lien_image;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ArticleVendu{");
@@ -142,6 +156,7 @@ public class ArticleVendu {
         sb.append(", miseAPrix=").append(miseAPrix);
         sb.append(", prixVente=").append(prixVente);
         sb.append(", etatVente=").append(etatVente);
+        sb.append(", lien_image='").append(lien_image).append('\'');
         sb.append(", acheteur=").append(acheteur);
         sb.append(", vendeur=").append(vendeur);
         sb.append(", lieuRetrait=").append(lieuRetrait);
@@ -154,12 +169,12 @@ public class ArticleVendu {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ArticleVendu that = (ArticleVendu) o;
-        return noArticle == that.noArticle && miseAPrix == that.miseAPrix && prixVente == that.prixVente && etatVente == that.etatVente && Objects.equals(nomArticle, that.nomArticle) && Objects.equals(description, that.description) && Objects.equals(dateDebutEncheres, that.dateDebutEncheres) && Objects.equals(dateFinEncheres, that.dateFinEncheres) && Objects.equals(acheteur, that.acheteur) && Objects.equals(vendeur, that.vendeur) && Objects.equals(lieuRetrait, that.lieuRetrait) && Objects.equals(categorieArticle, that.categorieArticle);
+        return noArticle == that.noArticle && miseAPrix == that.miseAPrix && prixVente == that.prixVente && etatVente == that.etatVente && Objects.equals(nomArticle, that.nomArticle) && Objects.equals(description, that.description) && Objects.equals(dateDebutEncheres, that.dateDebutEncheres) && Objects.equals(dateFinEncheres, that.dateFinEncheres) && Objects.equals(lien_image, that.lien_image) && Objects.equals(acheteur, that.acheteur) && Objects.equals(vendeur, that.vendeur) && Objects.equals(lieuRetrait, that.lieuRetrait) && Objects.equals(categorieArticle, that.categorieArticle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(noArticle, nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, acheteur, vendeur, lieuRetrait, categorieArticle);
+        return Objects.hash(noArticle, nomArticle, description, dateDebutEncheres, dateFinEncheres, miseAPrix, prixVente, etatVente, lien_image, acheteur, vendeur, lieuRetrait, categorieArticle);
     }
 }
 

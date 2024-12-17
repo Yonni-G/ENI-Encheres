@@ -23,6 +23,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         return categories;
     }
 
+    // Récupérer la liste des articles en vente
     @Override
     public List<ArticleVendu> findAllArticleVendu() {
         String sql = "SELECT * FROM articles_vendus";
