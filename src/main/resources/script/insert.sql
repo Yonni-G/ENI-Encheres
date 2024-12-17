@@ -56,8 +56,8 @@ CREATE TABLE UTILISATEURS (
                               code_postal      VARCHAR(10) NOT NULL,
                               ville            VARCHAR(30) NOT NULL,
                               mot_de_passe     VARCHAR(80) NOT NULL,
-                              credit           INTEGER NOT NULL,
-                              administrateur   bit NOT NULL
+                              credit           INTEGER NOT NULL DEFAULT 0, -- Valeur par défaut pour credit
+                              administrateur   BIT NOT NULL DEFAULT 0 -- Valeur par défaut pour administrateur (false)
 )
 ALTER TABLE UTILISATEURS ADD constraint utilisateur_pk PRIMARY KEY (no_utilisateur)
 
@@ -136,7 +136,7 @@ VALUES
 INSERT INTO Utilisateurs
 (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)
 VALUES
-    ('jdoe', 'Doe', 'John', 'jdoe@example.com', '0123456789', '10 Rue des Lilas', '75001', 'Paris', 'password123', 100, 0),
+    ('jdoe', 'Doe', 'John', 'jdoe@example.com', '0123456789', '10 Rue des Lilas', '75001', 'Paris', 'password123', 100, 1),
     ('mlaurent', 'Laurent', 'Marie', 'mlaurent@example.com', '0678901234', '15 Rue de la Paix', '69002', 'Lyon', 'securepass', 200, 0),
     ('tdupont', 'Dupont', 'Thomas', 'tdupont@example.com', '0654321987', '5 Avenue Foch', '33000', 'Bordeaux', 'thomas2024', 50, 0),
     ('cmartin', 'Martin', 'Claire', 'cmartin@example.com', '0612345678', '20 Rue Lafayette', '59000', 'Lille', 'claire@123', 150, 0),

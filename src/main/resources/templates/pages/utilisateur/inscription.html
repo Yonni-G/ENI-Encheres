@@ -6,10 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENI-Encheres - Inscription</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
 <!-- Inclure le fragment header -->
-<div th:replace="fragments/header :: header"></div>
+<header th:replace="fragments/header :: header"></header>
 
 <h1>Mon profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
@@ -64,6 +65,6 @@ private int credit;
 private boolean administrateur;
 -->
 <!-- Inclure le fragment footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<footer th:replace="fragments/footer :: footer"></footer>
 </body>
 </html>

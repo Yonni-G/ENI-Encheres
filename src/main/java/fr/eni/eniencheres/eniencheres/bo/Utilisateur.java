@@ -46,7 +46,7 @@ public class Utilisateur {
     private String ville;
 
     @NotNull
-    @Size(min=8)
+    @Size(min=8, max=20)
     private String motDePasse;
 
     private int credit;

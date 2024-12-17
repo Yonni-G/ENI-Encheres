@@ -24,6 +24,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     @Override
     public void add(Utilisateur utilisateur) {
         try {
+            // on encrypte le mdp
+            utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
             utilisateurRepository.add(utilisateur);
         } catch (DuplicateKeyException e) {
             // Vérification du message pour savoir si c'est le pseudo ou l'email
