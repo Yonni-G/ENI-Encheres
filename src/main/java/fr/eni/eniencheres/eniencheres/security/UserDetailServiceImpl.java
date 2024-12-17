@@ -31,12 +31,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         // on recupere l'utilisateur s'il existe
         Utilisateur utilisateur =  utilisateurService.getUtilisateur(pseudo);
-        String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
+        //String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
 
         if(utilisateur != null) {
             UserDetails user = User.builder()
-                    .username(utilisateur.getPseudo())
-                    .password(encodedPassword)
+                    .username(pseudo)
+                    .password(utilisateur.getMotDePasse())
                     //.roles(utilisateur.getRole())
                     .build();
 

@@ -2,6 +2,10 @@ package fr.eni.eniencheres.eniencheres.bll;
 
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.UtilisateurRepository;
+import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,25 +13,37 @@ import java.util.List;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
 
-    private UtilisateurRepository utilisateurRepository;
-    //private final PasswordEncoder passwordEncoder;
+    private final UtilisateurRepository utilisateurRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository) {
+    public UtilisateurServiceImpl(UtilisateurRepository utilisateurRepository, PasswordEncoder passwordEncoder) {
         this.utilisateurRepository = utilisateurRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void add(Utilisateur utilisateur) {
         try {
             utilisateurRepository.add(utilisateur);
-        } catch(IllegalArgumentException e) {
-
+        } catch (DuplicateKeyException e) {
+            // Vérification du message pour savoir si c'est le pseudo ou l'email
+            if (e.getMessage().contains("unique_pseudo")) {
+                throw new UtilisateurExceptions.PseudoDejaExistant();
+            } else if (e.getMessage().contains("unique_email")) {
+                throw new UtilisateurExceptions.EmailDejaExistant();
+            }
         }
     }
 
     @Override
     public Utilisateur getUtilisateur(String pseudo) {
-        return utilisateurRepository.getUtilisateur(pseudo);
+        System.out.println(passwordEncoder.encode("admin"));
+        try {
+            return utilisateurRepository.getUtilisateur(pseudo);
+        } catch (EmptyResultDataAccessException e) {
+            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        }
+
     }
 
     @Override
