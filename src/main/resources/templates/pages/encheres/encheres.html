@@ -6,13 +6,33 @@
 </head>
 <body>
 
-<header></header>
+<header th:replace="fragments/header :: header"></header>
 
 <main>
     <h1>Liste des enchères</h1>
+
+    <h2>Filtres</h2>
+    <div>
+        <input type="search" placeholder="Le nom de l'article contient..." /><button type="submit">Rechercher</button> <br />
+        <label>Catégorie : </label>
+        <select>
+            <option selected>Toutes</option>
+            <option th:each="categorie : ${categories}" th:value="*{categorie.noCategorie}"><span th:text="*{categorie.libelle}"></span></option>
+        </select>
+    </div>
+
+    <div class="article">
+        <img src="" alt="image-article" />
+        <ul th:each="article : ${articles}">
+            <li th:text="*{article.nomArticle}"></li>
+            <li>Prix: <span th:text="*{article.prixVente}"></span></li>
+            <li>Fin de l'enchère: <span th:text="*{article.dateFinEncheres}"></span></li>
+            <li>Vendeur: <span></span></li>
+        </ul>
+    </div>
 </main>
 
-<footer></footer>
+<footer th:replace="fragments/footer :: footer"></footer>
 
 </body>
 </html>
