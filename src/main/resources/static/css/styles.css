@@ -45,6 +45,11 @@ footer a {
     border: 1px solid black;
     margin: 10px;
     text-align: center;
+    transition: width 0.5s ease;
+}
+.article:hover {
+    width: 350px;
+    box-shadow: 2px 2px black;
 }
 .images-box {
     width: 200px;
