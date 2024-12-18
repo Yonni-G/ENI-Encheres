@@ -20,7 +20,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/connexion", "/login","/login/**", "/inscription",  "/images/**", "/css/**", "/encheres", "/encheres/**", "/detailVente/**").permitAll()
+                        .requestMatchers("/", "/connexion", "/login","/login/**", "/inscription",  "/images/**", "/css/**",
+                                "/encheres", "/encheres/**", "/detailVente/**", "/profil/**").permitAll()
                         //.requestMatchers(HttpMethod.GET, "/jeux", "/jeux/*/afficher").permitAll()
                         //.requestMatchers("/*/hello").hasAnyRole(null)
                         //.requestMatchers("/*/ajouter", "/*/modifier", "/*/supprimer","/*/enregistrer").hasAnyRole("ADMIN", "EMPLOYE")

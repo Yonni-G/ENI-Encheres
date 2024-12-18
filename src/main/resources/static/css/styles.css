@@ -74,6 +74,17 @@ h1 {
     line-height: 1.6rem;
 }
 
+/* Profil (profil/**.html) */
+#profil {
+    width: 100%;
+}
+.profil-table {
+    width: 100vh;
+    margin: 0 auto;
+    line-height: 1.6rem;
+}
+
+
 /* MISC */
 .error {
     color: brown;
