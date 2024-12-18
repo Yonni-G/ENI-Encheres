@@ -31,12 +31,14 @@ public class UtilisateurController {
     }
 
     @GetMapping("/modification")
-    String modificationGet() {
+    String modificationGet(Model model) {
+        model.addAttribute("utilisateur", utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "pages/utilisateur/modification";
     }
 
     @GetMapping("/connexion")
     String connexionGet() {
+
         return "pages/utilisateur/connexion";
     }
 
@@ -80,7 +82,6 @@ public class UtilisateurController {
             return "pages/utilisateur/inscription";
         }
 
-       // String mdp = utilisateur.getMotDePasse();
         // On encrypte le mdp
         utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         try {
@@ -103,6 +104,8 @@ public class UtilisateurController {
             Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur.getPseudo(), motDePasseConfirmation);
             Authentication authResult = authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authResult);
+
+
 
             // Tester si l'authentification a réussi
             if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {

@@ -15,6 +15,7 @@
 <h1>Connexion profil</h1>
 <!-- Afficher les erreurs de connexion -->
 <h2 class="error" th:if="${param.error}" th:text="'Erreur : Mot de passe ou pseudo incorrect !'"></h2>
+<a th:if="${username}" th:text="${username}"></a>
 
 <form th:action="@{/connexion}" method="post">
 
