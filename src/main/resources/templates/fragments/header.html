@@ -7,26 +7,24 @@
         <ul>
 
             <!-- TODO: #6003: Un click sur le logo du site ramène l’utilisateur sur la page principale (page de recherche d’articles) si celui-ci est connecté. -->
-            <li><a href="/" th:text="'Home'">Home</a></li>
 
-            <!-- Si l'utilisateur est connecté, afficher son nom et le lien de déconnexion -->
-            <li sec:authorize="isAuthenticated()">
-                <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
-            </li>
-            <li sec:authorize="isAuthenticated()">
-                <a href="/logout" th:text="'Déconnexion'"></a>
-            </li>
 
             <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
             <li sec:authorize="!isAuthenticated()">
-                <a href="/connexion" th:text="'Connexion'"></a>
+                <a th:href="@{/connexion}">S'inscrire - Se connecter</a>
             </li>
 
-            <!-- Si l'utilisateur n'est pas connecté, afficher le lien d'inscription -->
-            <li sec:authorize="!isAuthenticated()">
-                <a href="/inscription" th:text="'Inscription'">S'inscrire - Se connecter</a>
-            </li>
 
+            <!-- Si l'utilisateur est connecté, afficher son nom et le lien de déconnexion -->
+            <li sec:authorize="isAuthenticated()">
+
+                <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
+                <a th:href="@{/}">Enchères</a>
+                <a href="#">Vendre un article</a>
+                <a th:href="@{/modification}">Mon profil</a>
+                <a th:href="@{/logout}">Déconnexion</a>
+
+            </li>
         </ul>
     </nav>
     <div class="logo">

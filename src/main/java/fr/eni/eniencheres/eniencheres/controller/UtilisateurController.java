@@ -30,8 +30,13 @@ public class UtilisateurController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("/modification")
+    String modificationGet() {
+        return "pages/utilisateur/modification";
+    }
+
     @GetMapping("/connexion")
-    String connexionPost() {
+    String connexionGet() {
         return "pages/utilisateur/connexion";
     }
 

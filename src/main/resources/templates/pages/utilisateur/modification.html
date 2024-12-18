@@ -5,17 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ENI-Encheres - Inscription</title>
+    <title>ENI-Encheres - Modification de votre profil</title>
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
 <!-- Inclure le fragment header -->
 <header th:replace="fragments/header :: header"></header>
 
-<h1>Mon profil</h1>
+<h1>Modification de votre profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
 
-<form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
+<form th:object="${utilisateur}" th:action="@{/modification}" method="post">
 
     <table border="bordered">
 
@@ -45,13 +45,9 @@
 
     </table>
 
+    <p><button type="submit">Enregistrer</button> </p>
+</form>
 
-    <p><button type="submit">Créer</button> </p>
-</form>
-<!-- formulaire d'annulation -->
-<form th:action="@{/annulation}" method="post">
-    <button type="submit">Annuler</button>
-</form>
 <!--
 
 private String prenom;
