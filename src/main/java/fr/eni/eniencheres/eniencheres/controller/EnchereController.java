@@ -50,6 +50,7 @@ public class EnchereController {
     @GetMapping("/detailVente/{noArticle}")
     public String detailVente(@PathVariable("noArticle") Integer noArticle, Model model) {
         model.addAttribute("articles", service.findArticleById(noArticle));
+        model.addAttribute("categories", service.findAllCategories());
         return "pages/encheres/detailVente";
     }
 }
