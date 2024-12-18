@@ -30,29 +30,21 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     // Récupérer la liste des articles en vente
     @Override
     public List<ArticleVendu> findAllArticleVendu() {
-        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle" +
-                ", a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix" +
-                ", U.pseudo AS vendeur FROM articles_vendus a " +
-                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
-        // Création d'un objet Utilisateur et assignation du pseudo
-        // On affecte l'objet Utilisateur au vendeur
-        return jdbcTemplate.query(sql, new RowMapper<ArticleVendu>() {
-            @Override
-            public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
-                ArticleVendu articleVendu = new ArticleVendu();
-                articleVendu.setNoArticle(rs.getInt("noArticle"));
-                articleVendu.setLien_image(rs.getString("lien_image"));
-                articleVendu.setNomArticle(rs.getString("nomArticle"));
-                articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
-                articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
-                // Création d'un objet Utilisateur et assignation du pseudo
-                Utilisateur utilisateur = new Utilisateur();
-                utilisateur.setPseudo(rs.getString("vendeur"));
-                articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
 
-                return articleVendu;
-            };
+            return articleVendu;
         });
     }
 
@@ -66,24 +58,66 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     // Récupérer la liste des articles appartenant à la catégorie "[noCategorie]"
     @Override
     public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie){
-        String sql = "SELECT * FROM articles_vendus WHERE no_categorie = ?";
-        return jdbcTemplate.query(sql, new Object[]{noCategorie}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE a.no_categorie = ?";
+        return jdbcTemplate.query(sql, new Object[]{noCategorie}, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        });
     }
     // Récupérer la liste des articles contenant le nom "[%nom%]"
     @Override
     public List<ArticleVendu> findArticleByNom(String nom) {
-        String sql = "SELECT * FROM articles_vendus WHERE nom_article LIKE ?";
-        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%"}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE a.nom_article LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%"}, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        });
     }
 
     // Récupérer la liste des articles en fonction du nom et de la catégorie
     @Override
     public List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom) {
-        String sql = "SELECT * FROM articles_vendus WHERE nom_article LIKE ? AND no_categorie = ?";
-        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%", noCategorie}, new BeanPropertyRowMapper<>(ArticleVendu.class));
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE a.nom_article LIKE ? AND a.no_categorie = ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + nom + "%", noCategorie}, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        });
     }
 
-    // Jointure entre les différentes classes pour récupérer les données nécessaires
+    // Jointure entre les différentes classes pour récupérer les données nécessaires (!! detailVente.html !!)
     @Override
     public EnchereDTO getDetailsVente(int noArticle) {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, " +
