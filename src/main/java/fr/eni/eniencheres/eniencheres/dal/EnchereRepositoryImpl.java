@@ -4,6 +4,7 @@ import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Categorie;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,8 +24,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     @Override
     public List<Categorie> findAllCategories() {
         String sql = "SELECT * FROM categories";
-        List<Categorie> categories = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Categorie.class));
-        return categories;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
     // Récupérer la liste des articles en vente
@@ -33,8 +33,10 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle" +
                 ", a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix" +
                 ", U.pseudo AS vendeur FROM articles_vendus a " +
-                "JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
-        List<ArticleVendu> articleVendus = jdbcTemplate.query(sql, new RowMapper<ArticleVendu>() {
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
+        // Création d'un objet Utilisateur et assignation du pseudo
+        // On affecte l'objet Utilisateur au vendeur
+        return jdbcTemplate.query(sql, new RowMapper<ArticleVendu>() {
             @Override
             public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
                 ArticleVendu articleVendu = new ArticleVendu();
@@ -52,7 +54,6 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 return articleVendu;
             };
         });
-        return articleVendus;
     }
 
     // Récupérer les détails d'un article en fonction de l'id
@@ -91,10 +92,10 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait," +
                 " u.pseudo AS vendeur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere" +
                 " FROM articles_vendus a" +
-                " JOIN categories c ON c.no_categorie = a.no_categorie" +
+                " LEFT JOIN categories c ON c.no_categorie = a.no_categorie" +
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
-                " JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
-                " JOIN encheres e ON e.no_article = a.no_article" +
+                " LEFT JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
+                " LEFT JOIN encheres e ON e.no_article = a.no_article" +
                 " WHERE a.no_article = ?;";
         // Mappage des données récupérées dans l'objet DTO
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
@@ -108,9 +109,14 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 rs.getString("retrait"),
                 rs.getString("vendeur"),
                 rs.getInt("montantEnchere"),
-                rs.getTimestamp("dateEnchere").toLocalDateTime()
+                rs.getTimestamp("dateEnchere") != null ? rs.getTimestamp("dateEnchere").toLocalDateTime() : null
         );
 
-        return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
+        try {
+            return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }
