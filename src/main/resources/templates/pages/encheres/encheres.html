@@ -36,9 +36,9 @@
             <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                 <p th:text="*{article.nomArticle}"></p>
             </a>
-            <p>Prix : <span th:text="*{article.prixVente}"></span> points</p>
+            <p>Prix : <span th:text="*{article.miseAPrix}"></span> points</p>
             <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
-            <p>Vendeur : <span></span></p>
+            <p>Vendeur : <span th:text="*{article.vendeur.pseudo}"></span></p>
 
         </div>
     </div>

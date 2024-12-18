@@ -2,12 +2,15 @@ package fr.eni.eniencheres.eniencheres.dal;
 
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Categorie;
+import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -27,8 +30,28 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     // Récupérer la liste des articles en vente
     @Override
     public List<ArticleVendu> findAllArticleVendu() {
-        String sql = "SELECT * FROM articles_vendus";
-        List<ArticleVendu> articleVendus = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleVendu.class));
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle" +
+                ", a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix" +
+                ", U.pseudo AS vendeur FROM articles_vendus a " +
+                "JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
+        List<ArticleVendu> articleVendus = jdbcTemplate.query(sql, new RowMapper<ArticleVendu>() {
+            @Override
+            public ArticleVendu mapRow(ResultSet rs, int rowNum) throws SQLException {
+                ArticleVendu articleVendu = new ArticleVendu();
+                articleVendu.setNoArticle(rs.getInt("noArticle"));
+                articleVendu.setLien_image(rs.getString("lien_image"));
+                articleVendu.setNomArticle(rs.getString("nomArticle"));
+                articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+                articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+                // Création d'un objet Utilisateur et assignation du pseudo
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setPseudo(rs.getString("vendeur"));
+                articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+                return articleVendu;
+            };
+        });
         return articleVendus;
     }
 
