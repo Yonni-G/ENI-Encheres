@@ -116,7 +116,7 @@ public class UtilisateurController {
         }
 
         // Redirige vers la page d'accueil après connexion réussie
-        return "redirect:/encheres";
+        return "redirect:/";
 
 
     }
