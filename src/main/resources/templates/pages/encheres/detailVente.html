@@ -25,9 +25,9 @@
                     <td>Catégorie :</td>
                     <td th:text="${articles.categorie}"></td>
                 </tr>
-                <tr>
+                <tr th:if="${articles.montantEnchere != null}">
                     <td>Meilleure offre :</td>
-                    <td></td>
+                    <td th:text="${articles.montantEnchere} + ' le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
                 </tr>
                 <tr>
                     <td>Mise à prix :</td>

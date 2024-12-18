@@ -13,6 +13,8 @@ public class EnchereDTO {
     private LocalDateTime dateFinEnchere;
     private String retrait;
     private String vendeur;
+    private int montantEnchere;
+    private LocalDateTime dateEnchere;
 
     public EnchereDTO(
             int noArticle,
@@ -23,7 +25,9 @@ public class EnchereDTO {
             int miseAPrix,
             LocalDateTime dateFinEnchere,
             String retrait,
-            String vendeur
+            String vendeur,
+            int montantEnchere,
+            LocalDateTime dateEnchere
     ) {
         this.noArticle = noArticle;
         this.lien_image = lien_image;
@@ -34,7 +38,8 @@ public class EnchereDTO {
         this.dateFinEnchere = dateFinEnchere;
         this.retrait = retrait;
         this.vendeur = vendeur;
-
+        this.montantEnchere = montantEnchere;
+        this.dateEnchere = dateEnchere;
     }
     public EnchereDTO(){}
 
@@ -110,5 +115,21 @@ public class EnchereDTO {
 
     public void setVendeur(String vendeur) {
         this.vendeur = vendeur;
+    }
+
+    public int getMontantEnchere() {
+        return montantEnchere;
+    }
+
+    public void setMontantEnchere(int montantEnchere) {
+        this.montantEnchere = montantEnchere;
+    }
+
+    public LocalDateTime getDateEnchere() {
+        return dateEnchere;
+    }
+
+    public void setDateEnchere(LocalDateTime dateEnchere) {
+        this.dateEnchere = dateEnchere;
     }
 }
