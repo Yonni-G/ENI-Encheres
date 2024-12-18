@@ -12,7 +12,7 @@ public class EnchereDTO {
     private int miseAPrix;
     private LocalDateTime dateFinEnchere;
     private String retrait;
-    //private String vendeur;
+    private String vendeur;
 
     public EnchereDTO(
             int noArticle,
@@ -22,7 +22,8 @@ public class EnchereDTO {
             String categorie,
             int miseAPrix,
             LocalDateTime dateFinEnchere,
-            String retrait
+            String retrait,
+            String vendeur
     ) {
         this.noArticle = noArticle;
         this.lien_image = lien_image;
@@ -32,6 +33,7 @@ public class EnchereDTO {
         this.miseAPrix = miseAPrix;
         this.dateFinEnchere = dateFinEnchere;
         this.retrait = retrait;
+        this.vendeur = vendeur;
 
     }
     public EnchereDTO(){}
@@ -102,11 +104,11 @@ public class EnchereDTO {
         this.retrait = retrait;
     }
 
-//    public String getVendeur() {
-//        return vendeur;
-//    }
-//
-//    public void setVendeur(String vendeur) {
-//        this.vendeur = vendeur;
-//    }
+    public String getVendeur() {
+        return vendeur;
+    }
+
+    public void setVendeur(String vendeur) {
+        this.vendeur = vendeur;
+    }
 }
