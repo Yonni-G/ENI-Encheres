@@ -2,6 +2,7 @@ package fr.eni.eniencheres.eniencheres.bll;
 
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Categorie;
+import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
 import fr.eni.eniencheres.eniencheres.dal.EnchereRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,10 @@ public class EnchereServiceImpl implements EnchereService {
     @Override
     public List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom){
         return repository.findArticleByNomAndCategorieId(noCategorie, nom);
+    }
+
+    @Override
+    public EnchereDTO getDetailsVente(int noArticle) {
+        return repository.getDetailsVente(noArticle);
     }
 }

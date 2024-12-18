@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 <main>
     <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
 
@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Catégorie :</td>
-                    <td th:text="${articles.categorieArticle}"></td>
+                    <td th:text="${articles.categorie}"></td>
                 </tr>
                 <tr>
                     <td>Meilleure offre :</td>
@@ -35,7 +35,7 @@
                 </tr>
                 <tr>
                     <td>Fin de l'enchère :</td>
-                    <td th:text="${#temporals.format(articles.dateFinEncheres, 'dd-MM-yyyy')}"></td>
+                    <!-- <td th:text="${#temporals.format(articles.dateFinEncheres, 'dd-MM-yyyy')}"></td> -->
                 </tr>
                 <tr>
                     <td>Retrait :</td>
@@ -55,6 +55,6 @@
     </div>
 
 </main>
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>
