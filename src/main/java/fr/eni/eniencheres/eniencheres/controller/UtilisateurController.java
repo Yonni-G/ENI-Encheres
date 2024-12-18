@@ -29,18 +29,7 @@ public class UtilisateurController {
     public String UtilisateurInscriptionGet(Model model) {
 
         model.addAttribute("utilisateur", new Utilisateur(
-                0,
-                "pseudo",
-                "nom",
-                "prenom",
-                "email@email.com",
-                "telephone",
-                "nom de la rue",
-                "codepostal",
-                "nom de la ville",
-                "motpasse",
-                0,
-                false
+
         ));
         return "pages/utilisateur/inscription";
     }
@@ -80,6 +69,7 @@ public class UtilisateurController {
 //        }
 
         // arrivé ici la création du compte utilisateur a réussie
+        // il faut le connecter automatiquement et le rediriger vers l'accueil
 
         return "pages/utilisateur/inscription";
     }
