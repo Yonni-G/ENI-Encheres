@@ -14,6 +14,9 @@
 
 <h1>Modification de votre profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
+<h2 class="success" th:if="${errorSuccess}" th:text="${errorSuccess}"></h2>
+
+<h3 th:text="${username}"></h3>
 
 <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
 
@@ -38,8 +41,12 @@
             <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
         </tr>
         <tr>
-            <td><label for="motDePasse">*motDePasse : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
-            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" name="motDePasseConfirmation" /></td>
+            <td><label for="motDePasse">*mot De Passe actuel : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><label for="NouveauMotDePasse">*Nouveau mot De Passe : </label><input maxlength="8" type="password" required id="NouveauMotDePasse" name="NouveauMotDePasse"/></td>
+            <td><label for="NouveauMotDePasseConfirmation">*Confirmation : </label><input maxlength="8" type="password" required id="NouveauMotDePasseConfirmation" name="NouveauMotDePasseConfirmation" /></td>
 
         </tr>
 

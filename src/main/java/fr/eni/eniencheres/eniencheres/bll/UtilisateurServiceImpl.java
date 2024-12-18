@@ -64,4 +64,9 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     public List<Utilisateur> findAll() {
         return utilisateurRepository.findAll();
     }
+
+    @Override
+    public void update(Utilisateur utilisateur) {
+
+    }
 }
