@@ -8,14 +8,14 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
-    <h2>Détail vente n°<span th:text="${noArticle}"></span></h2>
+    <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
 
     <div class="details-container">
         <div class="details-image">
             <img th:src="${articles.lien_image}" alt="image de l'article en vente" />
         </div>
         <div class="details-texts">
-            <p th:text="${articles.nomArticle}"></p>
+            <h2 th:text="${articles.nomArticle}"></h2>
             <table>
                 <tr>
                     <td>Description :</td>
