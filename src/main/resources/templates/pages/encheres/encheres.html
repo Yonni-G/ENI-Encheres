@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Enchères</title>
@@ -42,7 +42,12 @@
 
             <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
 
-            <p>Vendeur : <span th:text="*{article.vendeur.pseudo}"></span></p>
+            <p sec:authorize="isAuthenticated()">Vendeur :
+                <a th:href="@{/profil/{pseudo}(pseudo=${article.vendeur.pseudo})}"><span th:text="*{article.vendeur.pseudo}"></span></a>
+            </p>
+            <p sec:authorize="!isAuthenticated()">Vendeur :
+                <span th:text="*{article.vendeur.pseudo}"></span>
+            </p>
 
         </div>
     </div>
