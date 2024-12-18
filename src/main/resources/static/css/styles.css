@@ -26,6 +26,24 @@ h1 {
     text-align: center;
 }
 
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: #f8f9fa;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px;
+    transition: background-color 0.5s ease;
+}
+nav a:hover {
+    background-color: darkgoldenrod;
+    border-radius: 25%;
+}
+
 /* Liste des ventes ('encheres.html') */
 #container-article {
     display: flex;

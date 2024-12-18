@@ -4,6 +4,12 @@
 <!-- Header Fragment -->
 <header xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav>
+        <div id="logo">
+            <a th:href="@{/encheres}">
+                <h1>ENI-Enchères</h1>
+            </a>
+        </div>
+
         <ul>
 
             <!-- TODO: #6003: Un click sur le logo du site ramène l’utilisateur sur la page principale (page de recherche d’articles) si celui-ci est connecté. -->
@@ -27,8 +33,5 @@
             </li>
         </ul>
     </nav>
-    <div class="logo">
-        <h1>ENI-Encheres</h1>
-    </div>
 </header>
 <!-- End of Header -->
