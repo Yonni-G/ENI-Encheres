@@ -30,9 +30,21 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public void add(Utilisateur utilisateur) {
-        // Encrypt password
-        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-        utilisateurRepository.add(utilisateur);
+
+
+        try {
+            utilisateurRepository.add(utilisateur);
+        } catch (DuplicateKeyException e) {
+            // Vérification du message pour savoir si c'est le pseudo ou l'email
+            if (e.getMessage().contains("unique_pseudo")) {
+                throw new UtilisateurExceptions.PseudoDejaExistant();
+            } else if (e.getMessage().contains("unique_email")) {
+                throw new UtilisateurExceptions.EmailDejaExistant();
+            }
+        }
+
+        // arrivé ici la création du compte utilisateur a réussie
+        // il faut le connecter automatiquement et le rediriger vers l'accueil (çà c'est le controller qui va le faire)
 
     }
 
