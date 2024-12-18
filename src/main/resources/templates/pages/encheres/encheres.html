@@ -33,11 +33,15 @@
         <div class="article" th:each="article : ${articles}">
 
             <div class="images-box"><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></div>
+
             <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                 <p th:text="*{article.nomArticle}"></p>
             </a>
+
             <p>Prix : <span th:text="*{article.miseAPrix}"></span> points</p>
+
             <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
+
             <p>Vendeur : <span th:text="*{article.vendeur.pseudo}"></span></p>
 
         </div>
