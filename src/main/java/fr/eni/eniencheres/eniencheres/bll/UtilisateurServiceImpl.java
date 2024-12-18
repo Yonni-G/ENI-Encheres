@@ -3,12 +3,19 @@ package fr.eni.eniencheres.eniencheres.bll;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.UtilisateurRepository;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
+import fr.eni.eniencheres.eniencheres.security.AuthenticationService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
@@ -23,25 +30,18 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public void add(Utilisateur utilisateur) {
-        try {
-            // on encrypte le mdp
-            utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
-            utilisateurRepository.add(utilisateur);
-        } catch (DuplicateKeyException e) {
-            // Vérification du message pour savoir si c'est le pseudo ou l'email
-            if (e.getMessage().contains("unique_pseudo")) {
-                throw new UtilisateurExceptions.PseudoDejaExistant();
-            } else if (e.getMessage().contains("unique_email")) {
-                throw new UtilisateurExceptions.EmailDejaExistant();
-            }
-        }
+        // Encrypt password
+        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
+        utilisateurRepository.add(utilisateur);
+
     }
 
     @Override
-    public Utilisateur getUtilisateur(String pseudo) {
+    public Optional<Utilisateur> getUtilisateur(String pseudo) {
 
         try {
-            return utilisateurRepository.getUtilisateur(pseudo);
+            Utilisateur utilisateur = utilisateurRepository.getUtilisateur(pseudo);
+            return Optional.ofNullable(utilisateur);
         } catch (EmptyResultDataAccessException e) {
             throw new UtilisateurExceptions.UtilisateurNonTrouve();
         }

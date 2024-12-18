@@ -57,10 +57,11 @@ CREATE TABLE UTILISATEURS (
                               ville            VARCHAR(30) NOT NULL,
                               mot_de_passe     VARCHAR(80) NOT NULL,
                               credit           INTEGER NOT NULL DEFAULT 0, -- Valeur par défaut pour credit
-                              administrateur   BIT NOT NULL DEFAULT 0 -- Valeur par défaut pour administrateur (false)
-)
-ALTER TABLE UTILISATEURS ADD constraint utilisateur_pk PRIMARY KEY (no_utilisateur)
-
+                              administrateur   BIT NOT NULL DEFAULT 0, -- Valeur par défaut pour administrateur (false)
+                              CONSTRAINT utilisateur_pk PRIMARY KEY (no_utilisateur),
+                              CONSTRAINT unique_pseudo UNIQUE (pseudo),   -- Contrôle de l'unicité du pseudo
+                              CONSTRAINT unique_email UNIQUE (email)      -- Contrôle de l'unicité de l'email
+);
 CREATE TABLE ARTICLES_VENDUS (
                                  no_article                    INTEGER IDENTITY(1,1) NOT NULL,
                                  nom_article                   VARCHAR(30) NOT NULL,

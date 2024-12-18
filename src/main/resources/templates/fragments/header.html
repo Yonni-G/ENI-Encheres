@@ -2,12 +2,29 @@
 
 
 <!-- Header Fragment -->
-<header>
+<header xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav>
         <ul>
-            <li><a th:href="@{/}">Accueil</a></li>
-            <li><a th:href="@{/logout}">Logout</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
+            <li><a href="/" th:text="'Home'">Home</a></li>
+
+            <!-- Si l'utilisateur est connecté, afficher son nom et le lien de déconnexion -->
+            <li sec:authorize="isAuthenticated()">
+                <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a href="/logout" th:text="'Déconnexion'">Déconnexion</a>
+            </li>
+
+            <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/login" th:text="'Connexion'">Connexion</a>
+            </li>
+
+            <!-- Si l'utilisateur n'est pas connecté, afficher le lien d'inscription -->
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/inscription" th:text="'Inscription'">Inscription</a>
+            </li>
+
         </ul>
     </nav>
     <div class="logo">
