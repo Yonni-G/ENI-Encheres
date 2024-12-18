@@ -64,7 +64,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     public EnchereDTO getDetailsVente(int noArticle) {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, " +
                 "a.description, c.libelle AS categorie, a.prix_initial AS miseAPrix, " +
-                //"a.date_fin_encheres AS dateFinEnchere," +
+                "a.date_fin_encheres AS dateFinEnchere," +
                 " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait" +
                // " u.pseudo AS vendeur" +
                 " FROM articles_vendus a" +
@@ -80,7 +80,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 rs.getString("description"),
                 rs.getString("categorie"),
                 rs.getInt("miseAPrix"),
-                //rs.getTimestamp("dateFinEnchere").toLocalDateTime(),
+                rs.getTimestamp("dateFinEnchere").toLocalDateTime(),
                 rs.getString("retrait")
                 //rs.getString("vendeur")
         );

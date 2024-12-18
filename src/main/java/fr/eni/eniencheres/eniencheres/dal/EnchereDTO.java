@@ -10,7 +10,7 @@ public class EnchereDTO {
     private String description;
     private String categorie;
     private int miseAPrix;
-    //private LocalDateTime dateFinEnchere;
+    private LocalDateTime dateFinEnchere;
     private String retrait;
     //private String vendeur;
 
@@ -21,7 +21,7 @@ public class EnchereDTO {
             String description,
             String categorie,
             int miseAPrix,
-            //LocalDateTime dateFinEnchere,
+            LocalDateTime dateFinEnchere,
             String retrait
     ) {
         this.noArticle = noArticle;
@@ -30,7 +30,7 @@ public class EnchereDTO {
         this.description = description;
         this.categorie = categorie;
         this.miseAPrix = miseAPrix;
-        //this.dateFinEnchere = dateFinEnchere;
+        this.dateFinEnchere = dateFinEnchere;
         this.retrait = retrait;
 
     }
@@ -86,13 +86,13 @@ public class EnchereDTO {
         this.miseAPrix = miseAPrix;
     }
 
-//    public LocalDateTime getDateFinEnchere() {
-//        return dateFinEnchere;
-//    }
-//
-//    public void setDateFinEnchere(LocalDateTime dateFinEnchere) {
-//        this.dateFinEnchere = dateFinEnchere;
-//    }
+    public LocalDateTime getDateFinEnchere() {
+        return dateFinEnchere;
+    }
+
+    public void setDateFinEnchere(LocalDateTime dateFinEnchere) {
+        this.dateFinEnchere = dateFinEnchere;
+    }
 
     public String getRetrait() {
         return retrait;

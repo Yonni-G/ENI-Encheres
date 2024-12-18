@@ -35,11 +35,11 @@
                 </tr>
                 <tr>
                     <td>Fin de l'enchère :</td>
-                    <!-- <td th:text="${#temporals.format(articles.dateFinEncheres, 'dd-MM-yyyy')}"></td> -->
+                    <td th:text="${#temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}"></td>
                 </tr>
                 <tr>
                     <td>Retrait :</td>
-                    <td></td>
+                    <td th:text="${articles.retrait}"></td>
                 </tr>
                 <tr>
                     <td>Vendeur :</td>
