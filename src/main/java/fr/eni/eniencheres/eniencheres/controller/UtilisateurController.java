@@ -4,7 +4,6 @@ import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,17 +24,16 @@ public class UtilisateurController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public UtilisateurController(UtilisateurService utilisateurService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @PostMapping("/login")
-//    String loginPost() {
-//
-//    }
+    @GetMapping("/connexion")
+    String connexionPost() {
+        return "pages/utilisateur/connexion";
+    }
 
     @GetMapping("/inscription")
     public String UtilisateurInscriptionGet(Model model) {
@@ -115,7 +113,7 @@ public class UtilisateurController {
             return "redirect:/login";
         }
 
-        // Redirige vers la page d'accueil après connexion réussie
+        // CONNEXION AUTOMATIQUE VERS L ACCUEIL
         return "redirect:/";
 
 

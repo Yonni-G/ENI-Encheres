@@ -14,12 +14,12 @@
                 <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
             </li>
             <li sec:authorize="isAuthenticated()">
-                <a href="/logout" th:text="'Déconnexion'">Déconnexion</a>
+                <a href="/logout" th:text="'Déconnexion'"></a>
             </li>
 
             <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
             <li sec:authorize="!isAuthenticated()">
-                <a href="/login" th:text="'Connexion'">Connexion</a>
+                <a href="/connexion" th:text="'Connexion'"></a>
             </li>
 
             <!-- Si l'utilisateur n'est pas connecté, afficher le lien d'inscription -->

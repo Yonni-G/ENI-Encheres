@@ -1,0 +1,35 @@
+<!-- src/main/resources/templates/index.html -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENI-Encheres - Inscription</title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+</head>
+<body>
+<!-- Inclure le fragment header -->
+<header th:replace="fragments/header :: header"></header>
+
+<h1>Connexion profil</h1>
+<!-- Afficher les erreurs de connexion -->
+<h2 class="error" th:if="${param.error}" th:text="'Erreur : Mot de passe ou pseudo incorrect !'"></h2>
+
+<form th:action="@{/connexion}" method="post">
+
+    <p>
+        <label for="username">*Pseudo : </label><input name="username" placeholder="Votre pseudo ?" required id="username"/>
+    </p>
+    <p>
+        <label for="password">*Mot de passe : </label><input maxlength="8" name="password" placeholder="Votre mot de passe ?" required id="password"/>
+    </p>
+    <p><button type="submit">Connexion</button> </p>
+</form>
+
+
+
+<!-- Inclure le fragment footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
