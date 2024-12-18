@@ -10,9 +10,11 @@ public class EnchereDTO {
     private String description;
     private String categorie;
     private int miseAPrix;
-    //private LocalDateTime dateFinEnchere;
+    private LocalDateTime dateFinEnchere;
     private String retrait;
-    //private String vendeur;
+    private String vendeur;
+    private int montantEnchere;
+    private LocalDateTime dateEnchere;
 
     public EnchereDTO(
             int noArticle,
@@ -21,8 +23,11 @@ public class EnchereDTO {
             String description,
             String categorie,
             int miseAPrix,
-            //LocalDateTime dateFinEnchere,
-            String retrait
+            LocalDateTime dateFinEnchere,
+            String retrait,
+            String vendeur,
+            int montantEnchere,
+            LocalDateTime dateEnchere
     ) {
         this.noArticle = noArticle;
         this.lien_image = lien_image;
@@ -30,9 +35,11 @@ public class EnchereDTO {
         this.description = description;
         this.categorie = categorie;
         this.miseAPrix = miseAPrix;
-        //this.dateFinEnchere = dateFinEnchere;
+        this.dateFinEnchere = dateFinEnchere;
         this.retrait = retrait;
-
+        this.vendeur = vendeur;
+        this.montantEnchere = montantEnchere;
+        this.dateEnchere = dateEnchere;
     }
     public EnchereDTO(){}
 
@@ -86,13 +93,13 @@ public class EnchereDTO {
         this.miseAPrix = miseAPrix;
     }
 
-//    public LocalDateTime getDateFinEnchere() {
-//        return dateFinEnchere;
-//    }
-//
-//    public void setDateFinEnchere(LocalDateTime dateFinEnchere) {
-//        this.dateFinEnchere = dateFinEnchere;
-//    }
+    public LocalDateTime getDateFinEnchere() {
+        return dateFinEnchere;
+    }
+
+    public void setDateFinEnchere(LocalDateTime dateFinEnchere) {
+        this.dateFinEnchere = dateFinEnchere;
+    }
 
     public String getRetrait() {
         return retrait;
@@ -102,11 +109,27 @@ public class EnchereDTO {
         this.retrait = retrait;
     }
 
-//    public String getVendeur() {
-//        return vendeur;
-//    }
-//
-//    public void setVendeur(String vendeur) {
-//        this.vendeur = vendeur;
-//    }
+    public String getVendeur() {
+        return vendeur;
+    }
+
+    public void setVendeur(String vendeur) {
+        this.vendeur = vendeur;
+    }
+
+    public int getMontantEnchere() {
+        return montantEnchere;
+    }
+
+    public void setMontantEnchere(int montantEnchere) {
+        this.montantEnchere = montantEnchere;
+    }
+
+    public LocalDateTime getDateEnchere() {
+        return dateEnchere;
+    }
+
+    public void setDateEnchere(LocalDateTime dateEnchere) {
+        this.dateEnchere = dateEnchere;
+    }
 }

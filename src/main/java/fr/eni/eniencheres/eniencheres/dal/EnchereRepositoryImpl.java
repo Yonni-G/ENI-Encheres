@@ -64,13 +64,14 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     public EnchereDTO getDetailsVente(int noArticle) {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, " +
                 "a.description, c.libelle AS categorie, a.prix_initial AS miseAPrix, " +
-                //"a.date_fin_encheres AS dateFinEnchere," +
-                " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait" +
-               // " u.pseudo AS vendeur" +
+                "a.date_fin_encheres AS dateFinEnchere," +
+                " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait," +
+                " u.pseudo AS vendeur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere" +
                 " FROM articles_vendus a" +
                 " JOIN categories c ON c.no_categorie = a.no_categorie" +
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
-                //" JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
+                " JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
+                " JOIN encheres e ON e.no_article = a.no_article" +
                 " WHERE a.no_article = ?;";
         // Mappage des données récupérées dans l'objet DTO
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
@@ -80,9 +81,11 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 rs.getString("description"),
                 rs.getString("categorie"),
                 rs.getInt("miseAPrix"),
-                //rs.getTimestamp("dateFinEnchere").toLocalDateTime(),
-                rs.getString("retrait")
-                //rs.getString("vendeur")
+                rs.getTimestamp("dateFinEnchere").toLocalDateTime(),
+                rs.getString("retrait"),
+                rs.getString("vendeur"),
+                rs.getInt("montantEnchere"),
+                rs.getTimestamp("dateEnchere").toLocalDateTime()
         );
 
         return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
