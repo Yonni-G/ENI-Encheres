@@ -42,11 +42,11 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=8)
+    @Size(min=5)
     private String ville;
 
     @NotNull
-    @Size(min=8, max=20)
+    @Size(min=5, max=20)
     private String motDePasse;
 
     private int credit;

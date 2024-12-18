@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Controller
 public class UtilisateurController {
 
@@ -31,8 +33,45 @@ public class UtilisateurController {
     }
 
     @GetMapping("/modification")
-    String modificationGet(Model model) {
+    public String modificationGet(Model model) {
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName()));
+        return "pages/utilisateur/modification";
+    }
+
+    @PostMapping("/modification")
+    public String modificationPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("NouveauMotDePasse") String NouveauMotDePasse, @RequestParam("NouveauMotDePasseConfirmation") String NouveauMotDePasseConfirmation, Model model) {
+
+        if (controlUser.hasErrors()) {
+            return "pages/utilisateur/modification";
+        }
+
+        // on vérifie que le mdp saisi est correct
+        Optional<Utilisateur> utilisateurData = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(utilisateurData.isPresent()) {
+            String mdpData = utilisateurData.get().getMotDePasse();
+            if (!passwordEncoder.matches(utilisateur.getMotDePasse(), mdpData)) {
+                model.addAttribute("errorMessage", "Votre mot de passe actuel est incorrect !");
+                return "pages/utilisateur/modification";
+            }
+        }else {
+            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        }
+
+
+        // on controle que les 2 nouveaux mots de passe coincident
+        if (!NouveauMotDePasse.equals(NouveauMotDePasseConfirmation)) {
+            model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
+            return "pages/utilisateur/modification";
+        }
+
+        //  arrivé ici, tout est bon =>
+        //  1. on met à jour le mot de passe de l'utilisateur avec un encode du nouveau mdp
+        //  2. on tente de valider l'update des données
+        utilisateurData.get().setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
+        try {
+            utilisateurService.update(utilisateurData.get());
+        } catch (Exception e) {}
+        model.addAttribute("successMessage", "Votre profil a bien été mis à jour");
         return "pages/utilisateur/modification";
     }
 
