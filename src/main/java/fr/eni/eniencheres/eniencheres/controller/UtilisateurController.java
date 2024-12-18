@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,19 +23,20 @@ public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
     private final AuthenticationManager authenticationManager;
-    //private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UtilisateurController(UtilisateurService utilisateurService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
         this.authenticationManager = authenticationManager;
-        //this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
 //    @PostMapping("/login")
 //    String loginPost() {
 //
 //    }
+
     @GetMapping("/inscription")
     public String UtilisateurInscriptionGet(Model model) {
 
@@ -75,6 +77,9 @@ public class UtilisateurController {
             return "pages/utilisateur/inscription";
         }
 
+       // String mdp = utilisateur.getMotDePasse();
+        // On encrypte le mdp
+        utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
         try {
             // ici le formulaire est valide => on tente d'ajouter l'utilisateur en BDD
             utilisateurService.add(utilisateur);
@@ -90,12 +95,28 @@ public class UtilisateurController {
         // => on le redirige vers l'accueil
 
         // Authentifie l'utilisateur immédiatement après l'inscription
-        Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur.getPseudo(), utilisateur.getMotDePasse());
-        Authentication authResult = authenticationManager.authenticate(authentication);
-        SecurityContextHolder.getContext().setAuthentication(authResult);
+        // Authentification de l'utilisateur après l'inscription
+        try {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur.getPseudo(), motDePasseConfirmation);
+            Authentication authResult = authenticationManager.authenticate(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authResult);
+
+            // Tester si l'authentification a réussi
+            if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+                System.out.println("Authentification réussie pour : " + authentication.getName());
+            } else {
+                System.out.println("L'authentification a échoué (même si aucune exception n'a été levée).");
+            }
+        } catch (AuthenticationException ex) {
+            // Si une exception est lancée, cela signifie que l'authentification a échoué
+            System.out.println("L'authentification a échoué : " + ex.getMessage());
+            System.out.println(utilisateur);
+            model.addAttribute("errorMessage", "Identifiants invalides");
+            return "redirect:/login";
+        }
 
         // Redirige vers la page d'accueil après connexion réussie
-        return "redirect:/";
+        return "redirect:/encheres";
 
 
     }
