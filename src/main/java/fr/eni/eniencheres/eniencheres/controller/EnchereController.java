@@ -3,6 +3,7 @@ package fr.eni.eniencheres.eniencheres.controller;
 import fr.eni.eniencheres.eniencheres.bll.EnchereService;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
+import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,7 +50,10 @@ public class EnchereController {
 
     @GetMapping("/detailVente/{noArticle}")
     public String detailVente(@PathVariable("noArticle") Integer noArticle, Model model) {
-        model.addAttribute("articles", service.findArticleById(noArticle));
+        //model.addAttribute("articles", service.findArticleById(noArticle));
+
+        model.addAttribute("articles", service.getDetailsVente(noArticle));
+
         return "pages/encheres/detailVente";
     }
 }

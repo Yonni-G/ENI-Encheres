@@ -6,12 +6,55 @@
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
-    <header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
 
-    <h2>Détail vente n°<span th:text="${noArticle}"></span></h2>
+    <div class="details-container">
+        <div class="details-image">
+            <img th:src="${articles.lien_image}" alt="image de l'article en vente" />
+        </div>
+        <div class="details-texts">
+            <h2 th:text="${articles.nomArticle}"></h2>
+            <table>
+                <tr>
+                    <td>Description :</td>
+                    <td th:text="${articles.description}"></td>
+                </tr>
+                <tr>
+                    <td>Catégorie :</td>
+                    <td th:text="${articles.categorie}"></td>
+                </tr>
+                <tr>
+                    <td>Meilleure offre :</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Mise à prix :</td>
+                    <td th:text="${articles.miseAPrix}"></td>
+                </tr>
+                <tr>
+                    <td>Fin de l'enchère :</td>
+                    <!-- <td th:text="${#temporals.format(articles.dateFinEncheres, 'dd-MM-yyyy')}"></td> -->
+                </tr>
+                <tr>
+                    <td>Retrait :</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Vendeur :</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Ma proposition :</td>
+                    <td><input type="number"/></td>
+                    <td><button type="submit">Enchérir</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-   <!-- <img th:src="${}"> -->
-
-    <footer th:replace="fragments/footer :: footer"></footer>
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

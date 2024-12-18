@@ -19,4 +19,7 @@ public interface EnchereRepository {
 
     // Récupérer la liste des articles en fonction du nom et de la catégorie
     List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom);
+
+    // Jointure entre les différentes classes pour récupérer les données nécessaires
+    EnchereDTO getDetailsVente(int noArticle);
 }
