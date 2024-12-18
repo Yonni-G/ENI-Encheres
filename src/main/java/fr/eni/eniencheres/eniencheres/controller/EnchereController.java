@@ -29,6 +29,7 @@ public class EnchereController {
 
         List<ArticleVendu> articles;
 
+        // Permet les filtres
         if (noCategorie != null && nom != null) {
             articles = service.findArticleByNomAndCategorieId(noCategorie, nom);
         } else if (noCategorie != null) {
@@ -38,6 +39,7 @@ public class EnchereController {
         } else {
             articles = service.findAllArticleVendu();
         }
+
         // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", service.findAllCategories());
         // Ajout à la vue de la liste des articles vendus

@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -73,4 +74,14 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         String sql = "SELECT * FROM utilisateurs";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
     }
+
+//    public Utilisateur getVendeur(int noArticle) {
+//        String sql = "SELECT u.pseudo AS vendeur, a.no_article FROM utilisateurs u" +
+//                " JOIN articles_vendus a ON a.no_utilisateur = u.no_utilisateur";
+//        RowMapper<Utilisateur> rowMapper = (rs, rowNum) -> {
+//            Utilisateur vendeur = new Utilisateur();
+//            vendeur.setPseudo(rs.getString("pseudo"));
+//
+//        }
+//    }
 }
