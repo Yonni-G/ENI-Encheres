@@ -57,6 +57,27 @@ nav a:hover {
     border-radius: 25%;
 }
 
+/* Vendre un article ('formAjoutArticle.html')  */
+#vendre-article {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px; /* Espace entre les colonnes */
+}
+
+.vendre-article-col {
+    /*border:1px solid black;*/
+}
+
+#vendre-article-col-left {
+    width: 30%;
+}
+
+#vendre-article-col-right {
+    width: 50%;
+}
+
+
 /* Liste des ventes ('encheres.html') */
 #container-article {
     display: flex;
@@ -74,6 +95,9 @@ nav a:hover {
 .article:hover {
     width: 350px;
     box-shadow: 2px 2px black;
+}
+.article-col {
+    width:50%;
 }
 .images-box {
     width: 200px;

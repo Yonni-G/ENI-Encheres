@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Enchères</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main>
+    <h1>Nouvelle vente</h1>
+
+<!--    private String nomArticle;-->
+<!--    private String description;-->
+<!--    private LocalDateTime dateDebutEncheres;-->
+<!--    private LocalDateTime dateFinEncheres;-->
+<!--    private int miseAPrix;-->
+<!--    private int prixVente;-->
+<!--    private boolean etatVente;-->
+<!--    private String lien_image;-->
+<!--    private Utilisateur acheteur;-->
+<!--    private Utilisateur vendeur;-->
+<!--    private Retrait lieuRetrait;-->
+<!--    private Categorie categorieArticle;-->
+<!--    -->
+    <h2>Filtres</h2>
+    <div id="vendre-article">
+
+        <div class="vendre-article-col" id="vendre-article-col-left">ici</div>
+        <div class="vendre-article-col" id="vendre-article-col-right">
+            <form method="post" th:action="@{/vendre}" th:object="${articleVendu}">
+                <p>
+                    <label for="nomArticle">Article : </label>
+                    <input id="nomArticle" type="text" th:field="*{nomArticle}" placeholder="Donnez un nom à votre article" />
+                </p>
+                <p>
+                    <label for="description">Description : </label>
+                    <textarea id="description" th:field="*{description}"></textarea>
+                </p>
+                <p>
+                    <label for="noCategorie">Catégorie : </label>
+                    <select id="noCategorie" name="noCategorie">
+                        <option  th:each="categorie : ${categories}"
+                                th:value="*{categorie.noCategorie}"
+                                th:text="*{categorie.libelle}">
+                        </option>
+                    </select>
+                    <!--                                th:selected="${param.noCategorie == categorie.noCategorie}"-->
+                    <button type="submit">Enregistrer</button>
+                </p>
+
+
+            </form>
+        </div>
+
+
+
+
+    </div>
+
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
