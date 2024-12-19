@@ -14,7 +14,7 @@
 
 <h1>Modification de votre profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
-<h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2>
+
 
 <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
 <table>

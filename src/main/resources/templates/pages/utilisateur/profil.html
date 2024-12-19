@@ -7,6 +7,9 @@
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
+
+<h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2>
+
 <main id="profil">
     <table class="profil-table">
         <tr>

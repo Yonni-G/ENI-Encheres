@@ -81,12 +81,12 @@ public class UtilisateurController {
 
             utilisateurService.update(utilisateur);
         } catch (UtilisateurExceptions.EmailDejaExistant e) {
-            model.addAttribute("errorMessage", "Cette adresse est déjà utilisée.");
+            model.addAttribute("errorMessage", "Cette adresse email est déjà utilisée.");
             return "pages/utilisateur/modification";
         }
 
         model.addAttribute("successMessage", "OK");
-        return "pages/utilisateur/modification";
+        return "redirect:profil/" + utilisateur.getPseudo() + "?success";
 
     }
 
@@ -118,9 +118,12 @@ public class UtilisateurController {
     }
 
     @GetMapping("/profil/{pseudo}")
-    public String profilGet(@PathVariable String pseudo, Model model) {
+    public String profilGet(@PathVariable String pseudo, @RequestParam(value = "success", required = false) String success, Model model) {
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
 
+        if(success != null) {
+            model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
+        }
         return "pages/utilisateur/profil";
     }
 
