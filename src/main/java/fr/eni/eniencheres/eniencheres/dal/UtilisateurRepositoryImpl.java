@@ -5,6 +5,7 @@ import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,7 +24,7 @@ import java.util.Map;
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
@@ -73,6 +74,15 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     public List<Utilisateur> findAll() {
         String sql = "SELECT * FROM utilisateurs";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
+    }
+
+    @Override
+    public void update(Utilisateur utilisateur) {
+
+        String sql = "UPDATE utilisateurs" +
+                " SET nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, code_postal = :codePostal, ville = :ville, mot_de_passe = :motDePasse" +
+                " WHERE no_utilisateur = :noUtilisateur";
+        namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
     }
 
 //    public Utilisateur getVendeur(int noArticle) {

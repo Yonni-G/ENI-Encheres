@@ -10,4 +10,6 @@ public interface UtilisateurRepository {
     Utilisateur getUtilisateur(String pseudo);
 
     List<Utilisateur> findAll();
+
+    void update(Utilisateur utilisateur);
 }

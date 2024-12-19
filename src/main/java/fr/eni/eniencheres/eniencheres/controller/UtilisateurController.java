@@ -4,6 +4,8 @@ import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import java.util.Optional;
 @Controller
 public class UtilisateurController {
 
+    private static final Logger log = LoggerFactory.getLogger(UtilisateurController.class);
     private final UtilisateurService utilisateurService;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
@@ -50,6 +53,7 @@ public class UtilisateurController {
         Optional<Utilisateur> utilisateurData = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         if(utilisateurData.isPresent()) {
             String mdpData = utilisateurData.get().getMotDePasse();
+
             if (!passwordEncoder.matches(utilisateur.getMotDePasse(), mdpData)) {
                 model.addAttribute("errorMessage", "Votre mot de passe actuel est incorrect !");
                 return "pages/utilisateur/modification";
@@ -58,7 +62,6 @@ public class UtilisateurController {
             throw new UtilisateurExceptions.UtilisateurNonTrouve();
         }
 
-
         // on controle que les 2 nouveaux mots de passe coincident
         if (!NouveauMotDePasse.equals(NouveauMotDePasseConfirmation)) {
             model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
@@ -66,14 +69,25 @@ public class UtilisateurController {
         }
 
         //  arrivé ici, tout est bon =>
-        //  1. on met à jour le mot de passe de l'utilisateur avec un encode du nouveau mdp
+        //  1. on met à jour :
+        //      1.1 le mot de passe de l'utilisateur avec un encode du nouveau mdp
+        utilisateur.setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
+        //      1.2 l'id de l'utilisateur
+        utilisateur.setNoUtilisateur(utilisateurData.get().getNoUtilisateur());
+
         //  2. on tente de valider l'update des données
-        utilisateurData.get().setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
+        utilisateur.setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
         try {
-            utilisateurService.update(utilisateurData.get());
-        } catch (Exception e) {}
-        model.addAttribute("successMessage", "Votre profil a bien été mis à jour");
+
+            utilisateurService.update(utilisateur);
+        } catch (UtilisateurExceptions.EmailDejaExistant e) {
+            model.addAttribute("errorMessage", "Cette adresse est déjà utilisée.");
+            return "pages/utilisateur/modification";
+        }
+
+        model.addAttribute("successMessage", "OK");
         return "pages/utilisateur/modification";
+
     }
 
     @GetMapping("/connexion")

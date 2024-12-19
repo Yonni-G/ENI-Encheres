@@ -26,7 +26,7 @@
                 <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
                 <a th:href="@{/}">Enchères</a>
                 <a href="#">Vendre un article</a>
-                <a th:href="@{/modification}">Mon profil</a>
+                <a th:href="@{/profil/{pseudo}(pseudo=${#authentication.name})}">Mon profil</a>
                 <a th:href="@{/logout}">Déconnexion</a>
 popo
                 <a  th:text="${usernname}"></a>

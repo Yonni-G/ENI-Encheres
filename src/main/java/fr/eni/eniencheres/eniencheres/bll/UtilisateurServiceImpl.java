@@ -67,6 +67,10 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public void update(Utilisateur utilisateur) {
-
+        try {
+            utilisateurRepository.update(utilisateur);
+        } catch (DuplicateKeyException e) {
+            throw new UtilisateurExceptions.EmailDejaExistant();
+        }
     }
 }

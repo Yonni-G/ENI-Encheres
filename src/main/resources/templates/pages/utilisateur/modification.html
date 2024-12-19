@@ -14,14 +14,10 @@
 
 <h1>Modification de votre profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
-<h2 class="success" th:if="${errorSuccess}" th:text="${errorSuccess}"></h2>
-
-<h3 th:text="${username}"></h3>
+<h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2>
 
 <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
-
-    <table border="bordered">
-
+<table>
         <tr>
             <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
             <td><label for="nom">*nom : </label><input required id="nom" th:field="*{nom}"/><br /><span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span></td>
@@ -41,7 +37,7 @@
             <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
         </tr>
         <tr>
-            <td><label for="motDePasse">*mot De Passe actuel : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/></td>
+            <td><label for="motDePasse">*motDePasse actuel : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
             <td>&nbsp;</td>
         </tr>
         <tr>
