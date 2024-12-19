@@ -62,7 +62,7 @@ public class EnchereController {
 //
         } else if (ventesEnCours == true) {
 //
-//        } else if (ventesNonDebutees == true) {
+        } //else if (ventesNonDebutees == true) {
 //
 //        } else if (ventesTerminees == true) {
 //
