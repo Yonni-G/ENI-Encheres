@@ -19,4 +19,14 @@ public interface EnchereService {
     List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom);
 
     EnchereDTO getDetailsVente(int noArticle);
+
+    List<ArticleVendu> findArticleByEncheresOuvertes();
+
+    List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);
+
+    List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur);
+
+    List<ArticleVendu> findArticleByVenteNonDebutee();
+
+    List<ArticleVendu> findArticleByVenteTerminee();
 }
