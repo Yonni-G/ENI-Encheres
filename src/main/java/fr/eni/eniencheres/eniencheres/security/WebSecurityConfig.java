@@ -21,7 +21,7 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/", "/connexion", "/login","/login/**", "/inscription",  "/images/**", "/css/**",
-                                "/encheres", "/encheres/**", "/detailVente/**", "/profil/**").permitAll()
+                                "/encheres", "/encheres/**").permitAll()
                         //.requestMatchers(HttpMethod.GET, "/jeux", "/jeux/*/afficher").permitAll()
                         //.requestMatchers("/*/hello").hasAnyRole(null)
                         //.requestMatchers("/*/ajouter", "/*/modifier", "/*/supprimer","/*/enregistrer").hasAnyRole("ADMIN", "EMPLOYE")

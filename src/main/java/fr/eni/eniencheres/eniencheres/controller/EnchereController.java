@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EnchereController {
@@ -27,26 +28,29 @@ public class EnchereController {
             @RequestParam(required = false) Integer noCategorie,
             Model model) {
 
-        List<ArticleVendu> articles;
+        // Initialisation de valeurs par défaut pour éviter les valeurs 'null'
+        if (nom == null) { nom = "";}
+        if (noCategorie == null) { noCategorie = null;} // Peut être 'null' pour le filtre 'Toutes'
 
-        // Permet les filtres
-        if (noCategorie != null && nom != null) {
+        List<ArticleVendu> articles;
+        // Récupération des articles en fonction des filtres
+        if (noCategorie != null && !nom.isBlank()) {
             articles = service.findArticleByNomAndCategorieId(noCategorie, nom);
         } else if (noCategorie != null) {
             articles = service.findArticleByCategorieId(noCategorie);
-        } else if (nom != null) {
+        } else if (!nom.isBlank()) {
             articles = service.findArticleByNom(nom);
         } else {
             articles = service.findAllArticleVendu();
         }
 
+
+
         // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", service.findAllCategories());
         // Ajout à la vue de la liste des articles vendus
         model.addAttribute("articles", articles);
-        // Ajout à la vue de la liste des utilisateurs
-        // TODO: ne fonctionne pas !!!!!!!!!!!!!!!!!!!!!!!!!
-        model.addAttribute("utilisateur", utilisateurService.findAll());
+
         return "pages/encheres/encheres";
     }
 
