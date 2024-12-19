@@ -27,7 +27,7 @@
                 </tr>
                 <tr th:if="${articles.montantEnchere != null && articles.dateEnchere != null}">
                     <td>Meilleure offre :</td>
-                    <td th:text="${articles.montantEnchere} + ' le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${articles.montantEnchere} + ' par ' + ' le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
                 </tr>
                 <tr th:if="${articles.montantEnchere == null || articles.dateEnchere == null}">
                     <td><em>Il n'y a aucune offre pour cette article...</em></td>
