@@ -55,18 +55,18 @@ public class EnchereController {
         EnchereFiltresDTO enchereFiltres = new EnchereFiltresDTO();
         model.addAttribute("enchereFiltres", enchereFiltres);
         if (encheresOuvertes == true) {
-
+            articles = service.findArticleByEncheresOuvertes();
         } else if (encheresEnCours == true) {
-
-        } else if (encheresRemportees == true) {
-
+            articles = service.findArticleByEncheresEnCours();
+//        } TODO: else if (encheresRemportees == true) {
+//
         } else if (ventesEnCours == true) {
-
-        } else if (ventesNonDebutees == true) {
-
-        } else if (ventesTerminees == true) {
-
-        }
+//
+//        } else if (ventesNonDebutees == true) {
+//
+//        } else if (ventesTerminees == true) {
+//
+//        }
 
         // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", service.findAllCategories());

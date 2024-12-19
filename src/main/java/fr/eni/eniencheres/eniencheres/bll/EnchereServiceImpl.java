@@ -49,4 +49,14 @@ public class EnchereServiceImpl implements EnchereService {
     public EnchereDTO getDetailsVente(int noArticle) {
         return repository.getDetailsVente(noArticle);
     }
+
+    @Override
+    public List<ArticleVendu> findArticleByEncheresOuvertes() {
+        return repository.findArticleByEncheresOuvertes();
+    }
+
+    @Override
+    public List<ArticleVendu> findArticleByEncheresEnCours() {
+        return repository.findArticleByEncheresEnCours();
+    }
 }
