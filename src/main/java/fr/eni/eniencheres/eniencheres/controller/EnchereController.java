@@ -4,6 +4,7 @@ import fr.eni.eniencheres.eniencheres.bll.EnchereService;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
+import fr.eni.eniencheres.eniencheres.dal.EnchereFiltresDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,12 @@ public class EnchereController {
     public String accueil(
             @RequestParam(required = false) String nom,
             @RequestParam(required = false) Integer noCategorie,
+            @RequestParam(required = false) boolean encheresOuvertes,
+            @RequestParam(required = false) boolean encheresEnCours,
+            @RequestParam(required = false) boolean encheresRemportees,
+            @RequestParam(required = false) boolean ventesEnCours,
+            @RequestParam(required = false) boolean ventesNonDebutees,
+            @RequestParam(required = false) boolean ventesTerminees,
             Model model) {
 
         // Initialisation de valeurs par défaut pour éviter les valeurs 'null'
@@ -44,7 +51,22 @@ public class EnchereController {
             articles = service.findAllArticleVendu();
         }
 
+        // Gérer les filtres Utilisateur connecté
+        EnchereFiltresDTO enchereFiltres = new EnchereFiltresDTO();
+        model.addAttribute("enchereFiltres", enchereFiltres);
+        if (encheresOuvertes == true) {
 
+        } else if (encheresEnCours == true) {
+
+        } else if (encheresRemportees == true) {
+
+        } else if (ventesEnCours == true) {
+
+        } else if (ventesNonDebutees == true) {
+
+        } else if (ventesTerminees == true) {
+
+        }
 
         // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", service.findAllCategories());
