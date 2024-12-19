@@ -22,5 +22,11 @@ public interface EnchereService {
 
     List<ArticleVendu> findArticleByEncheresOuvertes();
 
-    List<ArticleVendu> findArticleByEncheresEnCours();
+    List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);
+
+    List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur);
+
+    List<ArticleVendu> findArticleByVenteNonDebutee();
+
+    List<ArticleVendu> findArticleByVenteTerminee();
 }

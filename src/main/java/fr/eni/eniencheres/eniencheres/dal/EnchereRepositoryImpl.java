@@ -139,8 +139,13 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 
     // Récupérer la liste des articles en fonction de 'Enchères en cours ?'
     @Override
-    public List<ArticleVendu> findArticleByEncheresEnCours() {
-        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE date_fin_encheres > GETDATE() AND date_debut_encheres < GETDATE()";
+    public List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur) {
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, " +
+                "a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, " +
+                "U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur " +
+                "LEFT JOIN encheres e ON e.no_article = a.no_article " +
+                "WHERE e.montant_enchere IS NOT NULL AND e.no_utilisateur = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu articleVendu = new ArticleVendu();
             articleVendu.setNoArticle(rs.getInt("noArticle"));
@@ -155,12 +160,12 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
 
             return articleVendu;
-        });
+        }, no_utilisateur);
     }
 
     // TODO: Récupérer la liste des articles en fonction de 'Enchères remportees ?'
 //    @Override
-//    public List<ArticleVendu> findArticleByEncheresEnCours() {
+//    public List<ArticleVendu> findArticleByEncheresRemportees() {
 //        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE date_fin_encheres > GETDATE() AND date_debut_encheres < GETDATE()";
 //        return jdbcTemplate.query(sql, (rs, rowNum) -> {
 //            ArticleVendu articleVendu = new ArticleVendu();
@@ -179,6 +184,77 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 //        });
 //    }
 
+    // Récupérer la liste des articles en fonction de 'Ventes en cours ?'
+    @Override
+    public List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur) {
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, " +
+                "a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, " +
+                "U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur " +
+                "LEFT JOIN encheres e ON e.no_article = a.no_article " +
+                "WHERE a.no_utilisateur = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        }, no_utilisateur);
+    }
+
+    // Récupérer la liste des articles en fonction de 'Vente non débutées ?'
+    @Override
+    public List<ArticleVendu> findArticleByVenteNonDebutee() {
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere," +
+                " a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE date_debut_encheres > GETDATE()";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        });
+    }
+
+    // Récupérer la liste des articles en fonction de 'Vente non débutées ?'
+    @Override
+    public List<ArticleVendu> findArticleByVenteTerminee() {
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere," +
+                " a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE date_fin_encheres < GETDATE()";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        });
+    }
 
 //---------------------------------------------------------------------------------------------------------------------------------------
 

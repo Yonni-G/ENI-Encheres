@@ -25,7 +25,16 @@ public interface EnchereRepository {
     List<ArticleVendu> findArticleByEncheresOuvertes();
 
     // Récupérer la liste des articles en fonction de 'Enchères en cours ?'
-    List<ArticleVendu> findArticleByEncheresEnCours();
+    List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);
+
+    // Récupérer la liste des articles en fonction de 'Ventes en cours ?'
+    List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur);
+
+    // Récupérer la liste des articles en fonction de 'Vente non débutées ?'
+    List<ArticleVendu> findArticleByVenteNonDebutee();
+
+    // Récupérer la liste des articles en fonction de 'Vente non débutées ?'
+    List<ArticleVendu> findArticleByVenteTerminee();
 
     // Jointure entre les différentes classes pour récupérer les données nécessaires
     EnchereDTO getDetailsVente(int noArticle);
