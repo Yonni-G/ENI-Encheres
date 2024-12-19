@@ -7,7 +7,7 @@ public class EnchereFiltresDTO {
     private boolean encheresRemportees;
 
     private boolean ventesEnCours;
-    private boolean ventesNonCommencees;
+    private boolean ventesNonDebutees;
     private boolean ventesTerminees;
 
     public boolean isEncheresOuvertes() {
@@ -42,12 +42,12 @@ public class EnchereFiltresDTO {
         this.ventesEnCours = ventesEnCours;
     }
 
-    public boolean isVentesNonCommencees() {
-        return ventesNonCommencees;
+    public boolean isVentesNonDebutees() {
+        return ventesNonDebutees;
     }
 
-    public void setVentesNonCommencees(boolean ventesNonCommencees) {
-        this.ventesNonCommencees = ventesNonCommencees;
+    public void setVentesNonDebutees(boolean ventesNonDebutees) {
+        this.ventesNonDebutees = ventesNonDebutees;
     }
 
     public boolean isVentesTerminees() {
