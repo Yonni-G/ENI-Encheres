@@ -44,6 +44,8 @@ public class EnchereController {
             articles = service.findAllArticleVendu();
         }
 
+
+
         // Ajout à la vue de la liste des catégories
         model.addAttribute("categories", service.findAllCategories());
         // Ajout à la vue de la liste des articles vendus
