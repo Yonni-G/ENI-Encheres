@@ -3,6 +3,8 @@ package fr.eni.eniencheres.eniencheres.controller;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,10 +39,60 @@ public class UtilisateurController {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @GetMapping("/erreurCompte")
+    public String erreurCompte(Model model) {
+        return "pages/utilisateur/erreurCompte";
+    }
+
+    /*
+        Les 2 fonctions en GET /profil et /modification impliquent que le compte de l'utilisateur connecté soit existant
+        => on le vérifiera dans les 2 fonctions sus-nommées
+     */
+    @GetMapping("/profil/{pseudo}")
+    public String profilGet(@PathVariable String pseudo, @RequestParam(value = "success", required = false) String success, Model model) {
+
+        Optional<Utilisateur> utilisateurConnecteExiste;
+        try {
+            utilisateurConnecteExiste = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+            return "redirect:/erreurCompte";
+        }
+
+        model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
+
+        if(success != null) {
+            model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
+        }
+        return "pages/utilisateur/profil";
+    }
 
     @GetMapping("/modification")
-    public String modificationGet(@RequestParam(value = "delete", required = false) String delete, Model model) {
-        model.addAttribute("utilisateur", utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName()));
+    public String modificationGet(@RequestParam(value = "delete", required = false) String delete, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        // on recupere le pseudo (username) de la session
+        String utilisateurConnectePseudo =  SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Optional<Utilisateur> utilisateurConnecteExiste;
+        try {
+            utilisateurConnecteExiste = utilisateurService.getUtilisateur(utilisateurConnectePseudo);
+        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+            return "redirect:/erreurCompte";
+        }
+
+        /* ===================== SUPPRESSION DE COMPTE ===================================== */
+        model.addAttribute("utilisateur", utilisateurConnecteExiste.get());
+        if(delete != null) {
+            try {
+                utilisateurService.delete(utilisateurConnectePseudo);
+            } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
+                model.addAttribute("errorMessage", "Impossible de trouver le compte utilisateur de la session en cours !");
+                return "pages/utilisateur/modification";
+            }
+            // Déconnecter l'utilisateur après l'inscription
+            new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+            // Rediriger vers la page d'accueil
+            return "redirect:/";  // Page de connexion après la déconnexion
+        }
         return "pages/utilisateur/modification";
     }
 
@@ -116,16 +169,6 @@ public class UtilisateurController {
 
         ));
         return "pages/utilisateur/inscription";
-    }
-
-    @GetMapping("/profil/{pseudo}")
-    public String profilGet(@PathVariable String pseudo, @RequestParam(value = "success", required = false) String success, Model model) {
-        model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
-
-        if(success != null) {
-            model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
-        }
-        return "pages/utilisateur/profil";
     }
 
     @PostMapping("/annulation")

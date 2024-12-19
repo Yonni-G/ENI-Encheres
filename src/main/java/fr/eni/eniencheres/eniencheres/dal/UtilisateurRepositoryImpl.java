@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -83,6 +84,21 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
                 " SET nom = :nom, prenom = :prenom, email = :email, telephone = :telephone, rue = :rue, code_postal = :codePostal, ville = :ville, mot_de_passe = :motDePasse" +
                 " WHERE no_utilisateur = :noUtilisateur";
         namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
+    }
+
+    @Override
+    public void delete(String pseudo) {
+        // avant de faire la requete de suppression, on s'assure que l'utilisateur existe
+        Utilisateur utilisateurExiste;
+        utilisateurExiste = getUtilisateur(pseudo);
+        if (utilisateurExiste == null) {
+            throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        }
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("pseudo", pseudo); // Ajouter la valeur pour le paramètre "pseudo"
+
+        String sql = "DELETE FROM utilisateurs WHERE pseudo = :pseudo";
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
 //    public Utilisateur getVendeur(int noArticle) {

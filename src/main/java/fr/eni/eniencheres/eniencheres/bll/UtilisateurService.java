@@ -10,4 +10,6 @@ public interface UtilisateurService {
     Optional<Utilisateur> getUtilisateur(String pseudo);
     List<Utilisateur> findAll();
     void update(Utilisateur utilisateur);
+
+    void delete(String pseudo);
 }

@@ -31,7 +31,6 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     @Override
     public void add(Utilisateur utilisateur) {
 
-
         try {
             utilisateurRepository.add(utilisateur);
         } catch (DuplicateKeyException e) {
@@ -71,6 +70,15 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             utilisateurRepository.update(utilisateur);
         } catch (DuplicateKeyException e) {
             throw new UtilisateurExceptions.EmailDejaExistant();
+        }
+    }
+
+    @Override
+    public void delete(String pseudo) {
+        try {
+            utilisateurRepository.delete(pseudo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

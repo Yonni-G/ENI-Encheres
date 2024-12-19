@@ -12,4 +12,5 @@ public interface UtilisateurRepository {
     List<Utilisateur> findAll();
 
     void update(Utilisateur utilisateur);
+    void delete(String pseudo);
 }

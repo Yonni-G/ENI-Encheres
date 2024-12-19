@@ -19,7 +19,7 @@
 <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
 <table>
         <tr>
-            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
+            <td><label for="pseudo">Pseudo : </label><input disabled required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
             <td><label for="nom">*nom : </label><input required id="nom" th:field="*{nom}"/><br /><span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span></td>
         </tr>
         <tr>
