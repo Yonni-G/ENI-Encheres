@@ -43,9 +43,9 @@
                     <label for="noCategorie">Catégorie : </label>
                     <select id="noCategorie" name="noCategorie">
                         <option  th:each="categorie : ${categories}"
-                                th:value="*{categorie.noCategorie}"
-                                th:text="*{categorie.libelle}">
-                        </option>
+                                th:value="${categorie.noCategorie}"
+                                th:text="${categorie.libelle}"
+                        ></option>
                     </select>
                     <!--                                th:selected="${param.noCategorie == categorie.noCategorie}"-->
                     <button type="submit">Enregistrer</button>
