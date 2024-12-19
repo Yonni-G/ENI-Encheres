@@ -23,13 +23,15 @@
             <!-- Si l'utilisateur est connecté, afficher son nom et le lien de déconnexion -->
             <li sec:authorize="isAuthenticated()">
 
-                <span>Bienvenue, <span th:text="${#authentication.name}">Utilisateur</span></span>
+                <span>Bienvenue, </span><span th:text="${#authentication.name}">Utilisateur</span>
+                <span sec:authorize="hasRole('ROLE_ADMIN')">
+                    (Vous êtes administrateur)
+                </span>
                 <a th:href="@{/}">Enchères</a>
                 <a href="#">Vendre un article</a>
                 <a th:href="@{/profil/{pseudo}(pseudo=${#authentication.name})}">Mon profil</a>
                 <a th:href="@{/logout}">Déconnexion</a>
-popo
-                <a  th:text="${usernname}"></a>
+
             </li>
         </ul>
     </nav>

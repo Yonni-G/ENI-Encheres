@@ -36,8 +36,9 @@ public class UtilisateurController {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     @GetMapping("/modification")
-    public String modificationGet(Model model) {
+    public String modificationGet(@RequestParam(value = "delete", required = false) String delete, Model model) {
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName()));
         return "pages/utilisateur/modification";
     }
@@ -169,8 +170,6 @@ public class UtilisateurController {
             Authentication authResult = authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authResult);
 
-
-
             // Tester si l'authentification a réussi
             if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
                 System.out.println("Authentification réussie pour : " + authentication.getName());
@@ -187,7 +186,5 @@ public class UtilisateurController {
 
         // CONNEXION AUTOMATIQUE VERS L ACCUEIL
         return "redirect:/";
-
-
     }
 }
