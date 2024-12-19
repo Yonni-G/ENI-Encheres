@@ -27,6 +27,34 @@
             </select>
             <button type="submit">Rechercher</button>
         </form>
+        <form method="get" action="/encheres">
+            <div sec:authorize="isAuthenticated()">
+
+                <input type="radio" id="achats" value="achats" name="achat-vente" onchange="toggleCheckboxes(this.value)">
+                <label for="achats">Achats</label>
+
+                <input type="checkbox" id="encheresOuvertes" name="encheresOuvertes" class="achats-checkbox">
+                <label for="encheresOuvertes">enchères ouvertes</label>
+
+                <input type="checkbox" id="encheresEnCours" name="encheresEnCours" class="achats-checkbox">
+                <label for="encheresEnCours">mes enchères en cours</label>
+
+                <input type="checkbox" id="encheresRemportees" name="encheresRemportees" class="achats-checkbox">
+                <label for="encheresRemportees">mes enchères remportées</label>
+
+                <input type="radio" id="ventes" value="ventes" name="achat-vente" onchange="toggleCheckboxes(this.value)">
+                <label for="ventes">Mes ventes</label>
+
+                <input type="checkbox" id="ventesEnCours" name="ventesEnCours" class="ventes-checkbox">
+                <label for="ventesEnCours">mes ventes en cours</label>
+                <input type="checkbox" id="ventesNonDebutees" name="ventesNonDebutees" class="ventes-checkbox">
+                <label for="ventesNonDebutees">ventes non débutées</label>
+
+                <input type="checkbox" id="ventesTerminees" name="ventesTerminees" class="ventes-checkbox">
+                <label for="ventesTerminees">ventes terminées</label>
+
+            </div>
+        </form>
     </div>
 
     <div id="container-article">
@@ -56,5 +84,24 @@
 
 <footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<!-- Script JS qui gère le comportement dynamique des boutons radio/checkbox -->
+<script>
+    function toggleCheckboxes(value) {
+        const achatsCheckboxes = document.querySelectorAll('.achats-checkbox');
+        const ventesCheckboxes = document.querySelectorAll('.ventes-checkbox');
+        achatsCheckboxes.forEach(checkbox => {
+            checkbox.disabled = value !== 'achats';
+            if (value !== 'achats') {
+                checkbox.checked = false;
+            }
+        });
+        ventesCheckboxes.forEach(checkbox => {
+            checkbox.disabled = value !== 'ventes';
+            if (value !== 'ventes') {
+                checkbox.checked = false;
+            }
+        });
+    }
+</script>
 </body>
 </html>
