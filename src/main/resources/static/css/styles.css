@@ -10,6 +10,7 @@
     color: darkgreen;
 }
 
+/* BOUTONS */
 .btn-inscription {
     display: inline-block;
     padding: 10px 20px;
@@ -20,7 +21,6 @@
     border-radius: 5px;
     margin-top: 10px;
 }
-
 .btn-inscription:hover {
     background-color: #45a049;
 }
@@ -39,6 +39,7 @@
 .btn-delete:hover {
     background-color: red;
 }
+
 .btn-validation {
     display: inline-block;
     padding: 10px 20px;
@@ -54,17 +55,18 @@
     background-color: #1aa120;
 }
 
+/* GENERAL */
 body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
-/* GENERAL */
 main {
     width: 90%;
     margin: 0 auto;
 }
+
 h1, h2 {
     text-align: center;
 }
@@ -74,7 +76,6 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
-
 nav a {
     color: #f8f9fa;
     text-decoration: none;
