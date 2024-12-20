@@ -3,42 +3,58 @@ package fr.eni.eniencheres.eniencheres.controller;
 import fr.eni.eniencheres.eniencheres.bll.EnchereService;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
-import fr.eni.eniencheres.eniencheres.bo.Categorie;
-import fr.eni.eniencheres.eniencheres.dal.EnchereFiltresDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
+import java.util.Optional;
+
 
 @Controller
 public class ArticleController {
 
 
-    @Autowired
-    private EnchereService service;
-    ArticleController(EnchereService service) {
-        this.service = service;
+    private EnchereService enchereService;
+    private UtilisateurService utilisateurService;
+    ArticleController(EnchereService enchereService, UtilisateurService utilisateurService) {
+        this.enchereService = enchereService;
+        this.utilisateurService = utilisateurService;
     }
 
     @GetMapping("/vendre")
     public String vendreGet(Model model) {
         ArticleVendu articleVendu = new ArticleVendu();
         model.addAttribute("articleVendu", articleVendu);
-        // il faut également injecter les catégories
-        System.out.println(""+service.findAllCategories());
 
-        List<Categorie> categories = service.findAllCategories();
-        if(categories.isEmpty()) {
-            System.out.println("vide");
+        // il faut également injecter les catégories
+        model.addAttribute("categories", enchereService.findAllCategories());
+
+        // on ajoute le vendeur (qui est donc l'utilisateur connecté) à l'article
+        Optional<Utilisateur> vendeur = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        if(vendeur.isPresent()) {
+            articleVendu.setVendeur(vendeur.get());
         }
-        model.addAttribute("categories", categories);
+        else articleVendu.setVendeur(new Utilisateur());
+
         return "pages/articles/formAjoutArticle";
 
+    }
+
+    @PostMapping("/vendre")
+    public String vendrePost(@Valid ArticleVendu articleVendu, BindingResult controleArticleVendu, Model model){
+
+        // il faut également injecter les catégories
+        model.addAttribute("categories", enchereService.findAllCategories());
+        
+        if(controleArticleVendu.hasErrors()) {
+            return "pages/articles/formAjoutArticle";
+        }
+        return "pages/articles/formAjoutArticle";
     }
 }

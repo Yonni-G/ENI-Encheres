@@ -25,33 +25,68 @@
 <!--    private Retrait lieuRetrait;-->
 <!--    private Categorie categorieArticle;-->
 <!--    -->
-    <h2>Filtres</h2>
+    <h2>futur zone message erreur</h2>
     <div id="vendre-article">
 
-        <div class="vendre-article-col" id="vendre-article-col-left">ici</div>
+        <div class="vendre-article-col" id="vendre-article-col-left">image</div>
         <div class="vendre-article-col" id="vendre-article-col-right">
             <form method="post" th:action="@{/vendre}" th:object="${articleVendu}">
                 <p>
                     <label for="nomArticle">Article : </label>
-                    <input id="nomArticle" type="text" th:field="*{nomArticle}" placeholder="Donnez un nom à votre article" />
+                    <input autofocus required id="nomArticle" type="text" th:field="*{nomArticle}" placeholder="Donnez un nom à votre article" />
                 </p>
                 <p>
                     <label for="description">Description : </label>
-                    <textarea id="description" th:field="*{description}"></textarea>
+                    <textarea required id="description" th:field="*{description}"></textarea>
                 </p>
                 <p>
                     <label for="noCategorie">Catégorie : </label>
-                    <select id="noCategorie" name="noCategorie">
+                    <select required id="noCategorie" name="noCategorie">
                         <option  th:each="categorie : ${categories}"
                                 th:value="${categorie.noCategorie}"
                                 th:text="${categorie.libelle}"
                         ></option>
                     </select>
-                    <!--                                th:selected="${param.noCategorie == categorie.noCategorie}"-->
-                    <button type="submit">Enregistrer</button>
+                </p>
+                <p>
+                    <label for="photo">Photo de l'article : </label>
+                    <input type="file" id="photo" name="photo" accept=".jpg, .jpeg" />
+                </p>
+                <p>
+                    <label for="miseAPrix">Mise à prix : </label>
+                    <input required type="number" min="100" step="100" id="miseAPrix" th:field="*{miseAPrix}" />
                 </p>
 
+                <p>
+                    <label for="dateDebutEncheres">Début de l'enchère :</label>
+                    <input required type="date" id="dateDebutEncheres" th:field="*{dateDebutEncheres}" />
+                </p>
+                <p>
+                    <label for="dateFinEncheres">Fin de l'enchère :</label>
+                    <input required type="date" id="dateFinEncheres" th:field="*{dateFinEncheres}" />
+                </p>
+                <fieldset>
+                    <legend>Retrait</legend>
+                    <p>
+                        <label for="rue">Rue :</label>
+                        <input required type="text" id="rue" th:field="*{vendeur.rue}" />
+                    </p>
+                    <p>
+                        <label for="codePostal">Rue :</label>
+                        <input required type="text" id="codePostal" th:field="*{vendeur.codePostal}" />
+                    </p>
+                    <p>
+                        <label for="ville">Rue :</label>
+                        <input required type="text" id="ville" th:field="*{vendeur.ville}" />
+                    </p>
 
+                </fieldset>
+
+                <p>
+                    <button type="submit">Enregistrer</button>
+                    <!-- Bouton Annuler avec JavaScript -->
+                    <button type="button" onclick="window.location.href='/';">Annuler</button>
+                </p> <!-- Redirection via JS -->
             </form>
         </div>
 
