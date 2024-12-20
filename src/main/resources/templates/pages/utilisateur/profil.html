@@ -35,12 +35,8 @@
                 <p th:text="${utilisateur.ville}"></p>
             </div>
         </div>
-        <!-- Lien vers la modification du profil -->
-        <p style="text-align: center">
-            <a th:href="@{/modification}" class="btn-inscription">Modifier</a>
+        <a th:href="@{/modification}" class="btn-inscription">Modifier</a>
 
-
-        </p>
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
