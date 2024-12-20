@@ -25,6 +25,35 @@
     background-color: #45a049;
 }
 
+.btn-delete {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff4646;
+    color: #f8f9fa;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 2s ease;
+}
+.btn-delete:hover {
+    background-color: red;
+}
+.btn-validation {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3fc437;
+    color: #f8f9fa;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 2s ease;
+}
+.btn-validation:hover {
+    background-color: #1aa120;
+}
+
 body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;

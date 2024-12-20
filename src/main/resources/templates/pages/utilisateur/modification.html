@@ -11,7 +11,7 @@
 <body>
 <!-- Inclure le fragment header -->
 <header th:replace="fragments/header :: header"></header>
-
+<main>
 <h1>Modification de votre profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
 
@@ -48,8 +48,8 @@
 
     </table>
 
-    <p><button type="submit">Enregistrer</button> </p>
-    <a th:href="@{/modification?delete}" class="btn-inscription">Supprimer mon compte</a>
+    <button type="submit" class="btn-validation">Enregistrer</button>
+    <a th:href="@{/modification?delete}" onclick="return confirm('Etes-vous sûr de vouloir supprimer votre compte ?');"><button class="btn-delete">Supprimer mon compte</button></a>
 </form>
 
 <!--
@@ -64,7 +64,9 @@ private String motDePasse;
 private int credit;
 private boolean administrateur;
 -->
+</main>
 <!-- Inclure le fragment footer -->
 <footer th:replace="fragments/footer :: footer"></footer>
+
 </body>
 </html>
