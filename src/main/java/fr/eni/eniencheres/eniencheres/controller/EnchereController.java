@@ -38,7 +38,7 @@ public class EnchereController {
 
         // Initialisation de valeurs par défaut pour éviter les valeurs 'null'
         if (nom == null) { nom = "";}
-        if (noCategorie == null) { noCategorie = null;} // Peut être 'null' pour le filtre 'Toutes'
+        // noCategorie peut être 'null' pour le filtre 'Toutes'
 
         List<ArticleVendu> articles;
         // Récupération des articles en fonction des filtres
