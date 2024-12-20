@@ -6,52 +6,38 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-<header th:replace="~{fragments/header :: header}"></header>
+    <header th:replace="~{fragments/header :: header}"></header>
 
-<h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2>
+    <h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2> <!-- TODO: 1 seul titre h2 -->
+    <h2>Profil de <span th:text="${utilisateur.pseudo}"></span></h2>
 
-<main id="profil">
-    <table class="profil-table">
-        <tr>
-            <td>Pseudo :</td>
-            <td><strong><span th:text="${utilisateur.pseudo}"></span></strong></td>
-        </tr>
-        <tr>
-            <td>Nom :</td>
-            <td th:text="${utilisateur.nom}"></td>
-        </tr>
-        <tr>
-            <td>Prénom :</td>
-            <td th:text="${utilisateur.prenom}"></td>
-        </tr>
-        <tr>
-            <td>Email :</td>
-            <td th:text="${utilisateur.email}"></td>
-        </tr>
-        <tr>
-            <td>Téléphone :</td>
-            <td th:text="${utilisateur.telephone}"></td>
-        </tr>
-        <tr>
-            <td>Rue :</td>
-            <td th:text="${utilisateur.rue}"></td>
-        </tr>
-        <tr>
-            <td>Code postal :</td>
-            <td th:text="${utilisateur.codePostal}"></td>
-        </tr>
-        <tr>
-            <td>Ville :</td>
-            <td th:text="${utilisateur.ville}"></td>
-        </tr>
-    </table>
-    <!-- Lien vers la modification du profil -->
-    <p style="text-align: center">
+    <main id="profil">
+        <div class="profile-container">
+            <div class="profile-div left">
+                <p>Pseudo : </p>
+                <p>Nom : </p>
+                <p>Prénom : </p>
+                <p>Email : </p>
+                <p>Téléphone : </p>
+                <p>Rue : </p>
+                <p>Code postal : </p>
+                <p>Ville : </p>
+            </div>
+
+            <div class="profile-div right">
+                <p th:text="${utilisateur.pseudo}"></p>
+                <p th:text="${utilisateur.nom}"></p>
+                <p th:text="${utilisateur.prenom}"></p>
+                <p th:text="${utilisateur.email}"></p>
+                <p th:text="${utilisateur.telephone}"></p>
+                <p th:text="${utilisateur.rue}"></p>
+                <p th:text="${utilisateur.codePostal}"></p>
+                <p th:text="${utilisateur.ville}"></p>
+            </div>
+        </div>
         <a th:href="@{/modification}" class="btn-inscription">Modifier</a>
 
-
-    </p>
-</main>
-<footer th:replace="~{fragments/footer :: footer}"></footer>
+    </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

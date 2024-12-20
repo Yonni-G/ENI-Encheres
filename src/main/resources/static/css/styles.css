@@ -1,6 +1,14 @@
 /* src/main/resources/static/css/style.css */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+:root {
+    --background: #2F4858;
+    --text: #86BBD8;
+    --blue-medium: #33658A;
+    --yellow: #F6AE2D;
+    --orange: #F26419;
+}
+
 /* MISC */
 .error {
     color: brown;
@@ -10,6 +18,43 @@
     color: darkgreen;
 }
 
+/* GENERAL */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+    background-color: var(--background);
+}
+
+main {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav a {
+    color: var(--text);
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px;
+    transition: background-color 0.5s ease;
+}
+nav a:hover {
+    background-color: var(--text);
+    border-radius: 25%;
+}
+
+/* INPUT & BOUTONS */
 .btn-inscription {
     display: inline-block;
     padding: 10px 20px;
@@ -20,42 +65,47 @@
     border-radius: 5px;
     margin-top: 10px;
 }
-
 .btn-inscription:hover {
     background-color: #45a049;
 }
 
-body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
-/* GENERAL */
-main {
-    width: 90%;
-    margin: 0 auto;
-}
-h1 {
-    text-align: center;
-}
-
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav a {
+.btn-delete {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff4646;
     color: #f8f9fa;
+    text-align: center;
     text-decoration: none;
-    margin: 0 10px;
-    padding: 10px;
-    transition: background-color 0.5s ease;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 2s ease;
 }
-nav a:hover {
-    background-color: darkgoldenrod;
-    border-radius: 25%;
+.btn-delete:hover {
+    background-color: red;
+}
+
+.btn-validation {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3fc437;
+    color: #f8f9fa;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 2s ease;
+}
+.btn-validation:hover {
+    background-color: #1aa120;
+}
+main input, main select {
+    border: 1px solid var(--yellow);
+    color: var(--background);
+}
+main button {
+    background-color: var(--blue-medium);
+    border: 1px solid var(--yellow);
+    color: var(--yellow);
 }
 
 /* Vendre un article ('formAjoutArticle.html')  */
@@ -86,16 +136,24 @@ nav a:hover {
     justify-content: space-evenly;
 }
 .article {
+    background-color: white;
+    color: var(--background);
     width: 300px;
     height: 300px;
-    border: 1px solid black;
+    border: 1px solid var(--orange);
     margin: 10px;
     text-align: center;
     transition: width 0.5s ease;
 }
+.article a {
+    color: var(--orange);
+}
+.article a:hover{
+    background-color: var(--blue-medium);
+}
 .article:hover {
     width: 350px;
-    box-shadow: 2px 2px black;
+    box-shadow: 2px 2px var(--yellow);
 }
 .article-col {
     width:50%;
@@ -104,6 +162,7 @@ nav a:hover {
     width: 200px;
     height: 150px;
     margin: 0 auto;
+    background-color: white;
 }
 .images-box img {
     height: 100%;
@@ -130,7 +189,7 @@ nav a:hover {
 }
 .flex-container button {
     padding: 1.6rem;
-    box-shadow: 0.1rem 0.1rem black;
+    box-shadow: 0.1rem 0.1rem var(--orange);
 }
 .left-container {
     width: 30%;
@@ -177,21 +236,59 @@ nav a:hover {
 }
 
 /* Profil (profil/**.html) */
-#profil {
-    width: 100%;
+
+/* TODO: profile style */
+.profile-container {
+    display: flex;
+    justify-content: center;
 }
-.profil-table {
-    width: 100vh;
+.profile-div {
+    width: 10%;
+}
+.profile-container .right {
+    text-align: center;
+    font-weight: bold;
+}
+.right p:hover {
+    background-color: cornflowerblue;
+    padding: 0 2em 0 1em;
+}
+
+/* Modification profil */
+.modif-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 800px;
     margin: 0 auto;
-    line-height: 1.6rem;
+    gap: 10px;
+
+}
+.modif-box {
+    margin: 15px;
+}
+.modif-box label {
+    margin: 15px;
+}
+.modif-box input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+.modif3 {
+    align-self: center;
 }
 
 /* HEADER & FOOTER */
-header {
-    background-color: #007bff;
-    color: white;
+header, footer {
+    background-color: var(--blue-medium);
+    color: var(--yellow);
     padding: 10px;
     text-align: center;
+}
+
+header a, footer a {
+    text-decoration: none;
+    color: var(--orange);
 }
 
 header nav ul {
@@ -202,15 +299,4 @@ header nav ul {
 header nav ul li {
     display: inline;
     margin-right: 20px;
-}
-
-footer {
-    background-color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-}
-
-footer a {
-    text-decoration: none;
-    color: #007bff;
 }

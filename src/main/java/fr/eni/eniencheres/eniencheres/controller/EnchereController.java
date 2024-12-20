@@ -38,7 +38,7 @@ public class EnchereController {
 
         // Initialisation de valeurs par défaut pour éviter les valeurs 'null'
         if (nom == null) { nom = "";}
-        if (noCategorie == null) { noCategorie = null;} // Peut être 'null' pour le filtre 'Toutes'
+        // noCategorie peut être 'null' pour le filtre 'Toutes'
 
         List<ArticleVendu> articles;
         // Récupération des articles en fonction des filtres
@@ -55,22 +55,23 @@ public class EnchereController {
         // Gérer les filtres Utilisateur connecté
         EnchereFiltresDTO enchereFiltres = new EnchereFiltresDTO();
         model.addAttribute("enchereFiltres", enchereFiltres);
-        if (encheresOuvertes == true) {
+        if (encheresOuvertes) {
             articles = service.findArticleByEncheresOuvertes();
-        } else if (encheresEnCours == true) {
+        } else if (encheresEnCours) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             if (utilisateurConnecte.isPresent()) {
                 articles = service.findArticleByEncheresEnCours(utilisateurConnecte.get().getNoUtilisateur());
+            } else {
+                System.out.println("Utilisateur non trouvé...");
             }
-            // TODO: gérer cas utilisateur empty (normalement ça sert à rien)
 //        } TODO: else if (encheresRemportees == true) {
 //
-        } else if (ventesEnCours == true) {
+        } else if (ventesEnCours) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             articles = service.findArticleByMesVentesEnCours(utilisateurConnecte.get().getNoUtilisateur());
-        } else if (ventesNonDebutees == true) {
+        } else if (ventesNonDebutees) {
             articles = service.findArticleByVenteNonDebutee();
-        } else if (ventesTerminees == true) {
+        } else if (ventesTerminees) {
             articles = service.findArticleByVenteTerminee();
         }
 
