@@ -65,6 +65,7 @@ body {
 main {
     width: 90%;
     margin: 0 auto;
+    text-align: center;
 }
 
 h1, h2 {
@@ -223,6 +224,30 @@ nav a:hover {
 .right p:hover {
     background-color: cornflowerblue;
     padding: 0 2em 0 1em;
+}
+
+/* Modification profil */
+.modif-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 800px;
+    margin: 0 auto;
+    gap: 10px;
+
+}
+.modif-box {
+    margin: 15px;
+}
+.modif-box label {
+    margin: 15px;
+}
+.modif-box input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+.modif3 {
+    align-self: center;
 }
 
 /* HEADER & FOOTER */
