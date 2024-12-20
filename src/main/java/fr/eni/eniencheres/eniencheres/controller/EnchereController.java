@@ -55,9 +55,9 @@ public class EnchereController {
         // Gérer les filtres Utilisateur connecté
         EnchereFiltresDTO enchereFiltres = new EnchereFiltresDTO();
         model.addAttribute("enchereFiltres", enchereFiltres);
-        if (encheresOuvertes == true) {
+        if (encheresOuvertes) {
             articles = service.findArticleByEncheresOuvertes();
-        } else if (encheresEnCours == true) {
+        } else if (encheresEnCours) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             if (utilisateurConnecte.isPresent()) {
                 articles = service.findArticleByEncheresEnCours(utilisateurConnecte.get().getNoUtilisateur());
@@ -66,12 +66,12 @@ public class EnchereController {
             }
 //        } TODO: else if (encheresRemportees == true) {
 //
-        } else if (ventesEnCours == true) {
+        } else if (ventesEnCours) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             articles = service.findArticleByMesVentesEnCours(utilisateurConnecte.get().getNoUtilisateur());
-        } else if (ventesNonDebutees == true) {
+        } else if (ventesNonDebutees) {
             articles = service.findArticleByVenteNonDebutee();
-        } else if (ventesTerminees == true) {
+        } else if (ventesTerminees) {
             articles = service.findArticleByVenteTerminee();
         }
 
