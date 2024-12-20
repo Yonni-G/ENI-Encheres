@@ -61,8 +61,9 @@ public class EnchereController {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             if (utilisateurConnecte.isPresent()) {
                 articles = service.findArticleByEncheresEnCours(utilisateurConnecte.get().getNoUtilisateur());
+            } else {
+                System.out.println("Utilisateur non trouvé...");
             }
-            // TODO: gérer cas utilisateur empty (normalement ça sert à rien)
 //        } TODO: else if (encheresRemportees == true) {
 //
         } else if (ventesEnCours == true) {
