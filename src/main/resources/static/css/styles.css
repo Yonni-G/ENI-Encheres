@@ -36,7 +36,7 @@ main {
     width: 90%;
     margin: 0 auto;
 }
-h1 {
+h1, h2 {
     text-align: center;
 }
 
@@ -177,13 +177,22 @@ nav a:hover {
 }
 
 /* Profil (profil/**.html) */
-#profil {
-    width: 100%;
+
+/* TODO: profile style */
+.profile-container {
+    display: flex;
+    justify-content: center;
 }
-.profil-table {
-    width: 100vh;
-    margin: 0 auto;
-    line-height: 1.6rem;
+.profile-div {
+    width: 10%;
+}
+.profile-container .right {
+    text-align: center;
+    font-weight: bold;
+}
+.right p:hover {
+    background-color: cornflowerblue;
+    padding: 0 2em 0 1em;
 }
 
 /* HEADER & FOOTER */
