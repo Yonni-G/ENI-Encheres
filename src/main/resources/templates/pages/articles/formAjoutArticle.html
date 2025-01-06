@@ -12,7 +12,7 @@
 <main>
     <h1>Nouvelle vente</h1>
 
-    <h2 th:if="${errorMessage}" th:text="${errorMessage}">futur zone message erreur</h2>
+    <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}">futur zone message erreur</h2>
 
     <div id="vendre-article">
 
@@ -53,12 +53,12 @@
 
                 <p>
                     <label for="dateDebutEncheres">Début de l'enchère :</label>
-                    <input required type="date" id="dateDebutEncheres" th:field="*{dateDebutEncheres}" />
+                    <input required type="datetime-local" id="dateDebutEncheres" th:field="*{dateDebutEncheres}" />
                     <br /><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}" th:errors="*{dateDebutEncheres}"></span>
                 </p>
                 <p>
                     <label for="dateFinEncheres">Fin de l'enchère :</label>
-                    <input required type="date" id="dateFinEncheres" th:field="*{dateFinEncheres}" />
+                    <input required type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}" />
                     <br /><span class="error" th:if="${#fields.hasErrors('dateFinEncheres')}" th:errors="*{dateFinEncheres}"></span>
                 </p>
                 <fieldset>
@@ -66,17 +66,17 @@
                     <p>
                         <label for="rue">Rue :</label>
                         <input required type="text" id="rue"  th:field="*{lieuRetrait.rue}" />
-<!--                        <br /><span th:if="${#fields.hasErrors('vendeur.rue')}" th:errors="*{vendeur.rue}"></span>-->
+                        <br /><span class="error th:if="${#fields.hasErrors('lieuRetrait.rue')}" th:errors="*{lieuRetrait.rue}"></span>
                     </p>
                     <p>
                         <label for="codePostal">Code postal :</label>
                         <input required type="text" id="codePostal"  th:field="*{lieuRetrait.codePostal}" />
-<!--                        <br /><span th:if="${#fields.hasErrors('vendeur.codePostal')}" th:errors="*{vendeur.codePostal}"></span>-->
+                        <br /><span class="error th:if="${#fields.hasErrors('lieuRetrait.codePostal')}" th:errors="*{lieuRetrait.codePostal}"></span>
                     </p>
                     <p>
                         <label for="ville">Ville :</label>
                         <input required type="text" id="ville"  th:field="*{lieuRetrait.ville}" />
-<!--                        <br /><span th:if="${#fields.hasErrors('vendeur.ville')}" th:errors="*{vendeur.ville}"></span>-->
+                        <br /><span class="error th:if="${#fields.hasErrors('lieuRetrait.ville')}" th:errors="*{lieuRetrait.ville}"></span>
                     </p>
 
                 </fieldset>

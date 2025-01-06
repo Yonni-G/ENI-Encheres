@@ -1,10 +1,17 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 public class Retrait {
     private int noArticle;
     private String rue;
+    @NotNull
+    @NotEmpty
+    @Size(min=5)
     private String codePostal;
     private String ville;
 

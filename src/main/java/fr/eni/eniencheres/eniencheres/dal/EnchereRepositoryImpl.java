@@ -35,7 +35,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
             //articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -63,7 +63,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -83,7 +83,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -104,7 +104,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -126,7 +126,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -152,7 +152,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -199,7 +199,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -222,7 +222,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo
@@ -245,7 +245,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            articleVendu.setDateFinEncheres(rs.getDate("dateFinEnchere").toLocalDate());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
             // Création d'un objet Utilisateur et assignation du pseudo

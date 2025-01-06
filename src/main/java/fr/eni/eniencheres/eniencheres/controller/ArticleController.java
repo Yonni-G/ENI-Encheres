@@ -67,13 +67,16 @@ public class ArticleController {
         // il faut également injecter les catégories
         model.addAttribute("categories", enchereService.findAllCategories());
 
-        System.out.println("Categorie Article ID (noCategorie): " + articleVendu.getCategorieArticle().getNoCategorie());
-
         if(controleArticleVendu.hasErrors()) {
 
             return "pages/articles/formAjoutArticle";
         }
 
+        // ici on controle que la date de fin des encheres est postérieure à la date de debut des encheres
+        if(articleVendu.getDateFinEncheres().isBefore(articleVendu.getDateDebutEncheres())) {
+            model.addAttribute("errorMessage", "La date de fin des enchères doit être plus tard que la date de début des enchères !");
+            return "pages/articles/formAjoutArticle";
+        }
         // on ajoute le vendeur (qui est donc l'utilisateur connecté) à l'article
         Optional<Utilisateur> vendeur = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         if(vendeur.isPresent()) {
