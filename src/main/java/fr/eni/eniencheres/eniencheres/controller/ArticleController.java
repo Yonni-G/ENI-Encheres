@@ -1,5 +1,6 @@
 package fr.eni.eniencheres.eniencheres.controller;
 
+import fr.eni.eniencheres.eniencheres.bll.ArticleVenduService;
 import fr.eni.eniencheres.eniencheres.bll.EnchereService;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
@@ -22,9 +23,13 @@ public class ArticleController {
 
     private EnchereService enchereService;
     private UtilisateurService utilisateurService;
-    ArticleController(EnchereService enchereService, UtilisateurService utilisateurService) {
+    private ArticleVenduService articleVenduService;
+
+    ArticleController(EnchereService enchereService, UtilisateurService utilisateurService, ArticleVenduService articleVenduService) {
         this.enchereService = enchereService;
         this.utilisateurService = utilisateurService;
+        this.articleVenduService = articleVenduService;
+
     }
 
     @GetMapping("/vendre")
@@ -51,10 +56,14 @@ public class ArticleController {
 
         // il faut également injecter les catégories
         model.addAttribute("categories", enchereService.findAllCategories());
-        
+
         if(controleArticleVendu.hasErrors()) {
             return "pages/articles/formAjoutArticle";
         }
+
+        // on insere le nouvel article
+        articleVenduService.ajouter(articleVendu);
+
         return "pages/articles/formAjoutArticle";
     }
 }

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,7 +23,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -177,7 +182,7 @@ public class UtilisateurController {
     }
 
     @PostMapping("/inscription")
-    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("motDePasseConfirmation") String motDePasseConfirmation, Model model) {
+    public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("motDePasseConfirmation") String motDePasseConfirmation, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 
         if(controlUser.hasErrors()) {
@@ -206,28 +211,12 @@ public class UtilisateurController {
         // arrive ici l'utilisateur a cree son compte et est automatiquement connecté
         // => on le redirige vers l'accueil
 
-        // Authentifie l'utilisateur immédiatement après l'inscription
-        // Authentification de l'utilisateur après l'inscription
-        try {
-            Authentication authentication = new UsernamePasswordAuthenticationToken(utilisateur.getPseudo(), motDePasseConfirmation);
-            Authentication authResult = authenticationManager.authenticate(authentication);
-            SecurityContextHolder.getContext().setAuthentication(authResult);
+        request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+        Map<String, String> mapParametres = new HashMap<>();
+        mapParametres.put("username", utilisateur.getPseudo());
+        mapParametres.put("password", motDePasseConfirmation);
+        redirectAttributes.addAllAttributes(mapParametres);
 
-            // Tester si l'authentification a réussi
-            if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
-                System.out.println("Authentification réussie pour : " + authentication.getName());
-            } else {
-                System.out.println("L'authentification a échoué (même si aucune exception n'a été levée).");
-            }
-        } catch (AuthenticationException ex) {
-            // Si une exception est lancée, cela signifie que l'authentification a échoué
-            System.out.println("L'authentification a échoué : " + ex.getMessage());
-            System.out.println(utilisateur);
-            model.addAttribute("errorMessage", "Identifiants invalides");
-            return "redirect:/login";
-        }
-
-        // CONNEXION AUTOMATIQUE VERS L ACCUEIL
-        return "redirect:/";
+        return "redirect:/connexion";
     }
 }
