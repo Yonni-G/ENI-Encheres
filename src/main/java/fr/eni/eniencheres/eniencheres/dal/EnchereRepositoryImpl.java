@@ -171,8 +171,11 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, " +
                 "a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a " +
                 "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur " +
-                "LEFT JOIN encheres e ON e.no_utilisateur = U.no_utilisateur " +
-                "WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ? AND e.montant_enchere IS NOT NULL";
+                "LEFT JOIN encheres e ON e.no_article = a.no_article AND e.no_utilisateur = ?\n" +
+                "WHERE a.date_fin_encheres < GETDATE()" +
+                "  AND e.montant_enchere IS NOT NULL" +
+                "  AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres" +
+                "  WHERE no_article = a.no_article)";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu articleVendu = new ArticleVendu();
             articleVendu.setNoArticle(rs.getInt("noArticle"));
