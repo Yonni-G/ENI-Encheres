@@ -1,16 +1,11 @@
 package fr.eni.eniencheres.eniencheres.bll;
 
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.UtilisateurRepository;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
-import fr.eni.eniencheres.eniencheres.security.AuthenticationService;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +60,11 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
+    public void encherir(Enchere enchere) {
+        utilisateurRepository.encherir(enchere);
+    }
+
+    @Override
     public void update(Utilisateur utilisateur) {
         try {
             utilisateurRepository.update(utilisateur);
@@ -80,5 +80,10 @@ public class UtilisateurServiceImpl implements UtilisateurService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Optional<Utilisateur> getUtilisateurById(int noUtilisateur) {
+        return Optional.empty();
     }
 }

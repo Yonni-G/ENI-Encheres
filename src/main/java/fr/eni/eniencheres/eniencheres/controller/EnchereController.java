@@ -6,6 +6,7 @@ import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
+import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
 import fr.eni.eniencheres.eniencheres.dal.EnchereFiltresDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,7 +123,8 @@ public class EnchereController {
 
 
         model.addAttribute("noArticle", noArticle);  // Ajout de l'ID au modèle
-        model.addAttribute("articles", service.getDetailsVente(noArticle));
+        EnchereDTO enchereDTO = service.getDetailsVente(noArticle);
+        model.addAttribute("articles", enchereDTO);
 
         if(controlEnchere.hasErrors()) {
             return "pages/encheres/detailVente";
@@ -130,30 +132,36 @@ public class EnchereController {
 
         // Si la validation est réussie, traitement de l'enchère
         // on enrichit l'enchere avec les donnees de l'encherisseur
-        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        utilisateurConnecte.ifPresent(enchere::setUtilisateur);
+        Optional<Utilisateur> utilisateurExiste = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        Utilisateur utilisateurConnecte = new Utilisateur();
+        if(utilisateurExiste.isPresent()) {
+            utilisateurConnecte = utilisateurExiste.get();
+            enchere.setUtilisateur(utilisateurConnecte);
+        }
+        //utilisateurConnecte.ifPresent(enchere::setUtilisateur);
 
         // on enrichit l'enchere avec les donnees de l'article
         ArticleVendu articleVendu = articleVenduService.getById(noArticle);
-
-        System.out.println(
-                articleVendu
-        );
         enchere.setArticleVendu(articleVendu);
 
-
-        if(utilisateurConnecte.get().getNoUtilisateur() == articleVendu.getVendeur().getNoUtilisateur()) {
+        if(utilisateurConnecte.getNoUtilisateur() == articleVendu.getVendeur().getNoUtilisateur()) {
             model.addAttribute("erreurEnchere", "Vous ne pouvez pas enchérir sur votre propre objet !");
             return "pages/encheres/detailVente";
         }
-        if(enchere.getMontantEnchere() < articleVendu.getMiseAPrix()) {
-            model.addAttribute("erreurEnchere", "Votre enchère est trop faible");
+
+        // on recupere le max entre la mise à prix et l'enchere en cours
+        int enchereMinimumAttendue = Math.max(articleVendu.getMiseAPrix(), enchereDTO.getMontantEnchere());
+
+        if(enchere.getMontantEnchere() < enchereMinimumAttendue) {
+            model.addAttribute("erreurEnchere", "Votre enchère est trop faible (doit être > à " + enchereMinimumAttendue + ")");
             return "pages/encheres/detailVente";
         }
 
-        //utilisateurService.encherir(enchere);
-        System.out.println(2);
-        return "redirect:/detailVente/" + noArticle;  // Redirige vers la page avec l'ID de l'article après succès
+        // on ernregistre l'enchere
+        utilisateurService.encherir(enchere);
+
+        System.out.println("jouat");
+        return "redirect:/detailVente/" + noArticle + "?success";  // Redirige vers la page avec l'ID de l'article après succès
     }
 
 }
