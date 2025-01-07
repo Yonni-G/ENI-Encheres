@@ -37,9 +37,6 @@ public class UtilisateurServiceImpl implements UtilisateurService{
             }
         }
 
-        // arrivé ici la création du compte utilisateur a réussie
-        // il faut le connecter automatiquement et le rediriger vers l'accueil (çà c'est le controller qui va le faire)
-
     }
 
     @Override

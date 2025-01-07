@@ -172,7 +172,7 @@ public class EnchereController {
         }
 
         // CAS ERREUR 4 : ENCHERE TROP FAIBLE
-        if(enchere.getMontantEnchere() < enchereMinimumAttendue) {
+        if(enchere.getMontantEnchere() <= enchereMinimumAttendue) {
             model.addAttribute("erreurEnchere", "Votre enchère est trop faible (doit être > à " + enchereMinimumAttendue + ")");
             return "pages/encheres/detailVente";
         }

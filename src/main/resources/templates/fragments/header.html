@@ -27,6 +27,7 @@
                 <span sec:authorize="hasRole('ROLE_ADMIN')">
                     (Vous êtes administrateur)
                 </span>
+
                 <a th:href="@{/}">Enchères</a>
                 <a th:href="@{/vendre}">Vendre un article</a>
                 <a th:href="@{/profil/{pseudo}(pseudo=${#authentication.name})}">Mon profil</a>

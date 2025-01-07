@@ -54,12 +54,15 @@ CREATE TABLE CATEGORIES (
 ALTER TABLE CATEGORIES ADD constraint categorie_pk PRIMARY KEY (no_categorie);
 
 CREATE TABLE ENCHERES (
+                          no_enchere   INTEGER IDENTITY(1,1) NOT NULL,
                           no_utilisateur   INTEGER NOT NULL,
                           no_article       INTEGER NOT NULL,
                           date_enchere     DATETIME NOT NULL,
                           montant_enchere  INTEGER NOT NULL
 );
-ALTER TABLE ENCHERES ADD constraint enchere_pk PRIMARY KEY (no_utilisateur, no_article);
+ALTER TABLE ENCHERES ADD constraint enchere_pk PRIMARY KEY (no_enchere);
+
+/*ALTER TABLE ENCHERES ADD constraint enchere_pk PRIMARY KEY (no_utilisateur, no_article);*/
 
 CREATE TABLE RETRAITS (
                           no_article         INTEGER NOT NULL,
@@ -146,7 +149,7 @@ VALUES
 INSERT INTO Utilisateurs
 (pseudo, nom, prenom, email, telephone, rue, code_postal, ville, mot_de_passe, credit, administrateur)
 VALUES
-    ('admin', 'Doe', 'John', 'jdoe@example.com', '0123456789', '10 Rue des Lilas', '75001', 'Paris', '{bcrypt}$2a$10$RUP813cgJ0sLL2W5VqGBvuXyySMACT.DpKNGsVF41DEiS6MB9g8RW', 100, 1),
+    ('admin', 'Doe', 'John', 'jdoe@example.com', '0123456789', '10 Rue des Lilas', '75001', 'Paris', '{bcrypt}$2a$10$RUP813cgJ0sLL2W5VqGBvuXyySMACT.DpKNGsVF41DEiS6MB9g8RW', 100000, 1),
     ('mlaurent', 'Laurent', 'Marie', 'mlaurent@example.com', '0678901234', '15 Rue de la Paix', '69002', 'Lyon', '{bcrypt}$2a$10$RUP813cgJ0sLL2W5VqGBvuXyySMACT.DpKNGsVF41DEiS6MB9g8RW', 200, 0),
     ('tdupont', 'Dupont', 'Thomas', 'tdupont@example.com', '0654321987', '5 Avenue Foch', '33000', 'Bordeaux', '{bcrypt}$2a$10$RUP813cgJ0sLL2W5VqGBvuXyySMACT.DpKNGsVF41DEiS6MB9g8RW', 50, 0),
     ('cmartin', 'Martin', 'Claire', 'cmartin@example.com', '0612345678', '20 Rue Lafayette', '59000', 'Lille', '{bcrypt}$2a$10$RUP813cgJ0sLL2W5VqGBvuXyySMACT.DpKNGsVF41DEiS6MB9g8RW@123', 150, 0),
@@ -161,8 +164,8 @@ INSERT INTO articles_vendus
 (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, lien_image)
 VALUES
     -- Catégorie : Informatique
-    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2024-12-10', '2024-12-20', 3000, 3000, 1, 1, '/images/ordinateur_port.jpg'),
-    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2024-12-12', '2024-12-18', 800, 800, 2, 1, '/images/clavier_mec.jpg'),
+    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2025-12-10', '2024-12-20', 3000, 3000, 1, 1, '/images/ordinateur_port.jpg'),
+    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2025-12-12', '2024-12-18', 800, 800, 2, 1, '/images/clavier_mec.jpg'),
     -- Catégorie : Ameublement
     ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, 1500, 3, 2, '/images/canape.webp'),
     ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, 1000, 4, 2, '/images/table_basse.avif'),
@@ -176,10 +179,10 @@ VALUES
 
 INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere)
 VALUES
-    (1, 4, '2024-01-02 12:00:00', 50050),  -- John Doe enchère sur Ordinateur Portable
-    (2, 5, '2024-01-03 14:30:00', 60000),  -- Jane Smith enchère sur Ordinateur Portable
-    (3, 6, '2024-02-02 09:00:00', 20005),   -- Bob Lee enchère sur T-shirt vintage
-    (1, 3, '2024-03-01 10:00:00', 35000);  -- John Doe enchère sur Canapé 3 places
+    (1, 4, '2024-01-02 12:00:00', 1000),  -- John Doe enchère sur Ordinateur Portable
+    (2, 5, '2024-01-03 14:30:00', 1100),  -- Jane Smith enchère sur Ordinateur Portable
+    (3, 6, '2024-02-02 09:00:00', 1200),   -- Bob Lee enchère sur T-shirt vintage
+    (1, 3, '2024-03-01 10:00:00', 1300);  -- John Doe enchère sur Canapé 3 places
 
 INSERT INTO RETRAITS (no_article, rue, code_postal, ville)
 VALUES

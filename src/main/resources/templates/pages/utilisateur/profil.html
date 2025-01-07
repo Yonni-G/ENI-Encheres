@@ -22,6 +22,8 @@
                 <p>Rue : </p>
                 <p>Code postal : </p>
                 <p>Ville : </p>
+                <p>Crédits : </p>
+
             </div>
 
             <div class="profile-div right">
@@ -33,6 +35,7 @@
                 <p th:text="${utilisateur.rue}"></p>
                 <p th:text="${utilisateur.codePostal}"></p>
                 <p th:text="${utilisateur.ville}"></p>
+                <p><span th:text="${utilisateur.credit}"></span> crédits</p>
             </div>
         </div>
         <a th:href="@{/modification}" class="btn-inscription">Modifier</a>

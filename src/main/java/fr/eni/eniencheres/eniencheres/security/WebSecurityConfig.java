@@ -34,7 +34,7 @@ public class WebSecurityConfig {
                         .defaultSuccessUrl("/", true)  // Redirige vers une page accessible après la connexion
                 )
                 .logout((logout) -> logout.permitAll()
-                        .logoutSuccessUrl("/login"));
+                        .logoutSuccessUrl("/connexion"));
 
         return http.build();
     }

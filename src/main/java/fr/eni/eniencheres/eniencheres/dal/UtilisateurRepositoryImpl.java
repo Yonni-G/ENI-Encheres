@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -113,6 +114,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     }
 
     @Override
+    @Transactional
     public void encherir(Enchere enchere) {
         String SqlInsertEnchere = "INSERT INTO encheres (no_utilisateur, no_article, date_enchere, montant_enchere)" +
                 " VALUES (:noUtilisateur, :noArticle, GETDATE(), :montantEnchere)";
@@ -121,8 +123,30 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         params.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
         params.addValue("montantEnchere", enchere.getMontantEnchere());
 
-        // Exécution de la requête avec les paramètres
-        namedParameterJdbcTemplate.update(SqlInsertEnchere, params);
+        // Exécution de la requête d'insertion
+        if (namedParameterJdbcTemplate.update(SqlInsertEnchere, params) == 1) {
+            // Récupérer le crédit actuel de l'utilisateur
+            String SqlGetCredit = "SELECT credit FROM utilisateurs WHERE no_utilisateur = :noUtilisateur";
+            MapSqlParameterSource creditParams = new MapSqlParameterSource();
+            creditParams.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+
+            // Récupérer le crédit actuel de l'utilisateur
+            Integer creditActuel = namedParameterJdbcTemplate.queryForObject(SqlGetCredit, creditParams, Integer.class);
+
+            if (creditActuel != null) {
+                // Calculer le nouveau crédit
+                int nouveauCredit = creditActuel - enchere.getMontantEnchere();
+
+                // Mise à jour du crédit utilisateur
+                String SqlDecompteUtilisateur = "UPDATE utilisateurs SET credit = :nouveauCredit WHERE no_utilisateur = :noUtilisateur";
+                MapSqlParameterSource updateParams = new MapSqlParameterSource();
+                updateParams.addValue("nouveauCredit", nouveauCredit);
+                updateParams.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+
+                // Exécution de la mise à jour
+                namedParameterJdbcTemplate.update(SqlDecompteUtilisateur, updateParams);
+            }
+        }
 
     }
 
