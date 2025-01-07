@@ -30,6 +30,8 @@ public interface EnchereService {
 
     List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);
 
+    List<ArticleVendu> findArticleByEncheresRemportees(Integer no_utilisateur);
+
     List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur);
 
     List<ArticleVendu> findArticleByVenteNonDebutee();

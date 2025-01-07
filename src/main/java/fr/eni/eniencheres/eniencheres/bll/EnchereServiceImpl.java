@@ -71,6 +71,11 @@ public class EnchereServiceImpl implements EnchereService {
     }
 
     @Override
+    public List<ArticleVendu> findArticleByEncheresRemportees(Integer no_utilisateur) {
+        return repository.findArticleByEncheresRemportees(no_utilisateur);
+    }
+
+    @Override
     public List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur) {
         return repository.findArticleByMesVentesEnCours(no_utilisateur);
     }

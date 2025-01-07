@@ -165,30 +165,30 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         }, no_utilisateur);
     }
 
-    // TODO: Récupérer la liste des articles en fonction de 'Enchères remportees ?'
-//    @Override
-//    public List<ArticleVendu> findArticleByEncheresRemportees() {
-//        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, " +
-//                "a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a " +
-//                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur " +
-//                "LEFT JOIN encheres e ON e.no_utilisateur = U.no_utilisateur " +
-//                "WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ? AND e.montant_enchere IS NOT NULL";
-//        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-//            ArticleVendu articleVendu = new ArticleVendu();
-//            articleVendu.setNoArticle(rs.getInt("noArticle"));
-//            articleVendu.setLien_image(rs.getString("lien_image"));
-//            articleVendu.setNomArticle(rs.getString("nomArticle"));
-//            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
-//            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
-//
-//            // Création d'un objet Utilisateur et assignation du pseudo
-//            Utilisateur utilisateur = new Utilisateur();
-//            utilisateur.setPseudo(rs.getString("vendeur"));
-//            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
-//
-//            return articleVendu;
-//        });
-//    }
+    // TODO: Problème dans la requête: ne récupère pas les enchères remportées (0 ligne)
+    @Override
+    public List<ArticleVendu> findArticleByEncheresRemportees(Integer no_utilisateur) {
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, " +
+                "a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur " +
+                "LEFT JOIN encheres e ON e.no_utilisateur = U.no_utilisateur " +
+                "WHERE a.date_fin_encheres < GETDATE() AND e.no_utilisateur = ? AND e.montant_enchere IS NOT NULL";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setLien_image(rs.getString("lien_image"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+
+            // Création d'un objet Utilisateur et assignation du pseudo
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("vendeur"));
+            articleVendu.setVendeur(utilisateur);  // On affecte l'objet Utilisateur au vendeur
+
+            return articleVendu;
+        }, no_utilisateur);
+    }
 
     // Récupérer la liste des articles en fonction de 'Ventes en cours ?'
     @Override

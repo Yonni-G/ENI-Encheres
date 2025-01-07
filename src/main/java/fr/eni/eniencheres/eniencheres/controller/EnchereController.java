@@ -74,8 +74,9 @@ public class EnchereController {
             } else {
                 System.out.println("Utilisateur non trouvé...");
             }
-//        } TODO: else if (encheresRemportees == true) {
-//
+        } else if (encheresRemportees) {
+            Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+            articles = service.findArticleByEncheresRemportees(utilisateurConnecte.get().getNoUtilisateur());
         } else if (ventesEnCours) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             articles = service.findArticleByMesVentesEnCours(utilisateurConnecte.get().getNoUtilisateur());

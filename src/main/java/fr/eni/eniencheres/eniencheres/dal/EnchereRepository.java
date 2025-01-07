@@ -27,6 +27,9 @@ public interface EnchereRepository {
     // Récupérer la liste des articles en fonction de 'Enchères en cours ?'
     List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);
 
+    // TODO: Récupérer la liste des articles en fonction de 'Enchères remportees ?'
+    List<ArticleVendu> findArticleByEncheresRemportees(Integer no_utilisateur);
+
     // Récupérer la liste des articles en fonction de 'Ventes en cours ?'
     List<ArticleVendu> findArticleByMesVentesEnCours(Integer no_utilisateur);
 
