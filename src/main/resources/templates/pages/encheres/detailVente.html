@@ -56,7 +56,7 @@
                     <td>Vendeur :</td>
                     <td th:text="${articles.vendeur}"></td>
                 </tr>
-                <tr>
+                <tr th:if="${!aRemporteLaVente}">
 
                         <td>Ma proposition :</td>
                         <td><input min="1" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
