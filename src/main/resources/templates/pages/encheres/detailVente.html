@@ -9,6 +9,8 @@
 <header th:replace="~{fragments/header :: header}"></header>
 <main>
     <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
+    <h2 class="success" th:if="${success}">Votre enchère a bien été enregistrée !</h2>
+
 
     <div class="details-container">
         <div class="details-image">
