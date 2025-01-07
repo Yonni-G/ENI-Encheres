@@ -272,7 +272,10 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
                 " LEFT JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
                 " LEFT JOIN encheres e ON e.no_article = a.no_article" +
-                " WHERE a.no_article = ?;";
+                " WHERE a.no_article = ?"+
+                " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = a.no_article) " +
+                " OR e.montant_enchere IS NULL)";
+
         // Mappage des données récupérées dans l'objet DTO
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noArticle"),

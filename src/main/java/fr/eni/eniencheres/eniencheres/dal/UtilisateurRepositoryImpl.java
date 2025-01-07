@@ -1,17 +1,13 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,6 +17,7 @@ import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
@@ -72,6 +69,20 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     }
 
     @Override
+    public Optional<Utilisateur> getUtilisateurById(int noUtilisateur) {
+        String sql = "SELECT * FROM utilisateurs WHERE no_utilisateur = :noUtilisateur";
+        // Paramètres à passer à la requête
+        Map<String, Object> params = new HashMap<>();
+        params.put("noUtilisateur", noUtilisateur);
+
+        return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
+                sql,
+                params,
+                new BeanPropertyRowMapper<>(Utilisateur.class)
+        ));
+    }
+
+    @Override
     public List<Utilisateur> findAll() {
         String sql = "SELECT * FROM utilisateurs";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
@@ -99,6 +110,20 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
         String sql = "DELETE FROM utilisateurs WHERE pseudo = :pseudo";
         namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void encherir(Enchere enchere) {
+        String SqlInsertEnchere = "INSERT INTO encheres (no_utilisateur, no_article, date_enchere, montant_enchere)" +
+                " VALUES (:noUtilisateur, :noArticle, GETDATE(), :montantEnchere)";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+        params.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
+        params.addValue("montantEnchere", enchere.getMontantEnchere());
+
+        // Exécution de la requête avec les paramètres
+        namedParameterJdbcTemplate.update(SqlInsertEnchere, params);
+
     }
 
 

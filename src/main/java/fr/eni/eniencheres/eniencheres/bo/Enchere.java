@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Enchere {
     private LocalDateTime dateEnchere;
 
-    @Min(value = 100, message = "Le montant de l'enchère doit être supérieur ou égal à 1.")
+    @Min(value = 100, message = "Le montant de l'enchère doit être supérieur ou égal à 100.")
     private int montantEnchere;
 
     private Utilisateur utilisateur;

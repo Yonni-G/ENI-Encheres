@@ -1,25 +1,33 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
+import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Retrait;
+import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final UtilisateurRepository utilisateurRepository;
 
-    public ArticleVenduRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    public ArticleVenduRepositoryImpl(NamedParameterJdbcTemplate jdbcTemplate, UtilisateurRepository utilisateurRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.utilisateurRepository = utilisateurRepository;
     }
 
     @Override
@@ -81,11 +89,38 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
 
     @Override
     public ArticleVendu getById(int noArticle) {
-        String SqlGetArticle = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial as miseAPrix, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
+        String SqlGetArticle = "SELECT no_article AS noArticle," +
+                " nom_article AS nomArticle," +
+                " description," +
+                " date_debut_encheres AS dateDebutEncheres," +
+                " date_fin_encheres AS dateFinEncheres," +
+                " prix_initial as miseAPrix," +
+                " prix_vente AS prixVente," +
+                " no_utilisateur AS noUtilisateur," +
+                " no_categorie AS noCategorie" +
+                " FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
         Map<String, Object> params = new HashMap<>();
         params.put("noArticle", noArticle);
-        ArticleVendu articleVendu = jdbcTemplate.queryForObject(SqlGetArticle, params, new BeanPropertyRowMapper<>(ArticleVendu.class));
-        return articleVendu;
+        return jdbcTemplate.queryForObject(SqlGetArticle, params, (rs, rowNum) -> {
+            ArticleVendu articleVendu = new ArticleVendu();
+            articleVendu.setNoArticle(rs.getInt("noArticle"));
+            articleVendu.setNomArticle(rs.getString("nomArticle"));
+            articleVendu.setDescription(rs.getString("description"));
+            articleVendu.setDateDebutEncheres(rs.getTimestamp("dateDebutEncheres").toLocalDateTime());
+            articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
+            articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
+            articleVendu.setPrixVente(rs.getInt("prixVente"));
+
+            System.out.println("num:"+rs.getInt("noUtilisateur"));
+            // Création d'un objet Utilisateur et assignation au vendeur
+            Optional<Utilisateur> utilisateur = utilisateurRepository.getUtilisateurById(rs.getInt("noUtilisateur"));
+            if(utilisateur.isPresent()) {
+                articleVendu.setVendeur(utilisateur.get());  // On affecte l'objet Utilisateur au vendeur
+            } else articleVendu.setVendeur(new Utilisateur());  // On affecte l'objet Utilisateur au vendeur
+
+
+            return articleVendu;
+        });
     }
 
 
