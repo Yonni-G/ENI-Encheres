@@ -16,6 +16,7 @@
         </div>
         <div class="details-texts">
             <h2 th:text="${articles.nomArticle}"></h2>
+            <form th:action="@{/detailVente/{id}(id=${noArticle})}" th:object="${enchere}" method="post">
             <table>
                 <tr>
                     <td>Description :</td>
@@ -30,7 +31,7 @@
                     <td th:text="${articles.montantEnchere} + ' par ' + ' le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
                 </tr>
                 <tr th:if="${articles.montantEnchere == null || articles.dateEnchere == null}">
-                    <td><em>Il n'y a aucune offre pour cette article...</em></td>
+                    <td><em>Il n'y a aucune offre pour cet article...</em></td>
                 </tr>
                 <tr>
                     <td>Mise à prix :</td>
@@ -49,11 +50,19 @@
                     <td th:text="${articles.vendeur}"></td>
                 </tr>
                 <tr>
-                    <td>Ma proposition :</td>
-                    <td><input type="number"/></td>
-                    <td><button type="submit">Enchérir</button></td>
+
+                        <td>Ma proposition :</td>
+                        <td><input min="1" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
+                            <br /><span class="error" th:if="${#fields.hasErrors('montantEnchere')}" th:errors="*{montantEnchere}"></span>
+                            <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
+                        </td>
+
+                        <td><button type="submit">Enchérir</button></td>
+
                 </tr>
+
             </table>
+            </form>
         </div>
     </div>
 

@@ -101,13 +101,5 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
         namedParameterJdbcTemplate.update(sql, params);
     }
 
-//    public Utilisateur getVendeur(int noArticle) {
-//        String sql = "SELECT u.pseudo AS vendeur, a.no_article FROM utilisateurs u" +
-//                " JOIN articles_vendus a ON a.no_utilisateur = u.no_utilisateur";
-//        RowMapper<Utilisateur> rowMapper = (rs, rowNum) -> {
-//            Utilisateur vendeur = new Utilisateur();
-//            vendeur.setPseudo(rs.getString("pseudo"));
-//
-//        }
-//    }
+
 }

@@ -1,7 +1,9 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Retrait;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -76,4 +78,15 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             throw new RuntimeException("Erreur lors de l'insertion de l'article et du retrait", e);
         }
     }
+
+    @Override
+    public ArticleVendu getById(int noArticle) {
+        String SqlGetArticle = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial as miseAPrix, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
+        Map<String, Object> params = new HashMap<>();
+        params.put("noArticle", noArticle);
+        ArticleVendu articleVendu = jdbcTemplate.queryForObject(SqlGetArticle, params, new BeanPropertyRowMapper<>(ArticleVendu.class));
+        return articleVendu;
+    }
+
+
 }

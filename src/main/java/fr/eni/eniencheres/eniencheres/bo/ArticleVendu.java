@@ -28,7 +28,7 @@ public class ArticleVendu {
     @Max(value=100000)
     private int miseAPrix;
 
-    private int prixVente;
+    private Integer prixVente;
     private boolean etatVente;
     private String lien_image;
     private Utilisateur acheteur;

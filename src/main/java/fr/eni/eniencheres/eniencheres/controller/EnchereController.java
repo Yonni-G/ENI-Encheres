@@ -1,16 +1,21 @@
 package fr.eni.eniencheres.eniencheres.controller;
 
+import fr.eni.eniencheres.eniencheres.bll.ArticleVenduService;
 import fr.eni.eniencheres.eniencheres.bll.EnchereService;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.EnchereFiltresDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -23,6 +28,8 @@ public class EnchereController {
     private EnchereService service;
     @Autowired
     private UtilisateurService utilisateurService;
+    @Autowired
+    private ArticleVenduService articleVenduService;
 
     @GetMapping({"/", "/encheres"})
     public String accueil(
@@ -87,8 +94,49 @@ public class EnchereController {
     public String detailVente(@PathVariable("noArticle") Integer noArticle, Model model) {
         //model.addAttribute("articles", service.findArticleById(noArticle));
 
+        model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
 
         return "pages/encheres/detailVente";
     }
+
+    @PostMapping("/detailVente/{noArticle}")
+    public String detailVente(@PathVariable("noArticle") Integer noArticle, @Valid Enchere enchere, BindingResult controlEnchere, Model model) {
+
+
+        model.addAttribute("noArticle", noArticle);  // Ajout de l'ID au modèle
+        model.addAttribute("articles", service.getDetailsVente(noArticle));
+
+        if(controlEnchere.hasErrors()) {
+            return "pages/encheres/detailVente";
+        }
+
+        // Si la validation est réussie, traitement de l'enchère
+        // on enrichit l'enchere avec les donnees de l'encherisseur
+        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        utilisateurConnecte.ifPresent(enchere::setUtilisateur);
+
+        // on enrichit l'enchere avec les donnees de l'article
+        ArticleVendu articleVendu = articleVenduService.getById(noArticle);
+
+        System.out.println(
+                articleVendu
+        );
+        enchere.setArticleVendu(articleVendu);
+
+
+        if(utilisateurConnecte.get().getNoUtilisateur() == articleVendu.getVendeur().getNoUtilisateur()) {
+            model.addAttribute("erreurEnchere", "Vous ne pouvez pas enchérir sur votre propre objet !");
+            return "pages/encheres/detailVente";
+        }
+        if(enchere.getMontantEnchere() < articleVendu.getMiseAPrix()) {
+            model.addAttribute("erreurEnchere", "Votre enchère est trop faible");
+            return "pages/encheres/detailVente";
+        }
+
+        //utilisateurService.encherir(enchere);
+        System.out.println(2);
+        return "redirect:/detailVente/" + noArticle;  // Redirige vers la page avec l'ID de l'article après succès
+    }
+
 }
