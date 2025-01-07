@@ -101,19 +101,23 @@ public class EnchereController {
 
         model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
-        model.addAttribute("utilEnchere", service.getUtilEnchere(noArticle));
+        model.addAttribute("utilEnchere", service.getWinner(noArticle));
 
-//        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-//        Enchere enchere = new Enchere();
-//        ArticleVendu articleVendu = new ArticleVendu();
-//        LocalDateTime dateActuelle = LocalDateTime.now();
-//
-//        if (
-//                utilisateurConnecte.get().getNoUtilisateur() == enchere.getUtilisateur().getNoUtilisateur()
-//                && articleVendu.getDateFinEncheres().isBefore(dateActuelle)
-//        ) {
-//
-//        }
+        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        EnchereDTO enchere = service.getWinner(noArticle);
+
+        ArticleVendu articleVendu = articleVenduService.getById(noArticle);
+        LocalDateTime dateActuelle = LocalDateTime.now();
+
+        boolean aRemporteLaVente = false;
+        if (
+                utilisateurConnecte.get().getNoUtilisateur() == enchere.getNoUtilisateur()
+                && articleVendu.getDateFinEncheres().isBefore(dateActuelle)
+        ) {
+            aRemporteLaVente = true;
+        }
+        model.addAttribute("enchere", enchere);
+        model.addAttribute("aRemporteLaVente", aRemporteLaVente);
 
         return "pages/encheres/detailVente";
     }

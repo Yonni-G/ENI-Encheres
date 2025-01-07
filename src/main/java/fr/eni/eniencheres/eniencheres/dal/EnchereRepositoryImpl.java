@@ -299,7 +299,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         }
     }
 
-    // Cette méthode permet de récupérer le pseudo de l'enchérisseur
+    // Cette méthode permet de récupérer le pseudo des enchérisseurs
     @Override
     public EnchereDTO getUtilEnchere(int noArticle){
         String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
@@ -322,18 +322,15 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     // Méthode pour récupérer le vainqueur de l'enchère
     @Override
     public EnchereDTO getWinner(int noArticle){
-        String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere, " +
-                "e.date_enchere AS dateEnchere, a.date_fin_encheres AS dateFinEncheres " +
+        String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
-                "LEFT JOIN articles_vendus a ON a.no_article = e.no_article " +
-                "WHERE e.no_article = ? AND date_fin_encheres < GETDATE()";
+                "WHERE e.no_article = ? " +
+                "AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = e.no_article)";
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noUtilisateur"),
                 rs.getString("pseudo"),
-                rs.getInt("montantEnchere"),
-                rs.getTimestamp("dateEnchere").toLocalDateTime(),
-                rs.getTimestamp("dateFinEncheres").toLocalDateTime()
+                rs.getInt("montantEnchere")
         );
         try {
             return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);

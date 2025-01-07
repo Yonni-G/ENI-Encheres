@@ -10,6 +10,11 @@
 <main>
     <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
 
+    <!-- Condition pour afficher le message -->
+    <div th:if="${aRemporteLaVente}">
+        <p class="success-message">Félicitations, vous avez remporté la vente !</p>
+    </div>
+
     <div class="details-container">
         <div class="details-image">
             <img th:src="${articles.lien_image}" alt="image de l'article en vente" />
