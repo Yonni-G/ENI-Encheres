@@ -104,8 +104,6 @@ public class EnchereController {
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
 
-        System.out.println(service.getWinner(noArticle));
-
         // Afficher si la vente est remportée
         Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         EnchereDTO enchere = service.getWinner(noArticle);
@@ -130,13 +128,6 @@ public class EnchereController {
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
 
         // Afficher si la vente est terminée
-//        boolean isVenteTerminee = false;
-//        if (articleVendu.getDateFinEncheres() != null) {
-//            isVenteTerminee = articleVendu.getDateFinEncheres().isBefore(dateActuelle);
-//        } else {
-//            isVenteTerminee = false;
-//        }
-
         if(articleVendu.getDateFinEncheres().isBefore(dateActuelle))
             model.addAttribute("isVenteTerminee", true);
 
