@@ -59,6 +59,21 @@ public class EnchereDTO {
         this.dateFinEnchere = dateFinEncheres;
     }
 
+    public EnchereDTO(int noArticle, String lienImage, String nomArticle, String description, String categorie, int miseAPrix, LocalDateTime dateFinEnchere, String retrait, String vendeur, int noUtilisateur, int montantEnchere, LocalDateTime localDateTime) {
+        this.noArticle = noArticle;
+        this.lien_image = lienImage;
+        this.nomArticle = nomArticle;
+        this.description = description;
+        this.categorie = categorie;
+        this.miseAPrix = miseAPrix;
+        this.dateFinEnchere = dateFinEnchere;
+        this.retrait = retrait;
+        this.vendeur = vendeur;
+        this.noUtilisateur = noUtilisateur;
+        this.montantEnchere = montantEnchere;
+        this.dateEnchere = localDateTime;
+    }
+
     // Getters & Setters
 
     public int getNoArticle() {

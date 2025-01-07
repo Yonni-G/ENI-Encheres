@@ -266,7 +266,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 "a.description, c.libelle AS categorie, a.prix_initial AS miseAPrix, " +
                 "a.date_fin_encheres AS dateFinEnchere," +
                 " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait," +
-                " u.pseudo AS vendeur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere" +
+                " u.pseudo AS vendeur, e.no_utilisateur as noUtilisateur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere" +
                 " FROM articles_vendus a" +
                 " LEFT JOIN categories c ON c.no_categorie = a.no_categorie" +
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
@@ -287,6 +287,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 rs.getTimestamp("dateFinEnchere").toLocalDateTime(),
                 rs.getString("retrait"),
                 rs.getString("vendeur"),
+                rs.getInt("noUtilisateur"),
                 rs.getInt("montantEnchere"),
                 rs.getTimestamp("dateEnchere") != null ? rs.getTimestamp("dateEnchere").toLocalDateTime() : null
         );
@@ -305,14 +306,15 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
-                "WHERE e.no_article = ? ";
+                "WHERE e.no_article = ? "+
+        " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = ?)) ";
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noUtilisateur"),
                 rs.getString("pseudo"),
                 rs.getInt("montantEnchere")
         );
         try {
-            return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
+            return jdbcTemplate.queryForObject(sql, rowMapper, noArticle, noArticle);
 
         } catch (EmptyResultDataAccessException e) {
             return null;
