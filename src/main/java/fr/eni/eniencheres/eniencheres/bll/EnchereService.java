@@ -20,6 +20,10 @@ public interface EnchereService {
 
     EnchereDTO getDetailsVente(int noArticle);
 
+    EnchereDTO getUtilEnchere(int noArticle);
+
+    EnchereDTO getWinner(int noArticle);
+
     List<ArticleVendu> findArticleByEncheresOuvertes();
 
     List<ArticleVendu> findArticleByEncheresEnCours(Integer no_utilisateur);

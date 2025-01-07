@@ -38,4 +38,9 @@ public interface EnchereRepository {
 
     // Jointure entre les différentes classes pour récupérer les données nécessaires
     EnchereDTO getDetailsVente(int noArticle);
+
+    EnchereDTO getUtilEnchere(int noArticle);
+
+    // Méthode pour récupérer le vainqueur de l'enchère
+    EnchereDTO getWinner(int noArticle);
 }

@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 public class EnchereDTO {
 
     private int noArticle;
+    private int noUtilisateur;
+    private String pseudo;
     private String lien_image;
     private String nomArticle;
     private String description;
@@ -42,6 +44,20 @@ public class EnchereDTO {
         this.dateEnchere = dateEnchere;
     }
     public EnchereDTO(){}
+
+    public EnchereDTO(int noUtilisateur, String pseudo, int montantEnchere) {
+        this.noUtilisateur = noUtilisateur;
+        this.pseudo = pseudo;
+        this.montantEnchere = montantEnchere;
+    }
+
+    public EnchereDTO(int noUtilisateur, String pseudo, int montantEnchere, LocalDateTime dateEnchere, LocalDateTime dateFinEncheres) {
+        this.noUtilisateur = noUtilisateur;
+        this.pseudo = pseudo;
+        this.montantEnchere = montantEnchere;
+        this.dateEnchere = dateEnchere;
+        this.dateFinEnchere = dateFinEncheres;
+    }
 
     // Getters & Setters
 
@@ -131,5 +147,21 @@ public class EnchereDTO {
 
     public void setDateEnchere(LocalDateTime dateEnchere) {
         this.dateEnchere = dateEnchere;
+    }
+
+    public int getNoUtilisateur() {
+        return noUtilisateur;
+    }
+
+    public void setNoUtilisateur(int noUtilisateur) {
+        this.noUtilisateur = noUtilisateur;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 }

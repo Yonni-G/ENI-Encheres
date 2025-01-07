@@ -295,4 +295,48 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             return null;
         }
     }
+
+    // Cette méthode permet de récupérer le pseudo de l'enchérisseur
+    @Override
+    public EnchereDTO getUtilEnchere(int noArticle){
+        String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
+                "FROM utilisateurs u " +
+                "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
+                "WHERE e.no_article = ? ";
+        RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
+                rs.getInt("noUtilisateur"),
+                rs.getString("pseudo"),
+                rs.getInt("montantEnchere")
+        );
+        try {
+            return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    // Méthode pour récupérer le vainqueur de l'enchère
+    @Override
+    public EnchereDTO getWinner(int noArticle){
+        String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere, " +
+                "e.date_enchere AS dateEnchere, a.date_fin_encheres AS dateFinEncheres " +
+                "FROM utilisateurs u " +
+                "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
+                "LEFT JOIN articles_vendus a ON a.no_article = e.no_article " +
+                "WHERE e.no_article = ? AND date_fin_encheres < GETDATE()";
+        RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
+                rs.getInt("noUtilisateur"),
+                rs.getString("pseudo"),
+                rs.getInt("montantEnchere"),
+                rs.getTimestamp("dateEnchere").toLocalDateTime(),
+                rs.getTimestamp("dateFinEncheres").toLocalDateTime()
+        );
+        try {
+            return jdbcTemplate.queryForObject(sql, rowMapper, noArticle);
+
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }

@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,6 +100,19 @@ public class EnchereController {
 
         model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
+        model.addAttribute("utilEnchere", service.getUtilEnchere(noArticle));
+
+//        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+//        Enchere enchere = new Enchere();
+//        ArticleVendu articleVendu = new ArticleVendu();
+//        LocalDateTime dateActuelle = LocalDateTime.now();
+//
+//        if (
+//                utilisateurConnecte.get().getNoUtilisateur() == enchere.getUtilisateur().getNoUtilisateur()
+//                && articleVendu.getDateFinEncheres().isBefore(dateActuelle)
+//        ) {
+//
+//        }
 
         return "pages/encheres/detailVente";
     }

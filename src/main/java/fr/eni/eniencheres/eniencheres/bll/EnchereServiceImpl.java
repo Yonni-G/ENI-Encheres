@@ -51,6 +51,16 @@ public class EnchereServiceImpl implements EnchereService {
     }
 
     @Override
+    public EnchereDTO getUtilEnchere(int noArticle) {
+        return repository.getUtilEnchere(noArticle);
+    }
+
+    @Override
+    public EnchereDTO getWinner(int noArticle) {
+        return repository.getWinner(noArticle);
+    }
+
+    @Override
     public List<ArticleVendu> findArticleByEncheresOuvertes() {
         return repository.findArticleByEncheresOuvertes();
     }
