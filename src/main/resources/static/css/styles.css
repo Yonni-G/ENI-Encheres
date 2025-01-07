@@ -151,6 +151,9 @@ main button {
     width: 350px;
     box-shadow: 2px 2px var(--yellow);
 }
+#inactive-link:hover {
+    background-color: white;
+}
 .article-col {
     width:50%;
 }

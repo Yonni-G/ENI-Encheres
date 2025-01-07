@@ -93,7 +93,9 @@
     <div id="container-article">
         <div class="article" th:each="article : ${articles}">
 
-            <div class="images-box"><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></div>
+            <div class="images-box"><a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
+                <img class="images-articles" th:src="*{article.lien_image}" alt="image_article" />
+            </a></div>
 
             <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                 <p th:text="*{article.nomArticle}"></p>
