@@ -61,7 +61,9 @@
                 </tr>
                 <tr th:if="${isVenteTerminee == null}">
 
-                        <td>Ma proposition :</td>
+                        <td>Ma proposition :<br>
+                            <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
+                        </td>
                         <td><input min="100" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
                             <br /><span class="error" th:if="${#fields.hasErrors('montantEnchere')}" th:errors="*{montantEnchere}"></span>
                             <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>

@@ -111,6 +111,7 @@ public class EnchereController {
         EnchereDTO enchere = service.getWinner(noArticle);
         ArticleVendu articleVendu = articleVenduService.getById(noArticle);
         LocalDateTime dateActuelle = LocalDateTime.now();
+
         boolean aRemporteLaVente = false;
         // Vérification : enchère existante et utilisateur connecté
         if (enchere != null && utilisateurConnecte.isPresent()) {
@@ -123,19 +124,9 @@ public class EnchereController {
             }
         }
 
-        if (enchere == null) {
-            enchere = new EnchereDTO();  // Crée un objet vide si nécessaire
-        }
-        model.addAttribute("enchere", enchere);
+        model.addAttribute("enchere", enchere != null ? enchere : new Enchere());
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
-
-        // Afficher si la vente est terminée
-//        boolean isVenteTerminee = false;
-//        if (articleVendu.getDateFinEncheres() != null) {
-//            isVenteTerminee = articleVendu.getDateFinEncheres().isBefore(dateActuelle);
-//        } else {
-//            isVenteTerminee = false;
-//        }
+        model.addAttribute("credits", utilisateurConnecte.map(Utilisateur::getCredit).orElse(0));
 
         if(articleVendu.getDateFinEncheres().isBefore(dateActuelle))
             model.addAttribute("isVenteTerminee", true);
