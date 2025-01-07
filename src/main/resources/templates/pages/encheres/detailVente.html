@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>Fin de l'enchère :</td>
-                    <td th:text="${#temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${isVenteTerminee != null && isVenteTerminee ? 'Vente terminée !' : #temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}"></td>
                 </tr>
                 <tr>
                     <td>Retrait :</td>
@@ -56,7 +56,7 @@
                     <td>Vendeur :</td>
                     <td th:text="${articles.vendeur}"></td>
                 </tr>
-                <tr>
+                <tr th:if="${aRemporteLaVente != null ? !aRemporteLaVente : false}">
 
                         <td>Ma proposition :</td>
                         <td><input min="100" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />

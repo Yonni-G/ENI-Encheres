@@ -307,7 +307,8 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
                 "WHERE e.no_article = ? "+
-        " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = ?)) ";
+        " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = ?) " +
+                "OR e.montant_enchere IS NULL)";
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noUtilisateur"),
                 rs.getString("pseudo"),
@@ -328,7 +329,8 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
                 "WHERE e.no_article = ? " +
-                "AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = e.no_article)";
+                "AND e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = e.no_article" +
+                " OR e.montant_enchere IS NULL)";
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noUtilisateur"),
                 rs.getString("pseudo"),

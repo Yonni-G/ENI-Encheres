@@ -100,25 +100,41 @@ public class EnchereController {
 
         if(success != null) model.addAttribute("success", "success");
 
-        model.addAttribute("enchere", new Enchere());
+        //model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
 
+        // Afficher si la vente est remportée
         Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         EnchereDTO enchere = service.getWinner(noArticle);
-
         ArticleVendu articleVendu = articleVenduService.getById(noArticle);
         LocalDateTime dateActuelle = LocalDateTime.now();
-
         boolean aRemporteLaVente = false;
-        if (
-                utilisateurConnecte.get().getNoUtilisateur() == enchere.getNoUtilisateur()
-                && articleVendu.getDateFinEncheres().isBefore(dateActuelle)
-        ) {
-            aRemporteLaVente = true;
+        // Vérification : enchère existante et utilisateur connecté
+        if (enchere != null && utilisateurConnecte.isPresent()) {
+            // Vérifier si l'utilisateur connecté a remporté l'enchère
+            if (
+                    utilisateurConnecte.get().getNoUtilisateur() == enchere.getNoUtilisateur()
+                            && articleVendu.getDateFinEncheres().isBefore(dateActuelle)
+            ) {
+                aRemporteLaVente = true;
+            }
+        }
+
+        if (enchere == null) {
+            enchere = new EnchereDTO();  // Crée un objet vide si nécessaire
         }
         model.addAttribute("enchere", enchere);
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
+
+        // Afficher si la vente est terminée
+        boolean isVenteTerminee = false;
+        if (articleVendu.getDateFinEncheres() != null) {
+            isVenteTerminee = articleVendu.getDateFinEncheres().isBefore(dateActuelle);
+        } else {
+            isVenteTerminee = false;
+        }
+        model.addAttribute("isVenteTerminee", isVenteTerminee);
 
         return "pages/encheres/detailVente";
     }
