@@ -93,9 +93,18 @@
     <div id="container-article">
         <div class="article" th:each="article : ${articles}">
 
-            <div class="images-box"><a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
-                <img class="images-articles" th:src="*{article.lien_image}" alt="image_article" />
-            </a></div>
+
+            <div class="images-box">
+                <!-- Vérification de l'état de la vente pour chaque article -->
+                <img th:if="${article.dateFinEncheres.isBefore(now)}"
+                     src="/images/block.svg"
+                     alt="Vente terminée"
+                     style="position: absolute;"
+                />
+                <a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
+                    <img class="images-articles" th:src="*{article.lien_image}" alt="image_article" />
+                </a>
+            </div>
 
             <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                 <p th:text="*{article.nomArticle}"></p>

@@ -21,10 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class EnchereController {
@@ -91,6 +89,21 @@ public class EnchereController {
         model.addAttribute("categories", service.findAllCategories());
         // Ajout à la vue de la liste des articles vendus
         model.addAttribute("articles", articles);
+
+        // Afficher si la vente est terminée
+        LocalDateTime now = LocalDateTime.now();
+        boolean isVenteTerminee = false;
+        for (ArticleVendu article : articles) {
+            if (article.getDateFinEncheres().isBefore(now)) {
+                isVenteTerminee = true;
+            }
+        }
+
+        model.addAttribute("isVenteTerminee", isVenteTerminee);
+        model.addAttribute("now", now);  // Passer la date actuelle au modèle
+
+
+
 
         return "pages/encheres/encheres";
     }

@@ -162,6 +162,7 @@ main button {
     height: 150px;
     margin: 0 auto;
     background-color: white;
+    position: relative;
 }
 .images-box img {
     height: 100%;

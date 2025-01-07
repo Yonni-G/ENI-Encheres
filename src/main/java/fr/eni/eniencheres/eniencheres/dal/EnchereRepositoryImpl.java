@@ -28,13 +28,14 @@ public class EnchereRepositoryImpl implements EnchereRepository {
     // Récupérer la liste des articles en vente
     @Override
     public List<ArticleVendu> findAllArticleVendu() {
-        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur";
+        String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, " +
+                "U.pseudo AS vendeur FROM articles_vendus a " +
+                "LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur ";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             ArticleVendu articleVendu = new ArticleVendu();
             articleVendu.setNoArticle(rs.getInt("noArticle"));
             articleVendu.setLien_image(rs.getString("lien_image"));
             articleVendu.setNomArticle(rs.getString("nomArticle"));
-            //articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEnchere").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
 
