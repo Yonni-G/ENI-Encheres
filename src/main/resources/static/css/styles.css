@@ -139,7 +139,7 @@ main button {
     border: 1px solid var(--orange);
     margin: 10px;
     text-align: center;
-    transition: width 0.5s ease;
+    transition: box-shadow 0.5s ease;
 }
 .article a {
     color: var(--orange);
@@ -148,7 +148,6 @@ main button {
     background-color: var(--blue-medium);
 }
 .article:hover {
-    width: 350px;
     box-shadow: 2px 2px var(--yellow);
 }
 #inactive-link:hover {
@@ -239,7 +238,6 @@ main button {
 
 /* Profil (profil/**.html) */
 
-/* TODO: profile style */
 .profile-container {
     display: flex;
     flex-wrap: wrap;
@@ -310,7 +308,7 @@ header nav ul li {
 }
 
 /* MEDIA QUERIES */
-@media (min-width: 768px) {
+@media (max-width: 1080px) {
     nav {
         flex-wrap: nowrap;
     }
@@ -319,5 +317,16 @@ header nav ul li {
     }
     .article {
         width: 300px;
+    }
+}
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: nowrap;
+    }
+    #vendre-article {
+        flex-wrap: nowrap;
+    }
+    .article {
+        width: 250px;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Enchères</title>
@@ -8,8 +8,8 @@
 <body>
     <header th:replace="~{fragments/header :: header}"></header>
 
-    <h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2> <!-- TODO: 1 seul titre h2 -->
-    <h2>Profil de <span th:text="${utilisateur.pseudo}"></span></h2>
+    <h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2>
+    <h1>Profil de <span th:text="${utilisateur.pseudo}"></span></h1>
 
     <main id="profil">
         <div class="profile-container">
@@ -38,7 +38,8 @@
                 <p><span th:text="${utilisateur.credit}"></span> crédits</p>
             </div>
         </div>
-        <a th:href="@{/modification}" class="btn-inscription">Modifier</a>
+        <a th:href="@{/modification}" class="btn-inscription" sec:authorize="hasRole('ROLE_ADMIN')">Modifier</a>
+<!-- TODO: Pour l'instant l'admin peut modifier n'importe quel profil, alors que seul l'utilisateur doit pouvoir modifier son propre profil -->
 
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>

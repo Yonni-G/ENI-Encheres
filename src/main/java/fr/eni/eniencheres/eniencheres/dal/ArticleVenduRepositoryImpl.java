@@ -44,11 +44,12 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
         params.put("miseAPrix", articleVendu.getMiseAPrix());
         params.put("noUtilisateur", articleVendu.getVendeur().getNoUtilisateur());
         params.put("noCategorie", articleVendu.getCategorieArticle().getNoCategorie());
+        params.put("lien_image", articleVendu.getLien_image());
 
         try {
             // Exécution de l'insertion de l'article
-            String sqlInsertArticleWithReturn = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie) " +
-                    "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :noUtilisateur, :noCategorie); " +
+            String sqlInsertArticleWithReturn = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie, lien_image) " +
+                    "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :noUtilisateur, :noCategorie, :lien_image); " +
                     "SELECT SCOPE_IDENTITY();";
 
             // Récupération de l'ID généré
