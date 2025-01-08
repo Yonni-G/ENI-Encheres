@@ -310,7 +310,7 @@ header nav ul li {
 }
 
 /* MEDIA QUERIES */
-@media (min-width: 768px) {
+@media (max-width: 1080px) {
     nav {
         flex-wrap: nowrap;
     }
@@ -319,5 +319,16 @@ header nav ul li {
     }
     .article {
         width: 300px;
+    }
+}
+@media (max-width: 768px) {
+    nav {
+        flex-wrap: nowrap;
+    }
+    #vendre-article {
+        flex-wrap: nowrap;
+    }
+    .article {
+        width: 250px;
     }
 }
