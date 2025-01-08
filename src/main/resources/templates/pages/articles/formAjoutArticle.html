@@ -16,67 +16,81 @@
 
     <div id="vendre-article">
 
-        <div class="vendre-article-col" id="vendre-article-col-left">image</div>
+        <div class="vendre-article-col" id="vendre-article-col-left">
+            <div class="image-box-vente">
+
+            </div>
+        </div>
+
         <div class="vendre-article-col" id="vendre-article-col-right">
-            <form method="post" th:action="@{/vendre}" th:object="${articleVendu}">
+            <form method="post" th:action="@{/vendre}" th:object="${articleVendu}" enctype="multipart/form-data">
                 <p>
                     <label for="nomArticle">Article : </label>
-                    <input autofocus required id="nomArticle" type="text" th:field="*{nomArticle}" placeholder="Donnez un nom à votre article" />
-                    <br /><span class="error" th:if="${#fields.hasErrors('nomArticle')}" th:errors="*{nomArticle}"></span>
+                    <input autofocus required id="nomArticle" type="text" th:field="*{nomArticle}"
+                           placeholder="Donnez un nom à votre article"/>
+                    <br/><span class="error" th:if="${#fields.hasErrors('nomArticle')}"
+                               th:errors="*{nomArticle}"></span>
                 </p>
                 <p>
                     <label for="description">Description : </label>
                     <textarea required id="description" th:field="*{description}"></textarea>
-                    <br /><span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                    <br/><span class="error" th:if="${#fields.hasErrors('description')}"
+                               th:errors="*{description}"></span>
                 </p>
                 <p>
                     <label for="categorieArticle">Catégorie : </label>
                     <select required id="categorieArticle" name="categorieArticle.noCategorie">
                         <option value="" disabled selected>Choisissez une catégorie</option>
-                        <option  th:each="categorie : ${categories}"
+                        <option th:each="categorie : ${categories}"
                                 th:value="${categorie.noCategorie}"
                                 th:text="${categorie.libelle}"
                         ></option>
                     </select>
-                    <br /><span class="error" th:if="${#fields.hasErrors('categorieArticle')}" th:errors="*{categorieArticle}"></span>
+                    <br/><span class="error" th:if="${#fields.hasErrors('categorieArticle')}"
+                               th:errors="*{categorieArticle}"></span>
                 </p>
                 <p>
-                    <label for="photo">Photo de l'article : </label>
-                    <input type="file" id="photo" name="photo" accept=".jpg, .jpeg" />
-
+                    <label for="file">Photo de l'article : </label>
+                    <input type="file" id="file" name="file" accept=".jpg, .jpeg" required/>
+                    <span th:text="${message}"></span>
                 </p>
                 <p>
                     <label for="miseAPrix">Mise à prix : </label>
-                    <input required type="number" min="100" step="100" id="miseAPrix" th:field="*{miseAPrix}" />
-                    <br /><span class="error" th:if="${#fields.hasErrors('miseAPrix')}" th:errors="*{miseAPrix}"></span>
+                    <input required type="number" min="100" step="100" id="miseAPrix" th:field="*{miseAPrix}"/>
+                    <br/><span class="error" th:if="${#fields.hasErrors('miseAPrix')}" th:errors="*{miseAPrix}"></span>
                 </p>
 
                 <p>
                     <label for="dateDebutEncheres">Début de l'enchère :</label>
-                    <input required type="datetime-local" id="dateDebutEncheres" th:field="*{dateDebutEncheres}" />
-                    <br /><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}" th:errors="*{dateDebutEncheres}"></span>
+                    <input required type="datetime-local" id="dateDebutEncheres" th:field="*{dateDebutEncheres}"/>
+                    <br/><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}"
+                               th:errors="*{dateDebutEncheres}"></span>
                 </p>
                 <p>
                     <label for="dateFinEncheres">Fin de l'enchère :</label>
-                    <input required type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}" />
-                    <br /><span class="error" th:if="${#fields.hasErrors('dateFinEncheres')}" th:errors="*{dateFinEncheres}"></span>
+                    <input required type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}"/>
+                    <br/><span class="error" th:if="${#fields.hasErrors('dateFinEncheres')}"
+                               th:errors="*{dateFinEncheres}"></span>
                 </p>
                 <fieldset>
                     <legend>Retrait</legend>
                     <p>
                         <label for="rue">Rue :</label>
-                        <input required type="text" id="rue"  th:field="*{lieuRetrait.rue}" />
-                        <br /><span class="error" th:if="${#fields.hasErrors('lieuRetrait.rue')}" th:errors="*{lieuRetrait.rue}"></span>
+                        <input required type="text" id="rue" th:field="*{lieuRetrait.rue}"/>
+                        <br/><span class="error" th:if="${#fields.hasErrors('lieuRetrait.rue')}"
+                                   th:errors="*{lieuRetrait.rue}"></span>
                     </p>
                     <p>
                         <label for="codePostal">Code postal :</label>
-                        <input required type="text" id="codePostal"  th:field="*{lieuRetrait.codePostal}" />
-                        <br /><span class="error" th:if="${#fields.hasErrors('lieuRetrait.codePostal')}" th:errors="*{lieuRetrait.codePostal}"></span>
+                        <input required type="text" id="codePostal" th:field="*{lieuRetrait.codePostal}"/>
+                        <br/><span class="error" th:if="${#fields.hasErrors('lieuRetrait.codePostal')}"
+                                   th:errors="*{lieuRetrait.codePostal}"></span>
                     </p>
                     <p>
                         <label for="ville">Ville :</label>
-                        <input required type="text" id="ville"  th:field="*{lieuRetrait.ville}" />
-                        <br /><span class="error" th:if="${#fields.hasErrors('lieuRetrait.ville')}" th:errors="*{lieuRetrait.ville}"></span>
+                        <input required type="text" id="ville" th:field="*{lieuRetrait.ville}"/>
+                        <br/><span class="error" th:if="${#fields.hasErrors('lieuRetrait.ville')}"
+                                   th:errors="*{lieuRetrait.ville}"></span>
                     </p>
 
                 </fieldset>
@@ -88,8 +102,6 @@
                 </p> <!-- Redirection via JS -->
             </form>
         </div>
-
-
 
 
     </div>
