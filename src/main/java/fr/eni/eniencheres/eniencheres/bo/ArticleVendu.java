@@ -20,8 +20,10 @@ public class ArticleVendu {
     private String description;
 
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
     private LocalDateTime dateDebutEncheres;
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
     private LocalDateTime dateFinEncheres;
 
     @Min(value=100)
