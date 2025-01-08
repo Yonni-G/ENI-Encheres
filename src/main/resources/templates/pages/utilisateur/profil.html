@@ -38,8 +38,7 @@
                 <p><span th:text="${utilisateur.credit}"></span> crédits</p>
             </div>
         </div>
-        <a th:href="@{/modification}" class="btn-inscription" sec:authorize="hasRole('ROLE_ADMIN')">Modifier</a>
-<!-- TODO: Pour l'instant l'admin peut modifier n'importe quel profil, alors que seul l'utilisateur doit pouvoir modifier son propre profil -->
+        <a th:href="@{/modification}" class="btn-inscription" th:if='${estAutorise}'>Modifier</a>
 
     </main>
     <footer th:replace="~{fragments/footer :: footer}"></footer>
