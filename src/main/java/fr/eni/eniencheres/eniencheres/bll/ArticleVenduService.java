@@ -10,4 +10,5 @@ public interface ArticleVenduService {
 
     ArticleVendu getById(Integer noArticle);
 
+    boolean modifier(ArticleVendu articleVendu);
 }

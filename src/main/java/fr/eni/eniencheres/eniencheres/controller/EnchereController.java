@@ -106,8 +106,6 @@ public class EnchereController {
         model.addAttribute("now", now);  // Passer la date actuelle au modèle
 
 
-
-
         return "pages/encheres/encheres";
     }
 
@@ -140,12 +138,16 @@ public class EnchereController {
             }
         }
 
-        model.addAttribute("enchere", enchere != null ? enchere : new Enchere());
+        model.addAttribute("enchere", enchere != null ? enchere : new EnchereDTO());
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
         model.addAttribute("credits", utilisateurConnecte.map(Utilisateur::getCredit).orElse(0));
 
+
         if(articleVendu.getDateFinEncheres().isBefore(dateActuelle))
             model.addAttribute("isVenteTerminee", true);
+
+        if(articleVendu.getVendeur().getNoUtilisateur() == utilisateurConnecte.get().getNoUtilisateur())
+            model.addAttribute("isProprietaire", true);
 
         return "pages/encheres/detailVente";
     }
@@ -207,7 +209,6 @@ public class EnchereController {
         // on enregistre l'enchere
         utilisateurService.encherir(enchere);
 
-        System.out.println("jouat");
         return "redirect:/detailVente/" + noArticle + "?success";  // Redirige vers la page avec l'ID de l'article après succès
     }
 

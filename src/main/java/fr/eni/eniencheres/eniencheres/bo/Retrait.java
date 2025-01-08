@@ -3,16 +3,25 @@ package fr.eni.eniencheres.eniencheres.bo;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
 public class Retrait {
     private int noArticle;
-    private String rue;
+    //TODO définir les contraintes exactes de validation
+
     @NotNull
     @NotEmpty
-    @Size(min=5)
+    private String rue;
+
+    @NotNull
+    @NotEmpty
+    @Length(min = 5, max = 5, message = "Le code postal doit contenir 5 caractères.")
     private String codePostal;
+
+    @NotNull
+    @NotEmpty
     private String ville;
 
     public Retrait() {

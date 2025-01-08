@@ -59,19 +59,23 @@
                     <td>Vendeur :</td>
                     <td th:text="${articles.vendeur}"></td>
                 </tr>
-                <tr th:if="${isVenteTerminee == null}">
-
+                <th:block th:if="${isVenteTerminee == null}">
+                    <tr>
                         <td>Ma proposition :<br>
                             <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
                         </td>
                         <td><input min="100" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
                             <br /><span class="error" th:if="${#fields.hasErrors('montantEnchere')}" th:errors="*{montantEnchere}"></span>
                             <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
+                            <button type="submit">Enchérir</button>
                         </td>
 
-                        <td><button type="submit">Enchérir</button></td>
-
-                </tr>
+                    </tr>
+                    <!-- on n'affiche le bouton de modification d'une vente que si la vente appartient à l'utilisateur connecte -->
+                    <tr th:if="${isProprietaire}">
+                        <td colspan="2">La vente n'ayant pas débuté, <br>vous pouvez <a th:href="@{/modifierVente/{id}(id=${noArticle})}">modifier votre article</a></td>
+                    </tr>
+                </th:block>
 
             </table>
             </form>

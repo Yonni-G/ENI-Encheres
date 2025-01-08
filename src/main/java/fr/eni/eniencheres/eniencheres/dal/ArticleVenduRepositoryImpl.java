@@ -89,16 +89,23 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
 
     @Override
     public ArticleVendu getById(int noArticle) {
-        String SqlGetArticle = "SELECT no_article AS noArticle," +
-                " nom_article AS nomArticle," +
-                " description," +
-                " date_debut_encheres AS dateDebutEncheres," +
-                " date_fin_encheres AS dateFinEncheres," +
-                " prix_initial as miseAPrix," +
-                " prix_vente AS prixVente," +
-                " no_utilisateur AS noUtilisateur," +
-                " no_categorie AS noCategorie" +
-                " FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
+        String SqlGetArticle = "SELECT" +
+                " a.no_article AS noArticle," +
+                " a.nom_article AS nomArticle," +
+                " a.description," +
+                " a.date_debut_encheres AS dateDebutEncheres," +
+                " a.date_fin_encheres AS dateFinEncheres," +
+                " a.prix_initial as miseAPrix," +
+                " a.prix_vente AS prixVente," +
+                " a.no_utilisateur AS noUtilisateur," +
+                " a.no_categorie AS noCategorie," +
+                " r.rue AS rue," +
+                " r.code_postal AS codePostal," +
+                " r.ville AS ville" +
+                " FROM ARTICLES_VENDUS a" +
+                " LEFT JOIN RETRAITS r ON a.no_article = r.no_article" +
+                " WHERE a.no_article = :noArticle";
+
         Map<String, Object> params = new HashMap<>();
         params.put("noArticle", noArticle);
         return jdbcTemplate.queryForObject(SqlGetArticle, params, (rs, rowNum) -> {
@@ -111,7 +118,13 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
             articleVendu.setPrixVente(rs.getInt("prixVente"));
 
-            System.out.println("num:"+rs.getInt("noUtilisateur"));
+            // il faut également hydrater notre article avec le le lieu de retrait
+            articleVendu.setLieuRetrait(new Retrait(
+                    rs.getString("rue"),
+                    rs.getString("codePostal"),
+                    rs.getString("ville")
+            ));
+
             // Création d'un objet Utilisateur et assignation au vendeur
             Optional<Utilisateur> utilisateur = utilisateurRepository.getUtilisateurById(rs.getInt("noUtilisateur"));
             if(utilisateur.isPresent()) {
@@ -119,8 +132,51 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             } else articleVendu.setVendeur(new Utilisateur());  // On affecte l'objet Utilisateur au vendeur
 
 
+
             return articleVendu;
         });
+    }
+
+    @Override
+    public boolean modifier(ArticleVendu articleVendu) {
+        // Déclaration des requêtes SQL avec paramètres nommés
+
+        // Variables pour les paramètres
+        Map<String, Object> updateParams = new HashMap<>();
+        updateParams.put("noArticle", articleVendu.getNoArticle());
+        updateParams.put("nomArticle", articleVendu.getNomArticle());
+        updateParams.put("description", articleVendu.getDescription());
+        updateParams.put("dateDebutEncheres", articleVendu.getDateDebutEncheres());
+        updateParams.put("dateFinEncheres", articleVendu.getDateFinEncheres());
+        updateParams.put("miseAPrix", articleVendu.getMiseAPrix());
+        updateParams.put("noCategorie", articleVendu.getCategorieArticle().getNoCategorie());
+
+        try {
+            // Exécution de la mise à jour de l'article
+            String sqlUpdateArticleWithReturn = "UPDATE ARTICLES_VENDUS SET " +
+                    " nom_article = :nomArticle," +
+                    " description = :description," +
+                    " date_debut_encheres = :dateDebutEncheres," +
+                    " date_fin_encheres = :dateFinEncheres," +
+                    " prix_initial = :miseAPrix," +
+                    " no_categorie = :noCategorie" +
+                    " WHERE no_article = :noArticle";
+
+            jdbcTemplate.update(sqlUpdateArticleWithReturn, updateParams);
+            // on met également à jour le lieu de retrait
+            String sqlUpdateLieuRetrait = "UPDATE RETRAITS SET " +
+                    " rue = :rue," +
+                    " code_postal = :codePostal," +
+                    " ville = :ville";
+
+            jdbcTemplate.update(sqlUpdateLieuRetrait, new BeanPropertySqlParameterSource(articleVendu.getLieuRetrait()));
+
+            return true;
+
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

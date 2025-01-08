@@ -47,7 +47,8 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             return articleVendu;
         });
     }
-// --------------------- Méthodes FILTRES pour tous les utilisateurs ------------------------------------------------------------------------
+
+    // --------------------- Méthodes FILTRES pour tous les utilisateurs ------------------------------------------------------------------------
     // Récupérer les détails d'un article en fonction de l'id
     @Override
     public ArticleVendu findArticleById(Integer noArticle) {
@@ -57,7 +58,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 
     // Récupérer la liste des articles appartenant à la catégorie "[noCategorie]"
     @Override
-    public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie){
+    public List<ArticleVendu> findArticleByCategorieId(Integer noCategorie) {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, a.prix_initial AS miseAPrix, U.pseudo AS vendeur FROM articles_vendus a LEFT JOIN UTILISATEURS U on a.no_utilisateur = U.no_utilisateur WHERE a.no_categorie = ?";
         return jdbcTemplate.query(sql, new Object[]{noCategorie}, (rs, rowNum) -> {
             ArticleVendu articleVendu = new ArticleVendu();
@@ -75,6 +76,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
             return articleVendu;
         });
     }
+
     // Récupérer la liste des articles contenant le nom "[%nom%]"
     @Override
     public List<ArticleVendu> findArticleByNom(String nom) {
@@ -117,7 +119,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         });
     }
 
-// --------------------- Méthodes FILTRES pour tous les utilisateurs ------------------------------------------------------------------------
+    // --------------------- Méthodes FILTRES pour tous les utilisateurs ------------------------------------------------------------------------
     // Récupérer la liste des articles en fonction de 'Enchères ouvertes ?'
     @Override
     public List<ArticleVendu> findArticleByEncheresOuvertes() {
@@ -280,7 +282,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
                 " LEFT JOIN utilisateurs u ON u.no_utilisateur = a.no_utilisateur" +
                 " LEFT JOIN encheres e ON e.no_article = a.no_article" +
-                " WHERE a.no_article = ?"+
+                " WHERE a.no_article = ?" +
                 " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = a.no_article) " +
                 " OR e.montant_enchere IS NULL)";
 
@@ -310,12 +312,12 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 
     // Cette méthode permet de récupérer le pseudo des enchérisseurs
     @Override
-    public EnchereDTO getUtilEnchere(int noArticle){
+    public EnchereDTO getUtilEnchere(int noArticle) {
         String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
-                "WHERE e.no_article = ? "+
-        " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = ?) " +
+                "WHERE e.no_article = ? " +
+                " AND (e.montant_enchere = (SELECT MAX(montant_enchere) FROM encheres WHERE no_article = ?) " +
                 "OR e.montant_enchere IS NULL)";
         RowMapper<EnchereDTO> rowMapper = (rs, rowNum) -> new EnchereDTO(
                 rs.getInt("noUtilisateur"),
@@ -332,7 +334,7 @@ public class EnchereRepositoryImpl implements EnchereRepository {
 
     // Méthode pour récupérer le vainqueur de l'enchère
     @Override
-    public EnchereDTO getWinner(int noArticle){
+    public EnchereDTO getWinner(int noArticle) {
         String sql = "SELECT u.pseudo, e.no_utilisateur AS noUtilisateur, e.montant_enchere AS montantEnchere " +
                 "FROM utilisateurs u " +
                 "LEFT JOIN encheres e ON u.no_utilisateur = e.no_utilisateur " +
