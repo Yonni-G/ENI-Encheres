@@ -6,12 +6,79 @@
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
-    <header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <h1>Détail vente n°<span th:text="${noArticle}"></span></h1>
+    <h2 class="success" th:if="${success}">Votre enchère a bien été enregistrée !</h2>
 
-    <h2>Détail vente n°<span th:text="${noArticle}"></span></h2>
 
-   <!-- <img th:src="${}"> -->
+    <!-- Condition pour afficher le message -->
+    <div th:if="${aRemporteLaVente}">
+        <p class="success-message">Félicitations, vous avez remporté la vente !</p>
+    </div>
 
-    <footer th:replace="fragments/footer :: footer"></footer>
+    <div class="details-container">
+        <div class="details-image">
+            <img th:src="${articles.lien_image}" alt="image de l'article en vente" />
+        </div>
+        <div class="details-texts">
+            <h2 th:text="${articles.nomArticle}"></h2>
+            <form th:action="@{/detailVente/{id}(id=${noArticle})}" th:object="${enchere}" method="post">
+            <table>
+                <tr>
+                    <td>Description :</td>
+                    <td th:text="${articles.description}"></td>
+                </tr>
+                <tr>
+                    <td>Catégorie :</td>
+                    <td th:text="${articles.categorie}"></td>
+                </tr>
+                <tr th:if="${articles.montantEnchere != null && articles.dateEnchere != null}">
+                    <td>Meilleure offre :</td>
+                    <td th:text="${articles.montantEnchere} + ' pts, par ' + ${utilEnchere.pseudo} + ', le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
+                </tr>
+                <tr th:if="${articles.montantEnchere == null || articles.dateEnchere == null}">
+                    <td><em>Il n'y a aucune offre pour cet article...</em></td>
+                </tr>
+                <tr>
+                    <td>Mise à prix :</td>
+                    <td th:text="${articles.miseAPrix}"></td>
+                </tr>
+                <tr>
+                    <td>Fin de l'enchère :</td>
+                    <td>
+                        <p th:if="${isVenteTerminee}">Enchère terminée !</p>
+                        <p th:text="${#temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retrait :</td>
+                    <td th:text="${articles.retrait}"></td>
+                </tr>
+                <tr>
+                    <td>Vendeur :</td>
+                    <td th:text="${articles.vendeur}"></td>
+                </tr>
+                <tr th:if="${isVenteTerminee == null}">
+
+                        <td>Ma proposition :<br>
+                            <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
+                        </td>
+                        <td><input min="100" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
+                            <br /><span class="error" th:if="${#fields.hasErrors('montantEnchere')}" th:errors="*{montantEnchere}"></span>
+                            <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
+                        </td>
+
+                        <td><button type="submit">Enchérir</button></td>
+
+                </tr>
+
+            </table>
+            </form>
+        </div>
+    </div>
+
+</main>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

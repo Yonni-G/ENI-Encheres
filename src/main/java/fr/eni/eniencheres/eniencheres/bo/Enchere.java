@@ -1,11 +1,17 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Enchere {
     private LocalDateTime dateEnchere;
+
+    @Min(value = 100, message = "Le montant de l'enchère doit être supérieur ou égal à 100.")
     private int montantEnchere;
+
     private Utilisateur utilisateur;
     private ArticleVendu articleVendu;
 

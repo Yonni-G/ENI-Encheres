@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enchères</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header th:replace="~{fragments/header :: header}"></header>
+
+    <h2 class="success" th:if="${successMessage}" th:text="${successMessage}"></h2> <!-- TODO: 1 seul titre h2 -->
+    <h2>Profil de <span th:text="${utilisateur.pseudo}"></span></h2>
+
+    <main id="profil">
+        <div class="profile-container">
+            <div class="profile-div left">
+                <p>Pseudo : </p>
+                <p>Nom : </p>
+                <p>Prénom : </p>
+                <p>Email : </p>
+                <p>Téléphone : </p>
+                <p>Rue : </p>
+                <p>Code postal : </p>
+                <p>Ville : </p>
+                <p>Crédits : </p>
+
+            </div>
+
+            <div class="profile-div right">
+                <p th:text="${utilisateur.pseudo}"></p>
+                <p th:text="${utilisateur.nom}"></p>
+                <p th:text="${utilisateur.prenom}"></p>
+                <p th:text="${utilisateur.email}"></p>
+                <p th:text="${utilisateur.telephone}"></p>
+                <p th:text="${utilisateur.rue}"></p>
+                <p th:text="${utilisateur.codePostal}"></p>
+                <p th:text="${utilisateur.ville}"></p>
+                <p><span th:text="${utilisateur.credit}"></span> crédits</p>
+            </div>
+        </div>
+        <a th:href="@{/modification}" class="btn-inscription">Modifier</a>
+
+    </main>
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

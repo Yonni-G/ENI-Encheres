@@ -1,5 +1,6 @@
 package fr.eni.eniencheres.eniencheres.bll;
 
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.UtilisateurRepository;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService{
@@ -23,9 +25,8 @@ public class UtilisateurServiceImpl implements UtilisateurService{
 
     @Override
     public void add(Utilisateur utilisateur) {
+
         try {
-            // on encrypte le mdp
-            utilisateur.setMotDePasse(passwordEncoder.encode(utilisateur.getMotDePasse()));
             utilisateurRepository.add(utilisateur);
         } catch (DuplicateKeyException e) {
             // Vérification du message pour savoir si c'est le pseudo ou l'email
@@ -35,13 +36,15 @@ public class UtilisateurServiceImpl implements UtilisateurService{
                 throw new UtilisateurExceptions.EmailDejaExistant();
             }
         }
+
     }
 
     @Override
-    public Utilisateur getUtilisateur(String pseudo) {
+    public Optional<Utilisateur> getUtilisateur(String pseudo) {
 
         try {
-            return utilisateurRepository.getUtilisateur(pseudo);
+            Utilisateur utilisateur = utilisateurRepository.getUtilisateur(pseudo);
+            return Optional.ofNullable(utilisateur);
         } catch (EmptyResultDataAccessException e) {
             throw new UtilisateurExceptions.UtilisateurNonTrouve();
         }
@@ -51,5 +54,33 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     @Override
     public List<Utilisateur> findAll() {
         return utilisateurRepository.findAll();
+    }
+
+    @Override
+    public void encherir(Enchere enchere) {
+        utilisateurRepository.encherir(enchere);
+    }
+
+    @Override
+    public void update(Utilisateur utilisateur) {
+        try {
+            utilisateurRepository.update(utilisateur);
+        } catch (DuplicateKeyException e) {
+            throw new UtilisateurExceptions.EmailDejaExistant();
+        }
+    }
+
+    @Override
+    public void delete(String pseudo) {
+        try {
+            utilisateurRepository.delete(pseudo);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Optional<Utilisateur> getUtilisateurById(int noUtilisateur) {
+        return Optional.empty();
     }
 }

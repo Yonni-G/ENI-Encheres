@@ -1,17 +1,40 @@
 <!-- src/main/resources/templates/fragments/header.html -->
 
-
 <!-- Header Fragment -->
-<header>
+<header xmlns:sec="http://www.w3.org/1999/xhtml">
     <nav>
+        <div id="logo">
+            <a th:href="@{/encheres}">
+                <h1>ENI-Enchères</h1>
+            </a>
+        </div>
+
         <ul>
-            <li><a th:href="@{/}">Accueil</a></li>
-            <li><a th:href="@{/logout}">Logout</a></li>
-            <li><a th:href="@{/contact}">Contact</a></li>
+
+            <!-- TODO: #6003: Un click sur le logo du site ramène l’utilisateur sur la page principale (page de recherche d’articles) si celui-ci est connecté. -->
+
+
+            <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
+            <li sec:authorize="!isAuthenticated()">
+                <a th:href="@{/connexion}">S'inscrire - Se connecter</a>
+            </li>
+
+
+            <!-- Si l'utilisateur est connecté, afficher son nom et le lien de déconnexion -->
+            <li sec:authorize="isAuthenticated()">
+
+                <span>Bienvenue, </span><span th:text="${#authentication.name}">Utilisateur</span>
+                <span sec:authorize="hasRole('ROLE_ADMIN')">
+                    (Vous êtes administrateur)
+                </span>
+
+                <a th:href="@{/}">Enchères</a>
+                <a th:href="@{/vendre}">Vendre un article</a>
+                <a th:href="@{/profil/{pseudo}(pseudo=${#authentication.name})}">Mon profil</a>
+                <a th:href="@{/logout}">Déconnexion</a>
+
+            </li>
         </ul>
     </nav>
-    <div class="logo">
-        <h1>ENI-Encheres</h1>
-    </div>
 </header>
 <!-- End of Header -->

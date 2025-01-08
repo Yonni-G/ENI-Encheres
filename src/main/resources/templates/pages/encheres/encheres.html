@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Enchères</title>
@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<header th:replace="fragments/header :: header"></header>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <main>
     <h1>Liste des enchères</h1>
@@ -15,37 +15,168 @@
     <h2>Filtres</h2>
     <div>
         <form method="get" action="/encheres">
-            <input type="search" name="nom" th:value="${param.nom}" placeholder="Le nom de l'article contient..." /> <br />
-            <label>Catégories : </label>
-            <select name="noCategorie">
-                <option value="" th:selected="${param.noCategorie == null}">Toutes</option>
-                <option th:each="categorie : ${categories}"
-                        th:value="*{categorie.noCategorie}"
-                        th:selected="${param.noCategorie == categorie.noCategorie}"
-                        th:text="*{categorie.libelle}">
-                </option>
-            </select>
-            <button type="submit">Rechercher</button>
+            <div class="flex-container">
+                <div class="left-container">
+                    <input type="search" name="nom" th:value="${param.nom}" class="search-bar" placeholder="Le nom de l'article contient..." /> <br />
+                    <label>Catégories : </label>
+                    <select name="noCategorie" class="select-cat">
+                        <option value="" th:selected="${param.noCategorie == null}">Toutes</option>
+                        <option th:each="categorie : ${categories}"
+                                th:value="*{categorie.noCategorie}"
+                                th:selected="${param.noCategorie == categorie.noCategorie}"
+                                th:text="*{categorie.libelle}">
+                        </option>
+                    </select>
+                </div>
+                <div class="right-container">
+                    <button type="submit">Rechercher</button>
+                </div>
+            </div>
         </form>
+
+        <div sec:authorize="isAuthenticated()">
+            <form method="get" action="/encheres" th:object="${enchereFiltres}">
+                <div class="filters-container">
+                    <div class="subFilter-container">
+                        <div>
+                            <input type="radio" id="achats" value="achats" name="achat-vente" checked onchange="toggleCheckboxes(this.value)">
+                            <label for="achats">Achats</label>
+                        </div>
+                        <div class="list-filters">
+                            <div>
+                                <input type="checkbox" id="encheresOuvertes" name="encheresOuvertes"  class="achats-checkbox"
+                                    th:value="${param.encheresOuvertes}" th:field="*{encheresOuvertes}">
+                                <label for="encheresOuvertes">enchères ouvertes</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="encheresEnCours" name="encheresEnCours" class="achats-checkbox"
+                                       th:value="${param.encheresEnCours}" th:field="*{encheresEnCours}">
+                                <label for="encheresEnCours">mes enchères en cours</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="encheresRemportees" name="encheresRemportees" class="achats-checkbox"
+                                       th:value="${param.encheresRemportees}" th:field="*{encheresRemportees}">
+                                <label for="encheresRemportees">mes enchères remportées</label>
+                            </div>
+                        </div>
+                    </div>
+                <div class="subFilter-container">
+                    <div>
+                <input type="radio" id="ventes" value="ventes" name="achat-vente" onchange="toggleCheckboxes(this.value)">
+                <label for="ventes">Mes ventes</label>
+                    </div>
+                        <div class="list-filters">
+                            <div>
+                    <input type="checkbox" id="ventesEnCours" name="ventesEnCours" class="ventes-checkbox"
+                           th:value="${param.ventesEnCours}" th:field="*{ventesEnCours}">
+                    <label for="ventesEnCours">mes ventes en cours</label>
+                            </div>
+                            <div>
+                    <input type="checkbox" id="ventesNonDebutees" name="ventesNonDebutees" class="ventes-checkbox"
+                           th:value="${param.ventesNonDebutees}" th:field="*{ventesNonDebutees}">
+                    <label for="ventesNonDebutees">ventes non débutées</label>
+                            </div>
+                            <div>
+                    <input type="checkbox" id="ventesTerminees" name="ventesTerminees" class="ventes-checkbox"
+                           th:value="${param.ventesTerminees}" th:field="*{ventesTerminees}">
+                    <label for="ventesTerminees">ventes terminées</label>
+                            </div>
+                            </div>
+                    </div>
+                <button type="submit">Appliquer</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
     <div id="container-article">
         <div class="article" th:each="article : ${articles}">
 
-            <div class="images-box"><img class="images-articles" th:src="*{article.lien_image}" alt="image_article" /></div>
+
+            <div class="images-box">
+                <!-- Vérification de l'état de la vente pour chaque article -->
+                <img th:if="${article.dateFinEncheres.isBefore(now)}"
+                     src="/images/block.svg"
+                     alt="Vente terminée"
+                     style="position: absolute;"
+                />
+                <a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
+                    <img class="images-articles" th:src="*{article.lien_image}" alt="image_article" />
+                </a>
+            </div>
+
             <a th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                 <p th:text="*{article.nomArticle}"></p>
             </a>
-            <p>Prix : <span th:text="*{article.prixVente}"></span> points</p>
+
+            <p>Prix : <span th:text="*{article.miseAPrix}"></span> points</p>
+
             <p>Fin de l'enchère : <span th:text="*{#temporals.format(article.dateFinEncheres, 'dd-MM-yyyy')}"></span></p>
-            <p>Vendeur : <span></span></p>
+
+            <p sec:authorize="isAuthenticated()">Vendeur :
+                <a th:href="@{/profil/{pseudo}(pseudo=${article.vendeur.pseudo})}"><span th:text="*{article.vendeur.pseudo}"></span></a>
+            </p>
+            <p sec:authorize="!isAuthenticated()">Vendeur :
+                <span th:text="*{article.vendeur.pseudo}"></span>
+            </p>
 
         </div>
     </div>
 
 </main>
 
-<footer th:replace="fragments/footer :: footer"></footer>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
 
+<!-- Script JS qui gère le comportement dynamique des boutons radio/checkbox -->
+<script>
+    function toggleCheckboxes(value) {
+        const achatsCheckboxes = document.querySelectorAll('.achats-checkbox');
+        const ventesCheckboxes = document.querySelectorAll('.ventes-checkbox');
+        achatsCheckboxes.forEach(checkbox => {
+            checkbox.disabled = value !== 'achats';
+            if (value !== 'achats') {
+                checkbox.checked = false;
+            }
+        });
+        ventesCheckboxes.forEach(checkbox => {
+            checkbox.disabled = value !== 'ventes';
+            if (value !== 'ventes') {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const checkboxGroup = document.querySelectorAll(".achats-checkbox");
+
+        checkboxGroup.forEach(checkbox => {
+            checkbox.addEventListener("change", (event) => {
+                if (event.target.checked) {
+                    checkboxGroup.forEach(box => {
+                        if (box !== event.target) {
+                            box.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+        const checkboxGroup = document.querySelectorAll(".ventes-checkbox");
+
+        checkboxGroup.forEach(checkbox => {
+            checkbox.addEventListener("change", (event) => {
+                if (event.target.checked) {
+                    checkboxGroup.forEach(box => {
+                        if (box !== event.target) {
+                            box.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

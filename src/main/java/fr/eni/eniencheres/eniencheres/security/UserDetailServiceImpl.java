@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     private UtilisateurService utilisateurService;
-    private PasswordEncoder passwordEncoder;
+    //private PasswordEncoder passwordEncoder;
 
     public UserDetailServiceImpl(UtilisateurService utilisateurService, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
-        this.passwordEncoder = passwordEncoder;
+        //this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -29,25 +29,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
      */
     public UserDetails loadUserByUsername(String pseudo) {
 
-        Utilisateur utilisateur;
-        try {
-            // on recupere l'utilisateur s'il existe
-            utilisateur = utilisateurService.getUtilisateur(pseudo);
-            //String encodedPassword = passwordEncoder.encode(utilisateur.getMotDePasse());
-           // if (utilisateur != null) {
-            UserDetails user = User.builder()
+        Utilisateur utilisateur = utilisateurService.getUtilisateur(pseudo)
+                .orElseThrow(UtilisateurExceptions.UtilisateurNonTrouve::new);
+        return User.builder()
                     .username(pseudo)
                     .password(utilisateur.getMotDePasse())
                     .roles(utilisateur.isAdministrateur() ? "ADMIN" : "USER")
                     .build();
-
-                return user;
-           // }
-        }
-        catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
-            throw new UtilisateurExceptions.UtilisateurNonTrouve();
-        }
-
     }
 
 }

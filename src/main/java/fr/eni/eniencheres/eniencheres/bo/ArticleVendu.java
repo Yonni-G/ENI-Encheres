@@ -1,29 +1,48 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ArticleVendu {
     private int noArticle;
+
+    @NotEmpty
+    @Size(min = 8, max = 30, message = "Le nom de l'article doit être entre 8 et 30 caractères")
     private String nomArticle;
+
+    @NotEmpty
+    @Size(min = 10, max = 50, message = "Le nom de l'article doit être entre 8 et 30 caractères")
     private String description;
+
+    @NotNull
     private LocalDateTime dateDebutEncheres;
+    @NotNull
     private LocalDateTime dateFinEncheres;
+
+    @Min(value=100)
+    @Max(value=100000)
     private int miseAPrix;
-    private int prixVente;
+
+    private Integer prixVente;
     private boolean etatVente;
     private String lien_image;
     private Utilisateur acheteur;
     private Utilisateur vendeur;
+
+    @Valid
     private Retrait lieuRetrait;
+
     private Categorie categorieArticle;
 
     public ArticleVendu() {
     }
 
-    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente,String lien_image , Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
+    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente, String lien_image , Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
         this.description = description;

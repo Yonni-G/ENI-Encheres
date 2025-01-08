@@ -1,13 +1,36 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 public class Retrait {
+    private int noArticle;
     private String rue;
+    @NotNull
+    @NotEmpty
+    @Size(min=5)
     private String codePostal;
     private String ville;
 
     public Retrait() {
+    }
+
+    public int getNoArticle() {
+        return noArticle;
+    }
+
+    public void setNoArticle(int noArticle) {
+        this.noArticle = noArticle;
+    }
+
+    public Retrait(int noArticle, String rue, String codePostal, String ville) {
+        this.noArticle = noArticle;
+        this.rue = rue;
+        this.codePostal = codePostal;
+        this.ville = ville;
     }
 
     public Retrait(String rue, String codePostal, String ville) {
@@ -42,23 +65,23 @@ public class Retrait {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Retrait{");
-        sb.append("rue='").append(rue).append('\'');
-        sb.append(", codePostal='").append(codePostal).append('\'');
-        sb.append(", ville='").append(ville).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Retrait{" +
+                "noArticle=" + noArticle +
+                ", rue='" + rue + '\'' +
+                ", codePostal='" + codePostal + '\'' +
+                ", ville='" + ville + '\'' +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Retrait retrait = (Retrait) o;
-        return Objects.equals(rue, retrait.rue) && Objects.equals(codePostal, retrait.codePostal) && Objects.equals(ville, retrait.ville);
+        return noArticle == retrait.noArticle && Objects.equals(rue, retrait.rue) && Objects.equals(codePostal, retrait.codePostal) && Objects.equals(ville, retrait.ville);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(rue, codePostal, ville);
+        return Objects.hash(noArticle, rue, codePostal, ville);
     }
 }

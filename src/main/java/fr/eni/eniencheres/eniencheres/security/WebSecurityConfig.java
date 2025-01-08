@@ -4,6 +4,8 @@ package fr.eni.eniencheres.eniencheres.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -18,7 +20,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/login","/login/**", "/inscription",  "/images/**", "/css/**", "/encheres", "/encheres/**", "/detailVente/**").permitAll()
+                        .requestMatchers("/", "/connexion", "/login","/login/**", "/inscription",  "/images/**", "/css/**",
+                                "/encheres", "/encheres/**").permitAll()
                         //.requestMatchers(HttpMethod.GET, "/jeux", "/jeux/*/afficher").permitAll()
                         //.requestMatchers("/*/hello").hasAnyRole(null)
                         //.requestMatchers("/*/ajouter", "/*/modifier", "/*/supprimer","/*/enregistrer").hasAnyRole("ADMIN", "EMPLOYE")
@@ -26,12 +29,12 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        //.loginPage("/custom-login")
+                        .loginPage("/connexion")
                         .permitAll()
                         .defaultSuccessUrl("/", true)  // Redirige vers une page accessible après la connexion
                 )
                 .logout((logout) -> logout.permitAll()
-                        .logoutSuccessUrl("/login"));
+                        .logoutSuccessUrl("/connexion"));
 
         return http.build();
     }
@@ -43,16 +46,9 @@ public class WebSecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		UserDetails user =
-//			 User.withDefaultPasswordEncoder()
-//				.username("user")
-//				.password("password")
-//				.roles("USER")
-//				.build();
-//
-//		return new InMemoryUserDetailsManager(user);
-//	}
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
 }
 
