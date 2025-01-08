@@ -6,6 +6,7 @@ import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -23,11 +24,7 @@ import java.util.Optional;
 @Repository
 public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(UtilisateurRepositoryImpl.class);
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public UtilisateurRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -86,7 +83,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     @Override
     public List<Utilisateur> findAll() {
         String sql = "SELECT * FROM utilisateurs";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
+        return namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Utilisateur.class));
     }
 
     @Override
@@ -116,39 +113,67 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
     @Override
     @Transactional
     public void encherir(Enchere enchere) {
-        String SqlInsertEnchere = "INSERT INTO encheres (no_utilisateur, no_article, date_enchere, montant_enchere)" +
-                " VALUES (:noUtilisateur, :noArticle, GETDATE(), :montantEnchere)";
+
+        // Déclarer des variables pour stocker les données de la meilleure enchère actuelle
+        int noUtilisateur = 0;
+        int montantEnchere = 0;
+
+        // Requête SQL pour récupérer le no_utilisateur et la meilleure enchère
+        String sqlMontantMeilleureEnchere = "SELECT TOP 1 no_utilisateur, montant_enchere " +
+                "FROM encheres WHERE no_article = :noArticle " +
+                "ORDER BY montant_enchere DESC";
+
+        // Paramètres pour la requête
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
         params.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
-        params.addValue("montantEnchere", enchere.getMontantEnchere());
 
-        // Exécution de la requête d'insertion
-        if (namedParameterJdbcTemplate.update(SqlInsertEnchere, params) == 1) {
-            // Récupérer le crédit actuel de l'utilisateur
-            String SqlGetCredit = "SELECT credit FROM utilisateurs WHERE no_utilisateur = :noUtilisateur";
-            MapSqlParameterSource creditParams = new MapSqlParameterSource();
-            creditParams.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+        // Exécution de la requête et récupération des résultats
+        try {
+            // Récupération des données de la meilleure enchère
+            Map<String, Object> result = namedParameterJdbcTemplate.queryForMap(sqlMontantMeilleureEnchere, params);
 
-            // Récupérer le crédit actuel de l'utilisateur
-            Integer creditActuel = namedParameterJdbcTemplate.queryForObject(SqlGetCredit, creditParams, Integer.class);
+            // Récupération des données du Map
+            noUtilisateur = (Integer) result.get("no_utilisateur");
+            montantEnchere = (Integer) result.get("montant_enchere");
 
-            if (creditActuel != null) {
-                // Calculer le nouveau crédit
-                int nouveauCredit = creditActuel - enchere.getMontantEnchere();
+            //System.out.println("Meilleure enchère: Utilisateur " + noUtilisateur + " avec " + montantEnchere + " points.");
 
-                // Mise à jour du crédit utilisateur
-                String SqlDecompteUtilisateur = "UPDATE utilisateurs SET credit = :nouveauCredit WHERE no_utilisateur = :noUtilisateur";
-                MapSqlParameterSource updateParams = new MapSqlParameterSource();
-                updateParams.addValue("nouveauCredit", nouveauCredit);
-                updateParams.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
-
-                // Exécution de la mise à jour
-                namedParameterJdbcTemplate.update(SqlDecompteUtilisateur, updateParams);
-            }
+        } catch (EmptyResultDataAccessException e) {
+            // Si aucune enchère n'est trouvée, on passe à l'étape suivante (aucun changement de crédit à faire)
+            //System.out.println("Aucune enchère trouvée.");
         }
 
+        // Insérer la nouvelle enchère
+        String sqlInsertEnchere = "INSERT INTO encheres (no_utilisateur, no_article, date_enchere, montant_enchere) " +
+                "VALUES (:noUtilisateur, :noArticle, GETDATE(), :montantEnchere)";
+
+        MapSqlParameterSource params2 = new MapSqlParameterSource();
+        params2.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+        params2.addValue("noArticle", enchere.getArticleVendu().getNoArticle());
+        params2.addValue("montantEnchere", enchere.getMontantEnchere());
+
+        // Exécution de l'insertion de la nouvelle enchère
+        if (namedParameterJdbcTemplate.update(sqlInsertEnchere, params2) == 1) {
+
+            // Débiter directement le crédit du nouvel enchérisseur (sans récupération préalable)
+            String sqlDebitUtilisateur = "UPDATE utilisateurs SET credit = credit - :montantEnchere WHERE no_utilisateur = :noUtilisateur";
+            MapSqlParameterSource updateParams = new MapSqlParameterSource();
+            updateParams.addValue("montantEnchere", enchere.getMontantEnchere());
+            updateParams.addValue("noUtilisateur", enchere.getUtilisateur().getNoUtilisateur());
+
+            // Exécution de la mise à jour pour débiter le crédit
+            namedParameterJdbcTemplate.update(sqlDebitUtilisateur, updateParams);
+
+            // Si une meilleure enchère existait, on recrédite le crédit du précédent meilleur enchérisseur
+            if (noUtilisateur != 0) {  // Vérifie s'il y a eu un précédent meilleur enchérisseur
+                String sqlCreditUtilisateur = "UPDATE utilisateurs SET credit = credit + :montantEnchere WHERE no_utilisateur = :noUtilisateur";
+                MapSqlParameterSource updateParams2 = new MapSqlParameterSource();
+                updateParams2.addValue("montantEnchere", montantEnchere);
+                updateParams2.addValue("noUtilisateur", noUtilisateur);
+
+                // Exécution de la mise à jour pour recréditer le précédent enchérisseur
+                namedParameterJdbcTemplate.update(sqlCreditUtilisateur, updateParams2);
+            }
+        }
     }
-
-
 }

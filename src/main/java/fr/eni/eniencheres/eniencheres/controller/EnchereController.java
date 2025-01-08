@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EnchereController {
@@ -118,11 +120,14 @@ public class EnchereController {
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
 
+        System.out.println(service.getWinner(noArticle));
+
         // Afficher si la vente est remportée
         Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         EnchereDTO enchere = service.getWinner(noArticle);
         ArticleVendu articleVendu = articleVenduService.getById(noArticle);
         LocalDateTime dateActuelle = LocalDateTime.now();
+
         boolean aRemporteLaVente = false;
         // Vérification : enchère existante et utilisateur connecté
         if (enchere != null && utilisateurConnecte.isPresent()) {
@@ -135,13 +140,10 @@ public class EnchereController {
             }
         }
 
-        if (enchere == null) {
-            enchere = new EnchereDTO();  // Crée un objet vide si nécessaire
-        }
-        model.addAttribute("enchere", enchere);
+        model.addAttribute("enchere", enchere != null ? enchere : new Enchere());
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
+        model.addAttribute("credits", utilisateurConnecte.map(Utilisateur::getCredit).orElse(0));
 
-        // Afficher si la vente est terminée
         if(articleVendu.getDateFinEncheres().isBefore(dateActuelle))
             model.addAttribute("isVenteTerminee", true);
 
