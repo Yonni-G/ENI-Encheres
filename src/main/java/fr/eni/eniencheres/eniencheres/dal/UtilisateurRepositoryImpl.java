@@ -136,11 +136,8 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             noUtilisateur = (Integer) result.get("no_utilisateur");
             montantEnchere = (Integer) result.get("montant_enchere");
 
-            //System.out.println("Meilleure enchère: Utilisateur " + noUtilisateur + " avec " + montantEnchere + " points.");
-
         } catch (EmptyResultDataAccessException e) {
             // Si aucune enchère n'est trouvée, on passe à l'étape suivante (aucun changement de crédit à faire)
-            //System.out.println("Aucune enchère trouvée.");
         }
 
         // Insérer la nouvelle enchère

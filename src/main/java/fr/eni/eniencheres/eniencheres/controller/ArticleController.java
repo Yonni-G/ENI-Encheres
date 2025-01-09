@@ -99,7 +99,6 @@ public class ArticleController {
         try {
             // Sauvegarde de l'image et récupérer chemin du fichier
             String filePath = fileStorageService.saveFile(file);
-            System.out.println("Chemin de l'image sauvegardée : " + filePath);
 
             // On affecte à l'objet ArticleVendu
             articleVendu.setLien_image("/imagesUtilisateurs/" + filePath);

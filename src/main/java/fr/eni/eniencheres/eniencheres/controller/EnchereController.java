@@ -70,8 +70,6 @@ public class EnchereController {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             if (utilisateurConnecte.isPresent()) {
                 articles = service.findArticleByEncheresEnCours(utilisateurConnecte.get().getNoUtilisateur());
-            } else {
-                System.out.println("Utilisateur non trouvé...");
             }
         } else if (encheresRemportees) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -114,8 +112,6 @@ public class EnchereController {
         //model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
-
-        System.out.println(service.getWinner(noArticle));
 
         // Afficher si la vente est remportée
         Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());

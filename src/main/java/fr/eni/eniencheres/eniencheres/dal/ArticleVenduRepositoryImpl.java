@@ -58,7 +58,6 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             // Vérification de la clé générée
             if (generatedKey != null) {
                 int noArticle = generatedKey.intValue();
-                System.out.println("L'ID généré pour l'article est : " + noArticle);
 
                 // Assigner la valeur générée à l'objet articleVendu
                 articleVendu.setNoArticle(noArticle);
