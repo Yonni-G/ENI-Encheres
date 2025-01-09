@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -56,17 +59,17 @@ public class UtilisateurController {
         Optional<Utilisateur> utilisateurConnecteExiste;
         try {
             utilisateurConnecteExiste = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
+        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
             return "redirect:/erreurCompte";
         }
 
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
 
-        if (utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
+        if(utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
             model.addAttribute("estAutorise", "true");
         }
 
-        if (success != null) {
+        if(success != null) {
             model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
         }
         return "pages/utilisateur/profil";
@@ -76,18 +79,18 @@ public class UtilisateurController {
     public String modificationGet(@RequestParam(value = "delete", required = false) String delete, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         // on recupere le pseudo (username) de la session
-        String utilisateurConnectePseudo = SecurityContextHolder.getContext().getAuthentication().getName();
+        String utilisateurConnectePseudo =  SecurityContextHolder.getContext().getAuthentication().getName();
 
         Optional<Utilisateur> utilisateurConnecteExiste;
         try {
             utilisateurConnecteExiste = utilisateurService.getUtilisateur(utilisateurConnectePseudo);
-        } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
+        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
             return "redirect:/erreurCompte";
         }
 
         /* ===================== SUPPRESSION DE COMPTE ===================================== */
         model.addAttribute("utilisateur", utilisateurConnecteExiste.get());
-        if (delete != null) {
+        if(delete != null) {
             try {
                 utilisateurService.delete(utilisateurConnectePseudo);
             } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
@@ -111,14 +114,14 @@ public class UtilisateurController {
 
         // on vérifie que le mdp saisi est correct
         Optional<Utilisateur> utilisateurData = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (utilisateurData.isPresent()) {
+        if(utilisateurData.isPresent()) {
             String mdpData = utilisateurData.get().getMotDePasse();
 
             if (!passwordEncoder.matches(utilisateur.getMotDePasse(), mdpData)) {
                 model.addAttribute("errorMessage", "Votre mot de passe actuel est incorrect !");
                 return "pages/utilisateur/modification";
             }
-        } else {
+        }else {
             throw new UtilisateurExceptions.UtilisateurNonTrouve();
         }
 
@@ -184,12 +187,12 @@ public class UtilisateurController {
     public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("motDePasseConfirmation") String motDePasseConfirmation, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 
-        if (controlUser.hasErrors()) {
+        if(controlUser.hasErrors()) {
             return "pages/utilisateur/inscription";
         }
 
         // on controle que les 2 mots de passe coincident
-        if (!utilisateur.getMotDePasse().equals(motDePasseConfirmation)) {
+        if(!utilisateur.getMotDePasse().equals(motDePasseConfirmation)) {
             model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
             return "pages/utilisateur/inscription";
         }

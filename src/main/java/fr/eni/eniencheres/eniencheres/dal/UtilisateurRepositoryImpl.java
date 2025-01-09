@@ -11,8 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
 
         String sql = "INSERT INTO utilisateurs (pseudo, nom, prenom, email, telephone, rue, code_Postal, ville, mot_de_passe) VALUES (:pseudo, :nom, :prenom, :email, :telephone, :rue, :codePostal, :ville, :motDePasse)";
         //try {
-        namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
+            namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(utilisateur));
 //        } catch (DuplicateKeyException e) {
 //            // Vérification du message pour savoir si c'est le pseudo ou l'email
 //            if (e.getMessage().contains("unique_pseudo")) {

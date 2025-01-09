@@ -1,12 +1,12 @@
 <!-- src/main/resources/templates/index.html -->
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ENI-Encheres - Inscription</title>
-    <link href="/css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
 <!-- Inclure le fragment header -->
@@ -15,60 +15,41 @@
 <h1>Mon profil</h1>
 <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
 
-<form method="post" th:action="@{/inscription}" th:object="${utilisateur}">
+<form th:object="${utilisateur}" th:action="@{/inscription}" method="post">
 
     <table border="bordered">
 
         <tr>
-            <td><label for="pseudo">*Pseudo : </label><input id="pseudo" required th:field="*{pseudo}"/><br/><span
-                    th:errors="*{pseudo}" th:if="${#fields.hasErrors('pseudo')}"></span></td>
-            <td><label for="nom">*nom : </label><input id="nom" required th:field="*{nom}"/><br/><span
-                    th:errors="*{nom}" th:if="${#fields.hasErrors('nom')}"></span></td>
+            <td><label for="pseudo">*Pseudo : </label><input required id="pseudo" th:field="*{pseudo}"/><br /><span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span></td>
+            <td><label for="nom">*nom : </label><input required id="nom" th:field="*{nom}"/><br /><span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span></td>
         </tr>
         <tr>
 
         <tr>
-            <td><label for="prenom">*Prénom : </label><input id="prenom" required th:field="*{prenom}"/><br/><span
-                    th:errors="*{prenom}" th:if="${#fields.hasErrors('prenom')}"></span></td>
-            <td><label for="email">*email : </label><input id="email" required th:field="*{email}"
-                                                           type="email"/><br/><span
-                    th:errors="*{email}" th:if="${#fields.hasErrors('email')}"></span></td>
+            <td><label for="prenom">*Prénom : </label><input required id="prenom" th:field="*{prenom}"/><br /><span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span></td>
+            <td><label for="email">*email : </label><input type="email" required id="email" th:field="*{email}"/><br /><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
         </tr>
         <tr>
-            <td><label for="telephone">*telephone : </label><input id="telephone" required
-                                                                   th:field="*{telephone}"/><br/><span
-                    th:errors="*{telephone}" th:if="${#fields.hasErrors('telephone')}"></span></td>
-            <td><label for="rue">*rue : </label><input id="rue" required th:field="*{rue}"/><br/><span
-                    th:errors="*{rue}" th:if="${#fields.hasErrors('rue')}"></span></td>
+            <td><label for="telephone">*telephone : </label><input required id="telephone" th:field="*{telephone}"/><br /><span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span></td>
+            <td><label for="rue">*rue : </label><input required id="rue" th:field="*{rue}"/><br /><span th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"></span></td>
         </tr>
         <tr>
-            <td><label for="codePostal">*codePostal : </label><input id="codePostal" required th:field="*{codePostal}"/><br/><span
-                    th:errors="*{codePostal}" th:if="${#fields.hasErrors('codePostal')}"></span></td>
-            <td><label for="ville">*ville : </label><input id="ville" required th:field="*{ville}"/><br/><span
-                    th:errors="*{ville}" th:if="${#fields.hasErrors('ville')}"></span></td>
+            <td><label for="codePostal">*codePostal : </label><input required id="codePostal" th:field="*{codePostal}"/><br /><span th:if="${#fields.hasErrors('codePostal')}" th:errors="*{codePostal}"></span></td>
+            <td><label for="ville">*ville : </label><input required id="ville" th:field="*{ville}"/><br /><span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span></td>
         </tr>
         <tr>
-            <td><label for="motDePasse">*motDePasse : </label><input id="motDePasse" maxlength="8" required
-                                                                     th:field="*{motDePasse}"
-                                                                     type="password"/><br/><span
-                    th:errors="*{motDePasse}" th:if="${#fields.hasErrors('motDePasse')}"></span></td>
-            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input id="motDePasseConfirmation"
-                                                                                              maxlength="8" name="motDePasseConfirmation"
-                                                                                              required
-                                                                                              type="password"/>
-            </td>
+            <td><label for="motDePasse">*motDePasse : </label><input maxlength="8" type="password" required id="motDePasse" th:field="*{motDePasse}"/><br /><span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span></td>
+            <td><label for="motDePasseConfirmation">*motDePasse confirmation : </label><input maxlength="8" type="password" required id="motDePasseConfirmation" name="motDePasseConfirmation" /></td>
 
         </tr>
 
     </table>
 
 
-    <p>
-        <button type="submit">Créer</button>
-    </p>
+    <p><button type="submit">Créer</button> </p>
 </form>
 <!-- formulaire d'annulation -->
-<form method="post" th:action="@{/annulation}">
+<form th:action="@{/annulation}" method="post">
     <button type="submit">Annuler</button>
 </form>
 <!--

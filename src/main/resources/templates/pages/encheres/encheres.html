@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Enchères</title>
-    <link href="/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 
@@ -14,18 +14,18 @@
 
     <h2>Filtres</h2>
     <div>
-        <form action="/encheres" method="get">
+        <form method="get" action="/encheres">
             <div class="flex-container">
                 <div class="left-container">
-                    <input class="search-bar" name="nom" placeholder="Le nom de l'article contient..." th:value="${param.nom}"
-                           type="search"/> <br/>
+                    <input type="search" name="nom" th:value="${param.nom}" class="search-bar"
+                           placeholder="Le nom de l'article contient..."/> <br/>
                     <label>Catégories : </label>
-                    <select class="select-cat" name="noCategorie">
-                        <option th:selected="${param.noCategorie == null}" value="">Toutes</option>
+                    <select name="noCategorie" class="select-cat">
+                        <option value="" th:selected="${param.noCategorie == null}">Toutes</option>
                         <option th:each="categorie : ${categories}"
+                                th:value="*{categorie.noCategorie}"
                                 th:selected="${param.noCategorie == categorie.noCategorie}"
-                                th:text="*{categorie.libelle}"
-                                th:value="*{categorie.noCategorie}">
+                                th:text="*{categorie.libelle}">
                         </option>
                     </select>
                 </div>
@@ -36,57 +36,57 @@
         </form>
 
         <div sec:authorize="isAuthenticated()">
-            <form action="/encheres" method="get" th:object="${enchereFiltres}">
+            <form method="get" action="/encheres" th:object="${enchereFiltres}">
                 <div class="filters-container">
                     <div class="subFilter-container">
                         <div>
-                            <input checked id="achats" name="achat-vente" onchange="toggleCheckboxes(this.value)" type="radio"
-                                   value="achats">
+                            <input type="radio" id="achats" value="achats" name="achat-vente" checked
+                                   onchange="toggleCheckboxes(this.value)">
                             <label for="achats">Achats</label>
                         </div>
                         <div class="list-filters">
                             <div>
-                                <input class="achats-checkbox" id="encheresOuvertes" name="encheresOuvertes"
-                                       th:field="*{encheresOuvertes}"
-                                       th:value="${param.encheresOuvertes}" type="checkbox">
+                                <input type="checkbox" id="encheresOuvertes" name="encheresOuvertes"
+                                       class="achats-checkbox"
+                                       th:value="${param.encheresOuvertes}" th:field="*{encheresOuvertes}">
                                 <label for="encheresOuvertes">enchères ouvertes</label>
                             </div>
                             <div>
-                                <input class="achats-checkbox" id="encheresEnCours" name="encheresEnCours"
-                                       th:field="*{encheresEnCours}"
-                                       th:value="${param.encheresEnCours}" type="checkbox">
+                                <input type="checkbox" id="encheresEnCours" name="encheresEnCours"
+                                       class="achats-checkbox"
+                                       th:value="${param.encheresEnCours}" th:field="*{encheresEnCours}">
                                 <label for="encheresEnCours">mes enchères en cours</label>
                             </div>
                             <div>
-                                <input class="achats-checkbox" id="encheresRemportees" name="encheresRemportees"
-                                       th:field="*{encheresRemportees}"
-                                       th:value="${param.encheresRemportees}" type="checkbox">
+                                <input type="checkbox" id="encheresRemportees" name="encheresRemportees"
+                                       class="achats-checkbox"
+                                       th:value="${param.encheresRemportees}" th:field="*{encheresRemportees}">
                                 <label for="encheresRemportees">mes enchères remportées</label>
                             </div>
                         </div>
                     </div>
                     <div class="subFilter-container">
                         <div>
-                            <input id="ventes" name="achat-vente" onchange="toggleCheckboxes(this.value)" type="radio"
-                                   value="ventes">
+                            <input type="radio" id="ventes" value="ventes" name="achat-vente"
+                                   onchange="toggleCheckboxes(this.value)">
                             <label for="ventes">Mes ventes</label>
                         </div>
                         <div class="list-filters">
                             <div>
-                                <input class="ventes-checkbox" id="ventesEnCours" name="ventesEnCours" th:field="*{ventesEnCours}"
-                                       th:value="${param.ventesEnCours}" type="checkbox">
+                                <input type="checkbox" id="ventesEnCours" name="ventesEnCours" class="ventes-checkbox"
+                                       th:value="${param.ventesEnCours}" th:field="*{ventesEnCours}">
                                 <label for="ventesEnCours">mes ventes en cours</label>
                             </div>
                             <div>
-                                <input class="ventes-checkbox" id="ventesNonDebutees" name="ventesNonDebutees"
-                                       th:field="*{ventesNonDebutees}"
-                                       th:value="${param.ventesNonDebutees}" type="checkbox">
+                                <input type="checkbox" id="ventesNonDebutees" name="ventesNonDebutees"
+                                       class="ventes-checkbox"
+                                       th:value="${param.ventesNonDebutees}" th:field="*{ventesNonDebutees}">
                                 <label for="ventesNonDebutees">ventes non débutées</label>
                             </div>
                             <div>
-                                <input class="ventes-checkbox" id="ventesTerminees" name="ventesTerminees"
-                                       th:field="*{ventesTerminees}"
-                                       th:value="${param.ventesTerminees}" type="checkbox">
+                                <input type="checkbox" id="ventesTerminees" name="ventesTerminees"
+                                       class="ventes-checkbox"
+                                       th:value="${param.ventesTerminees}" th:field="*{ventesTerminees}">
                                 <label for="ventesTerminees">ventes terminées</label>
                             </div>
                         </div>
@@ -104,13 +104,13 @@
 
             <div class="images-box">
                 <!-- Vérification de l'état de la vente pour chaque article -->
-                <img alt="Vente terminée"
+                <img th:if="${article.dateFinEncheres.isBefore(now)}"
                      src="/images/block.svg"
+                     alt="Vente terminée"
                      style="position: absolute; width: 50px;"
-                     th:if="${article.dateFinEncheres.isBefore(now)}"
                 />
                 <a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
-                    <img alt="image_article" class="images-articles" th:src="*{article.lien_image}"/>
+                    <img class="images-articles" th:src="*{article.lien_image}" alt="image_article"/>
                 </a>
             </div>
 

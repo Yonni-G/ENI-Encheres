@@ -4,6 +4,7 @@ package fr.eni.eniencheres.eniencheres.security;
 import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,10 +32,10 @@ public class UserDetailServiceImpl implements UserDetailsService {
         Utilisateur utilisateur = utilisateurService.getUtilisateur(pseudo)
                 .orElseThrow(UtilisateurExceptions.UtilisateurNonTrouve::new);
         return User.builder()
-                .username(pseudo)
-                .password(utilisateur.getMotDePasse())
-                .roles(utilisateur.isAdministrateur() ? "ADMIN" : "USER")
-                .build();
+                    .username(pseudo)
+                    .password(utilisateur.getMotDePasse())
+                    .roles(utilisateur.isAdministrateur() ? "ADMIN" : "USER")
+                    .build();
     }
 
 }

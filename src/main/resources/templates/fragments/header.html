@@ -11,6 +11,7 @@
 
         <ul>
 
+
             <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
             <li sec:authorize="!isAuthenticated()">
                 <a th:href="@{/connexion}">S'inscrire - Se connecter</a>
@@ -31,7 +32,6 @@
                 <a th:href="@{/logout}">Déconnexion</a>
 
             </li>
-
         </ul>
     </nav>
 </header>

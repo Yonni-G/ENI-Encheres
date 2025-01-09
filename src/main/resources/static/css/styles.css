@@ -61,7 +61,6 @@ nav a {
     border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 nav a:hover {
     background-color: var(--yellow);
     color: var(--blue-medium);
@@ -78,7 +77,6 @@ nav a:hover {
     border-radius: 5px;
     margin-top: 10px;
 }
-
 .btn-inscription:hover {
     background-color: #45a049;
 }
@@ -94,7 +92,6 @@ nav a:hover {
     margin-top: 10px;
     transition: background-color 2s ease;
 }
-
 .btn-delete:hover {
     background-color: red;
 }
@@ -110,16 +107,13 @@ nav a:hover {
     margin-top: 10px;
     transition: background-color 2s ease;
 }
-
 .btn-validation:hover {
     background-color: #1aa120;
 }
-
 main input, main select {
     border: 1px solid var(--yellow);
     color: var(--background);
 }
-
 main button {
     background-color: var(--blue-medium);
     border: 1px solid var(--yellow);
@@ -140,8 +134,7 @@ main button {
 
 .vendre-article-col {
     width: 100%;
-    max-width: 600px;
-}
+    max-width: 600px;}
 
 #vendre-article-col-left,
 #vendre-article-col-right {
@@ -180,22 +173,18 @@ main button {
 .article a:hover {
     color: var(--orange);
 }
-
 #inactive-link:hover {
     background-color: white;
 }
-
 .article-col {
-    width: 50%;
+    width:50%;
 }
-
 .images-box {
     margin: 0 auto;
     width: 80%;
     overflow: hidden;
     border-radius: var(--border-radius);
 }
-
 .images-box img {
     width: 100%;
     height: auto;
@@ -219,17 +208,14 @@ main button {
     width: 100%;
     align-items: center;
 }
-
 .flex-container button {
     padding: 1.6rem;
     box-shadow: 0.1rem 0.1rem var(--orange);
 }
-
 .left-container {
     width: 30%;
     margin-bottom: 1.6rem;
 }
-
 .left-container select {
     margin-left: 1.6rem;
 }
@@ -239,22 +225,18 @@ main button {
     margin-bottom: 1.6rem;
     align-items: center;
 }
-
 .subFilter-container {
     display: flex;
     flex-direction: column;
 }
-
 .list-filters {
     margin-left: 1.6rem;
 }
-
 .filters-container button {
     margin-left: 1.6rem;
     padding: 0.8rem;
     height: 32%;
 }
-
 /* Détails des ventes ('détailVente.html') */
 .details-container {
     display: flex;
@@ -295,16 +277,13 @@ main button {
     justify-content: center;
     gap: 10px;
 }
-
 .profile-div {
     width: 10%;
 }
-
 .profile-container .right {
     text-align: center;
     font-weight: bold;
 }
-
 .right p:hover {
     background-color: cornflowerblue;
     padding: 0 2em 0 1em;
@@ -320,20 +299,16 @@ main button {
     gap: 10px;
 
 }
-
 .modif-box {
     margin: 15px;
 }
-
 .modif-box label {
     margin: 15px;
 }
-
 .modif-box input {
     margin-bottom: 10px;
     padding: 5px;
 }
-
 .modif3 {
     align-self: center;
 }

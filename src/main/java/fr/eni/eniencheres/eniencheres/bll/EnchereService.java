@@ -2,13 +2,14 @@ package fr.eni.eniencheres.eniencheres.bll;
 
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
 import fr.eni.eniencheres.eniencheres.bo.Categorie;
+import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EnchereService {
     List<Categorie> findAllCategories();
-
     List<ArticleVendu> findAllArticleVendu();
 
     ArticleVendu findArticleById(Integer noArticle);
