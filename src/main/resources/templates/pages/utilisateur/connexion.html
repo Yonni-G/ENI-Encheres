@@ -17,21 +17,32 @@
 <h2 class="error" th:if="${param.error}" th:text="'Erreur : Mot de passe ou pseudo incorrect !'"></h2>
 <a th:if="${username}" th:text="${username}"></a>
 
-<form th:action="@{/connexion}" method="post">
+<main>
 
-    <p>
-        <label for="username">*Pseudo : </label><input name="username" placeholder="Votre pseudo ?" required id="username"/>
-    </p>
-    <p>
-        <label for="password">*Mot de passe : </label><input maxlength="8" type="password" name="password" placeholder="Votre mot de passe ?" required id="password"/>
-    </p>
-    <p><button type="submit">Connexion</button> </p>
-</form>
+    <!-- Formulaire de connexion -->
+    <form th:action="@{/connexion}" method="post">
 
-<!-- Lien vers l'inscription -->
-<p>
-    <a th:href="@{/inscription}" class="btn-inscription">Créer un compte</a>
-</p>
+        <p>
+            <label for="username">*Pseudo : </label><input name="username" placeholder="Votre pseudo ?" required
+                                                           id="username"/>
+        </p>
+        <p>
+            <label for="password">*Mot de passe : </label><input maxlength="8" type="password" name="password"
+                                                                 placeholder="Votre mot de passe ?" required
+                                                                 id="password"/>
+        </p>
+        <p>
+            <button type="submit">Connexion</button>
+        </p>
+    </form>
+
+    <!-- Lien vers l'inscription -->
+    <p>
+        <a th:href="@{/inscription}" class="btn-inscription">Créer un compte</a>
+    </p>
+
+</main>
+
 
 <!-- Inclure le fragment footer -->
 <footer th:replace="fragments/footer :: footer"></footer>

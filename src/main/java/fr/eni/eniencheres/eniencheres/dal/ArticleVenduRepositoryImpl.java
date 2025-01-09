@@ -1,17 +1,14 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
-import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
-import fr.eni.eniencheres.eniencheres.bo.*;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
+import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
+import fr.eni.eniencheres.eniencheres.bo.Categorie;
+import fr.eni.eniencheres.eniencheres.bo.Retrait;
+import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -55,7 +52,6 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             // Vérification de la clé générée
             if (generatedKey != null) {
                 int noArticle = generatedKey.intValue();
-                System.out.println("L'ID généré pour l'article est : " + noArticle);
 
                 // Assigner la valeur générée à l'objet articleVendu
                 articleVendu.setNoArticle(noArticle);

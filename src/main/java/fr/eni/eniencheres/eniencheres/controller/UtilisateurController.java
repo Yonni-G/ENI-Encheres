@@ -65,6 +65,10 @@ public class UtilisateurController {
 
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
 
+        if(utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
+            model.addAttribute("estAutorise", "true");
+        }
+
         if(success != null) {
             model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
         }

@@ -3,12 +3,8 @@ package fr.eni.eniencheres.eniencheres.dal;
 import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -136,11 +132,8 @@ public class UtilisateurRepositoryImpl implements UtilisateurRepository {
             noUtilisateur = (Integer) result.get("no_utilisateur");
             montantEnchere = (Integer) result.get("montant_enchere");
 
-            //System.out.println("Meilleure enchère: Utilisateur " + noUtilisateur + " avec " + montantEnchere + " points.");
-
         } catch (EmptyResultDataAccessException e) {
             // Si aucune enchère n'est trouvée, on passe à l'étape suivante (aucun changement de crédit à faire)
-            //System.out.println("Aucune enchère trouvée.");
         }
 
         // Insérer la nouvelle enchère

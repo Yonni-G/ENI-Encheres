@@ -20,11 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class EnchereController {
@@ -73,8 +69,6 @@ public class EnchereController {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
             if (utilisateurConnecte.isPresent()) {
                 articles = service.findArticleByEncheresEnCours(utilisateurConnecte.get().getNoUtilisateur());
-            } else {
-                System.out.println("Utilisateur non trouvé...");
             }
         } else if (encheresRemportees) {
             Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());

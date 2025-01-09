@@ -19,7 +19,7 @@
 
     <div class="details-container">
         <div class="details-image">
-            <img th:src="${articles.lien_image}" alt="image de l'article en vente"/>
+            <img th:src="${articles.lien_image}" alt="image de l'article en vente" id="imageArticle" />
         </div>
         <div class="details-texts">
             <h2 th:text="${articles.nomArticle}"></h2>
@@ -106,11 +106,5 @@
 
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
-<script>function confirmAndRedirect(noArticle) {
-    if (confirm('Êtes-vous sûr de vouloir annuler la vente ?')) {
-        window.location.href = '/annulerVente/' + noArticle;
-    }
-}
-</script>
 </body>
 </html>

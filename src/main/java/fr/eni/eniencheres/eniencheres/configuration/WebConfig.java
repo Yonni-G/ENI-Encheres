@@ -9,8 +9,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/imagesUtilisateurs/**")
-                .addResourceLocations("file:C:/Users/acoulon2024/Desktop/Encheres ENI/imagesUtilisateurs/")
-                .setCachePeriod(0); // Désactive le cache
+        // Dossier par défaut (src/main/resources/static)
+        registry.addResourceHandler("/images/**")
+                .addResourceLocations("classpath:/static/images/");
+
+        // Dossier personnalisé (par exemple, dans Documents)
+        registry.addResourceHandler("/imagesUtilisateurs/**")
+                .addResourceLocations("file:" + System.getProperty("user.home") + "/Documents/imagesUtilisateurs/");
     }
 }

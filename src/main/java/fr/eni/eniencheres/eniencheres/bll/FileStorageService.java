@@ -56,6 +56,6 @@ public class FileStorageService {
             Files.copy(inputStream, destinationPath);
         }
 
-        return "/images/imagesUtilisateurs/" + destinationPath.getFileName().toString();
+        return destinationPath.getFileName().toString();
     }
 }

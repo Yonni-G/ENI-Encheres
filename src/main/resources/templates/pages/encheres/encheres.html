@@ -99,7 +99,7 @@
                 <img th:if="${article.dateFinEncheres.isBefore(now)}"
                      src="/images/block.svg"
                      alt="Vente terminée"
-                     style="position: absolute;"
+                     style="position: absolute; width: 50px;"
                 />
                 <a id="inactive-link" th:href="@{/detailVente/{noArticle}(noArticle=${article.noArticle})}">
                     <img class="images-articles" th:src="*{article.lien_image}" alt="image_article" />
