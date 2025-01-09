@@ -8,6 +8,7 @@ import fr.eni.eniencheres.eniencheres.bo.Enchere;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import fr.eni.eniencheres.eniencheres.dal.EnchereDTO;
 import fr.eni.eniencheres.eniencheres.dal.EnchereFiltresDTO;
+import fr.eni.eniencheres.eniencheres.exceptions.UtilisateurExceptions;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -108,22 +109,43 @@ public class EnchereController {
 
         if(success != null) model.addAttribute("success", "success");
 
-        // si c'est une desactivation qui est demandée, on effectue les controles nécessaires
-        if(desactivate != null) {
-            // est-ce que l'utilisateur connecté est en droit de desactiver cet article ?
-            // est-ce le sien ?
-            // l'objet est-il en cours de vente ?
-            
-        }
+
 
         //model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
 
-        // Afficher si la vente est remportée
-        Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        // Obtention des données nécessaires
+        Optional<Utilisateur> utilisateurConnecte;
+        try {
+            utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
+        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+                return "redirect:/erreurCompte";
+        }
+
         EnchereDTO enchere = service.getWinner(noArticle);
         ArticleVendu articleVendu = articleVenduService.getById(noArticle);
+
+        // si c'est un desactivation de l'article est demandée, on effectue les controles nécessaires
+        if(desactivate != null) {
+            // est-ce que l'utilisateur connecté est en droit de desactiver cet article :
+            //  - est-ce le sien ?
+            // -  l'objet est-il en cours de vente ?
+            if(utilisateurConnecte.isPresent()) {
+                if (utilisateurConnecte.get().getNoUtilisateur() != articleVendu.getVendeur().getNoUtilisateur()) {
+                    model.addAttribute("errorMessage", "Vous n'avez pas le droit de demander la désactivation d'un article qui n'est pas le vôtre !");
+                    return "pages/encheres/detailVente";
+                }
+                if(articleVendu.getDateFinEncheres().isBefore(LocalDateTime.now())) {
+                    model.addAttribute("errorMessage", "Vous ne pouvez pas demander la désactivation d'un article en cours de vente.");
+                    return "pages/encheres/detailVente";
+                }
+                System.out.println("on procede à la desactvation");
+            } else throw new UtilisateurExceptions.UtilisateurNonTrouve();
+
+        }
+
+        // Afficher si la vente est remportée
         LocalDateTime dateActuelle = LocalDateTime.now();
 
         boolean aRemporteLaVente = false;
@@ -142,11 +164,10 @@ public class EnchereController {
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
         model.addAttribute("credits", utilisateurConnecte.map(Utilisateur::getCredit).orElse(0));
 
-        model.addAttribute("isVenteTerminee", articleVendu.getDateFinEncheres().isBefore(dateActuelle));
+        if(articleVendu.getDateFinEncheres().isBefore(dateActuelle)) model.addAttribute("isVenteTerminee", true);
+        if(dateActuelle.isAfter(articleVendu.getDateDebutEncheres()) && dateActuelle.isBefore(articleVendu.getDateFinEncheres())) model.addAttribute("isVenteEnCours", true);
 
-        model.addAttribute("isProprietaire", utilisateurConnecte
-                .map(utilisateur -> articleVendu.getVendeur().getNoUtilisateur() == utilisateur.getNoUtilisateur())
-                .orElse(false));  // Si utilisateurConnecte est vide, "isProprietaire" sera false
+        if(articleVendu.getVendeur().getNoUtilisateur() == utilisateurConnecte.get().getNoUtilisateur()) model.addAttribute("isProprietaire", "");
 
 
         return "pages/encheres/detailVente";
