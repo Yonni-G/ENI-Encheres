@@ -9,4 +9,5 @@ public interface ArticleVenduRepository {
     ArticleVendu getById(int noArticle);
 
 
+    boolean modifier(ArticleVendu articleVendu);
 }

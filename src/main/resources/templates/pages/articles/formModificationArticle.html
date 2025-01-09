@@ -2,7 +2,7 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Enchères</title>
+    <title>Modification Article</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -10,14 +10,18 @@
 <header th:replace="~{fragments/header :: header}"></header>
 
 <main>
-    <h1>Nouvelle vente</h1>
+    <h1>Modification Article</h1>
 
     <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}">futur zone message erreur</h2>
+    <h2 class="success" th:if="${success}">Votre article a bien été modifié.</h2>
 
     <div id="vendre-article">
 
+        <div class="vendre-article-col" id="vendre-article-col-left">image</div>
         <div class="vendre-article-col" id="vendre-article-col-right">
-            <form method="post" th:action="@{/vendre}" th:object="${articleVendu}" enctype="multipart/form-data">
+            <form method="post" th:action="@{/modifierVente/{id}(id=${articleVendu.noArticle})}"
+                  th:object="${articleVendu}">
+
                 <p>
                     <label for="nomArticle">Article : </label>
                     <input autofocus required id="nomArticle" type="text" th:field="*{nomArticle}"
@@ -38,16 +42,17 @@
                         <option th:each="categorie : ${categories}"
                                 th:value="${categorie.noCategorie}"
                                 th:text="${categorie.libelle}"
-                                th:selected="${categorie.noCategorie == (articleVendu.categorieArticle != null ? articleVendu.categorieArticle.noCategorie : null)}"
-                        ></option>
+                                th:selected="${categorie.noCategorie == articleVendu.getCategorieArticle().getNoCategorie()}"
+                        >
+                        </option>
                     </select>
                     <br/><span class="error" th:if="${#fields.hasErrors('categorieArticle')}"
                                th:errors="*{categorieArticle}"></span>
                 </p>
                 <p>
-                    <label for="file">Photo de l'article : </label>
-                    <input type="file" id="file" name="file" accept=".jpg, .jpeg" />
-                    <span th:text="${message}"></span>
+                    <label for="photo">Photo de l'article : </label>
+                    <input type="file" id="photo" name="photo" accept=".jpg, .jpeg"/>
+
                 </p>
                 <p>
                     <label for="miseAPrix">Mise à prix : </label>
@@ -57,10 +62,12 @@
 
                 <p>
                     <label for="dateDebutEncheres">Début de l'enchère :</label>
-                    <input required type="datetime-local" id="dateDebutEncheres" th:field="*{dateDebutEncheres}"/>
-                    <br/><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}"
-                               th:errors="*{dateDebutEncheres}"></span>
+                    <input required type="datetime-local" id="dateDebutEncheres"
+                           th:field="*{dateDebutEncheres}" />
+
+                    <br/><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}" th:errors="*{dateDebutEncheres}"></span>
                 </p>
+
                 <p>
                     <label for="dateFinEncheres">Fin de l'enchère :</label>
                     <input required type="datetime-local" id="dateFinEncheres" th:field="*{dateFinEncheres}"/>

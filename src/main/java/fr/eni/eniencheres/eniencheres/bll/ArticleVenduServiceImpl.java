@@ -24,5 +24,10 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         return articleVenduRepository.getById(noArticle);
     }
 
+    @Override
+    public boolean modifier(ArticleVendu articleVendu) {
+        return articleVenduRepository.modifier(articleVendu);
+    }
+
 
 }

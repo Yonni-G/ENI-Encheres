@@ -1,20 +1,14 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
-import fr.eni.eniencheres.eniencheres.bll.UtilisateurService;
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
-import fr.eni.eniencheres.eniencheres.bo.Enchere;
+import fr.eni.eniencheres.eniencheres.bo.Categorie;
 import fr.eni.eniencheres.eniencheres.bo.Retrait;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -44,11 +38,12 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
         params.put("miseAPrix", articleVendu.getMiseAPrix());
         params.put("noUtilisateur", articleVendu.getVendeur().getNoUtilisateur());
         params.put("noCategorie", articleVendu.getCategorieArticle().getNoCategorie());
+        params.put("lien_image", articleVendu.getLien_image());
 
         try {
             // Exécution de l'insertion de l'article
-            String sqlInsertArticleWithReturn = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie) " +
-                    "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :noUtilisateur, :noCategorie); " +
+            String sqlInsertArticleWithReturn = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, no_utilisateur, no_categorie, lien_image) " +
+                    "VALUES (:nomArticle, :description, :dateDebutEncheres, :dateFinEncheres, :miseAPrix, :noUtilisateur, :noCategorie, :lien_image); " +
                     "SELECT SCOPE_IDENTITY();";
 
             // Récupération de l'ID généré
@@ -57,7 +52,6 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             // Vérification de la clé générée
             if (generatedKey != null) {
                 int noArticle = generatedKey.intValue();
-                System.out.println("L'ID généré pour l'article est : " + noArticle);
 
                 // Assigner la valeur générée à l'objet articleVendu
                 articleVendu.setNoArticle(noArticle);
@@ -89,16 +83,24 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
 
     @Override
     public ArticleVendu getById(int noArticle) {
-        String SqlGetArticle = "SELECT no_article AS noArticle," +
-                " nom_article AS nomArticle," +
-                " description," +
-                " date_debut_encheres AS dateDebutEncheres," +
-                " date_fin_encheres AS dateFinEncheres," +
-                " prix_initial as miseAPrix," +
-                " prix_vente AS prixVente," +
-                " no_utilisateur AS noUtilisateur," +
-                " no_categorie AS noCategorie" +
-                " FROM ARTICLES_VENDUS WHERE no_article = :noArticle";
+        String SqlGetArticle = "SELECT" +
+                " a.no_article AS noArticle," +
+                " a.nom_article AS nomArticle," +
+                " a.description," +
+                " a.date_debut_encheres AS dateDebutEncheres," +
+                " a.date_fin_encheres AS dateFinEncheres," +
+                " a.prix_initial as miseAPrix," +
+                " a.prix_vente AS prixVente," +
+                " a.no_utilisateur AS noUtilisateur," +
+                " a.no_categorie AS noCategorie," +
+                " a.etat_vente AS etatVente," +
+                " r.rue AS rue," +
+                " r.code_postal AS codePostal," +
+                " r.ville AS ville" +
+                " FROM ARTICLES_VENDUS a" +
+                " LEFT JOIN RETRAITS r ON a.no_article = r.no_article" +
+                " WHERE a.no_article = :noArticle";
+
         Map<String, Object> params = new HashMap<>();
         params.put("noArticle", noArticle);
         return jdbcTemplate.queryForObject(SqlGetArticle, params, (rs, rowNum) -> {
@@ -110,8 +112,16 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
             articleVendu.setPrixVente(rs.getInt("prixVente"));
+            articleVendu.setCategorieArticle(new Categorie(rs.getInt("noCategorie"), ""));
+            articleVendu.setEtatVente(rs.getInt("etatVente") == 1);
 
-            System.out.println("num:"+rs.getInt("noUtilisateur"));
+            // il faut également hydrater notre article avec le le lieu de retrait
+            articleVendu.setLieuRetrait(new Retrait(
+                    rs.getString("rue"),
+                    rs.getString("codePostal"),
+                    rs.getString("ville")
+            ));
+
             // Création d'un objet Utilisateur et assignation au vendeur
             Optional<Utilisateur> utilisateur = utilisateurRepository.getUtilisateurById(rs.getInt("noUtilisateur"));
             if(utilisateur.isPresent()) {
@@ -119,8 +129,51 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             } else articleVendu.setVendeur(new Utilisateur());  // On affecte l'objet Utilisateur au vendeur
 
 
+
             return articleVendu;
         });
+    }
+
+    @Override
+    public boolean modifier(ArticleVendu articleVendu) {
+        // Déclaration des requêtes SQL avec paramètres nommés
+
+        // Variables pour les paramètres
+        Map<String, Object> updateParams = new HashMap<>();
+        updateParams.put("noArticle", articleVendu.getNoArticle());
+        updateParams.put("nomArticle", articleVendu.getNomArticle());
+        updateParams.put("description", articleVendu.getDescription());
+        updateParams.put("dateDebutEncheres", articleVendu.getDateDebutEncheres());
+        updateParams.put("dateFinEncheres", articleVendu.getDateFinEncheres());
+        updateParams.put("miseAPrix", articleVendu.getMiseAPrix());
+        updateParams.put("noCategorie", articleVendu.getCategorieArticle().getNoCategorie());
+
+        try {
+            // Exécution de la mise à jour de l'article
+            String sqlUpdateArticleWithReturn = "UPDATE ARTICLES_VENDUS SET " +
+                    " nom_article = :nomArticle," +
+                    " description = :description," +
+                    " date_debut_encheres = :dateDebutEncheres," +
+                    " date_fin_encheres = :dateFinEncheres," +
+                    " prix_initial = :miseAPrix," +
+                    " no_categorie = :noCategorie" +
+                    " WHERE no_article = :noArticle";
+
+            jdbcTemplate.update(sqlUpdateArticleWithReturn, updateParams);
+            // on met également à jour le lieu de retrait
+            String sqlUpdateLieuRetrait = "UPDATE RETRAITS SET " +
+                    " rue = :rue," +
+                    " code_postal = :codePostal," +
+                    " ville = :ville";
+
+            jdbcTemplate.update(sqlUpdateLieuRetrait, new BeanPropertySqlParameterSource(articleVendu.getLieuRetrait()));
+
+            return true;
+
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

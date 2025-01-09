@@ -65,6 +65,10 @@ public class UtilisateurController {
 
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
 
+        if(utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
+            model.addAttribute("estAutorise", "true");
+        }
+
         if(success != null) {
             model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
         }
@@ -135,9 +139,7 @@ public class UtilisateurController {
         utilisateur.setNoUtilisateur(utilisateurData.get().getNoUtilisateur());
 
         //  2. on tente de valider l'update des données
-        utilisateur.setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
         try {
-
             utilisateurService.update(utilisateur);
         } catch (UtilisateurExceptions.EmailDejaExistant e) {
             model.addAttribute("errorMessage", "Cette adresse email est déjà utilisée.");
