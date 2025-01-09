@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EnchereController {
@@ -45,7 +46,9 @@ public class EnchereController {
             Model model) {
 
         // Initialisation de valeurs par défaut pour éviter les valeurs 'null'
-        if (nom == null) { nom = "";}
+        if (nom == null) {
+            nom = "";
+        }
         // noCategorie peut être 'null' pour le filtre 'Toutes'
 
         List<ArticleVendu> articles;
@@ -106,14 +109,14 @@ public class EnchereController {
     @GetMapping("/detailVente/{noArticle}")
     public String detailVente(@PathVariable("noArticle") Integer noArticle, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "desactivate", required = false) String desactivate, Model model) {
 
-        if(success != null) model.addAttribute("success", "success");
+        if (success != null) model.addAttribute("success", "success");
 
         // si c'est une desactivation qui est demandée, on effectue les controles nécessaires
-        if(desactivate != null) {
+        if (desactivate != null) {
             // est-ce que l'utilisateur connecté est en droit de desactiver cet article ?
             // est-ce le sien ?
             // l'objet est-il en cours de vente ?
-            
+
         }
 
         //model.addAttribute("enchere", new Enchere());
@@ -161,7 +164,7 @@ public class EnchereController {
         model.addAttribute("articles", enchereDTO);
         model.addAttribute("utilEnchere", service.getUtilEnchere(noArticle));
 
-        if(controlEnchere.hasErrors()) {
+        if (controlEnchere.hasErrors()) {
             return "pages/encheres/detailVente";
         }
 
@@ -169,7 +172,7 @@ public class EnchereController {
         // on enrichit l'enchere avec les donnees de l'encherisseur
         Optional<Utilisateur> utilisateurExiste = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
         Utilisateur utilisateurConnecte;
-        if(utilisateurExiste.isPresent()) {
+        if (utilisateurExiste.isPresent()) {
             utilisateurConnecte = utilisateurExiste.get();
             enchere.setUtilisateur(utilisateurConnecte);
         } else utilisateurConnecte = new Utilisateur();
@@ -179,13 +182,13 @@ public class EnchereController {
         enchere.setArticleVendu(articleVendu);
 
         // CAS ERREUR 1 : ENCHERIR SUR SON PROPRE OBJET
-        if(utilisateurConnecte.getNoUtilisateur() == articleVendu.getVendeur().getNoUtilisateur()) {
+        if (utilisateurConnecte.getNoUtilisateur() == articleVendu.getVendeur().getNoUtilisateur()) {
             model.addAttribute("erreurEnchere", "Vous ne pouvez pas enchérir sur votre propre objet !");
             return "pages/encheres/detailVente";
         }
 
         // CAS ERREUR 2 : ON EST DEJA LE MEILLEUR ENCHERISSEUR
-        if(utilisateurConnecte.getNoUtilisateur() == enchereDTO.getNoUtilisateur()) {
+        if (utilisateurConnecte.getNoUtilisateur() == enchereDTO.getNoUtilisateur()) {
             model.addAttribute("erreurEnchere", "Vous êtes déjà le meilleur enchérisseur sur cet objet !");
             return "pages/encheres/detailVente";
         }
@@ -195,13 +198,13 @@ public class EnchereController {
 
         // CAS ERREUR 3 : CREDIT INSUFFISANT
         // est-ce que l'utilisateur a assez de credit pour encherir ?
-        if(utilisateurConnecte.getCredit() < enchereMinimumAttendue) {
+        if (utilisateurConnecte.getCredit() < enchereMinimumAttendue) {
             model.addAttribute("erreurEnchere", "Vous n'avez pas assez de points pour enchérir (vous disposez de " + utilisateurConnecte.getCredit() + " points.)");
             return "pages/encheres/detailVente";
         }
 
         // CAS ERREUR 4 : ENCHERE TROP FAIBLE
-        if(enchere.getMontantEnchere() <= enchereMinimumAttendue) {
+        if (enchere.getMontantEnchere() <= enchereMinimumAttendue) {
             model.addAttribute("erreurEnchere", "Votre enchère est trop faible (doit être > à " + enchereMinimumAttendue + ")");
             return "pages/encheres/detailVente";
         }

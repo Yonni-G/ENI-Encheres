@@ -44,7 +44,9 @@ public class EnchereDTO {
         this.montantEnchere = montantEnchere;
         this.dateEnchere = dateEnchere;
     }
-    public EnchereDTO(){}
+
+    public EnchereDTO() {
+    }
 
     public EnchereDTO(int noUtilisateur, String pseudo, int montantEnchere) {
         this.noUtilisateur = noUtilisateur;
@@ -146,16 +148,16 @@ public class EnchereDTO {
         return categorie;
     }
 
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
     public boolean isEtatVente() {
         return etatVente;
     }
 
     public void setEtatVente(boolean etatVente) {
         this.etatVente = etatVente;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
     }
 
     public int getMiseAPrix() {
