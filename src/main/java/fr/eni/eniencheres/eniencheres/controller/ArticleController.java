@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.Random;
 
 
 @Controller
@@ -101,7 +102,7 @@ public class ArticleController {
             System.out.println("Chemin de l'image sauvegardée : " + filePath);
 
             // On affecte à l'objet ArticleVendu
-            articleVendu.setLien_image(filePath);
+            articleVendu.setLien_image("/imagesUtilisateurs/" + filePath);
             model.addAttribute("message", "Image uploadé avec succès!");
         } catch (IOException e) {
             e.printStackTrace();
@@ -112,7 +113,7 @@ public class ArticleController {
         // on insere le nouvel article
         articleVenduService.ajouter(articleVendu);
 
-        return "redirect:/";
+        return "redirect:/detailVente/" + articleVendu.getNoArticle();
     }
 
     @GetMapping("/modifierVente/{noArticle}")

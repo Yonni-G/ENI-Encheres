@@ -19,7 +19,7 @@
 
     <div class="details-container">
         <div class="details-image">
-            <img th:src="${articles.lien_image}" alt="image de l'article en vente" />
+            <img th:src="${articles.lien_image}" alt="image de l'article en vente" id="imageArticle" />
         </div>
         <div class="details-texts">
             <h2 th:text="${articles.nomArticle}"></h2>
@@ -81,6 +81,7 @@
             </form>
         </div>
     </div>
+
 
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
