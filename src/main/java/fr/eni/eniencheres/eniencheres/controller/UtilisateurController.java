@@ -139,9 +139,7 @@ public class UtilisateurController {
         utilisateur.setNoUtilisateur(utilisateurData.get().getNoUtilisateur());
 
         //  2. on tente de valider l'update des données
-        utilisateur.setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
         try {
-
             utilisateurService.update(utilisateur);
         } catch (UtilisateurExceptions.EmailDejaExistant e) {
             model.addAttribute("errorMessage", "Cette adresse email est déjà utilisée.");

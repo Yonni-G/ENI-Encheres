@@ -1,6 +1,7 @@
 package fr.eni.eniencheres.eniencheres.dal;
 
 import fr.eni.eniencheres.eniencheres.bo.ArticleVendu;
+import fr.eni.eniencheres.eniencheres.bo.Categorie;
 import fr.eni.eniencheres.eniencheres.bo.Retrait;
 import fr.eni.eniencheres.eniencheres.bo.Utilisateur;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -92,6 +93,7 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
                 " a.prix_vente AS prixVente," +
                 " a.no_utilisateur AS noUtilisateur," +
                 " a.no_categorie AS noCategorie," +
+                " a.etat_vente AS etatVente," +
                 " r.rue AS rue," +
                 " r.code_postal AS codePostal," +
                 " r.ville AS ville" +
@@ -110,6 +112,8 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
             articleVendu.setDateFinEncheres(rs.getTimestamp("dateFinEncheres").toLocalDateTime());
             articleVendu.setMiseAPrix(rs.getInt("miseAPrix"));
             articleVendu.setPrixVente(rs.getInt("prixVente"));
+            articleVendu.setCategorieArticle(new Categorie(rs.getInt("noCategorie"), ""));
+            articleVendu.setEtatVente(rs.getInt("etatVente") == 1);
 
             // il faut également hydrater notre article avec le le lieu de retrait
             articleVendu.setLieuRetrait(new Retrait(

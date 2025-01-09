@@ -15,12 +15,12 @@
     <h1>Modification de votre profil</h1>
     <h2 class="error" th:if="${errorMessage}" th:text="${errorMessage}"></h2>
 
-    <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
-        <div class="modif-container">
-            <div class="modif-box">
-                <label for="pseudo">Pseudo : </label>
-                <input disabled required id="pseudo" th:field="*{pseudo}"/><br/>
-                <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
+            <form th:object="${utilisateur}" th:action="@{/modification}" method="post">
+                <div class="modif-container">
+                    <div class="modif-box">
+                        <label for="pseudo">Pseudo : </label>
+                        <input readonly required id="pseudo" th:field="*{pseudo}" style="background-color: gray"/><br />
+                        <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
 
                 <label for="prenom">*Prénom : </label>
                 <input required id="prenom" th:field="*{prenom}"/><br/>

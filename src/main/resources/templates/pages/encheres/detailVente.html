@@ -24,64 +24,85 @@
         <div class="details-texts">
             <h2 th:text="${articles.nomArticle}"></h2>
             <form th:action="@{/detailVente/{id}(id=${noArticle})}" th:object="${enchere}" method="post">
-            <table>
-                <tr>
-                    <td>Description :</td>
-                    <td th:text="${articles.description}"></td>
-                </tr>
-                <tr>
-                    <td>Catégorie :</td>
-                    <td th:text="${articles.categorie}"></td>
-                </tr>
-                <tr th:if="${articles.montantEnchere != null && articles.dateEnchere != null}">
-                    <td>Meilleure offre :</td>
-                    <td th:text="${articles.montantEnchere} + ' pts, par ' + ${utilEnchere.pseudo} + ', le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
-                </tr>
-                <tr th:if="${articles.montantEnchere == null || articles.dateEnchere == null}">
-                    <td><em>Il n'y a aucune offre pour cet article...</em></td>
-                </tr>
-                <tr>
-                    <td>Mise à prix :</td>
-                    <td th:text="${articles.miseAPrix}"></td>
-                </tr>
-                <tr>
-                    <td>Fin de l'enchère :</td>
-                    <td>
-                        <p th:if="${isVenteTerminee}">Enchère terminée !</p>
-                        <p th:text="${#temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Retrait :</td>
-                    <td th:text="${articles.retrait}"></td>
-                </tr>
-                <tr>
-                    <td>Vendeur :</td>
-                    <td th:text="${articles.vendeur}"></td>
-                </tr>
-                <th:block th:if="${isVenteTerminee == null}">
+                <table>
                     <tr>
-                        <td>Ma proposition :<br>
-                            <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
-                        </td>
-                        <td><input min="100" step="100" placeholder="Votre enchère ?" type="number" th:field="*{montantEnchere}" />
-                            <br /><span class="error" th:if="${#fields.hasErrors('montantEnchere')}" th:errors="*{montantEnchere}"></span>
-                            <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
-                            <button type="submit">Enchérir</button>
-                        </td>
-
+                        <td>Description :</td>
+                        <td th:text="${articles.description}"></td>
                     </tr>
-                    <!-- on n'affiche le bouton de modification d'une vente que si la vente appartient à l'utilisateur connecte -->
+                    <tr>
+                        <td>Catégorie :</td>
+                        <td th:text="${articles.categorie}"></td>
+                    </tr>
+                    <tr th:if="${articles.montantEnchere != null && articles.dateEnchere != null}">
+                        <td>Meilleure offre :</td>
+                        <td th:text="${articles.montantEnchere} + ' pts, par ' + ${utilEnchere.pseudo} + ', le ' + ${#temporals.format(articles.dateEnchere, 'dd-MM-yyyy')}"></td>
+                    </tr>
+                    <tr th:if="${articles.montantEnchere == null || articles.dateEnchere == null}">
+                        <td><em>Il n'y a aucune offre pour cet article...</em></td>
+                    </tr>
+                    <tr>
+                        <td>Mise à prix :</td>
+                        <td th:text="${articles.miseAPrix}"></td>
+                    </tr>
+                    <tr>
+                        <td>Fin de l'enchère :</td>
+                        <td>
+                            <p th:if="${isVenteTerminee}">Enchère terminée !</p>
+                            <p th:text="${#temporals.format(articles.dateFinEnchere, 'dd-MM-yyyy')}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Retrait :</td>
+                        <td th:text="${articles.retrait}"></td>
+                    </tr>
+                    <tr>
+                        <td>Vendeur :</td>
+                        <td th:text="${articles.vendeur}"></td>
+                    </tr>
+                    <th:block th:if="${!isVenteTerminee}">
+                        <th:block th:if="${!isProprietaire}">
+                            <tr>
+                                <td>Ma proposition :<br>
+                                    <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
+                                </td>
+                                <td><input min="100" step="100" placeholder="Votre enchère ?" type="number"
+                                           th:field="*{montantEnchere}"/>
+                                    <br/><span class="error" th:if="${#fields.hasErrors('montantEnchere')}"
+                                               th:errors="*{montantEnchere}"></span>
+                                    <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
+                                    <button type="submit">Enchérir</button>
+                                </td>
+
+                            </tr>
+                            <!-- on affiche le bouton de modification d'une vente que si la vente appartient à l'utilisateur connecte -->
+
+                        </th:block>
+                    </th:block>
                     <tr th:if="${isProprietaire}">
-                        <td colspan="2">La vente n'ayant pas débuté, <br>vous pouvez <a th:href="@{/modifierVente/{id}(id=${noArticle})}">modifier votre article</a></td>
-                    </tr>
-                </th:block>
+                        <td colspan="2">La vente n'ayant pas débuté, vous pouvez<br />
+                            <button type="button"
+                                    th:attr="onclick='window.location.href=\'/modifierVente/'+ ${noArticle} + '\''"
+                                    class="btn btn-primary me-2">
+                                Modifier votre article
+                            </button>
+                            <button th:if="${articles.isEtatVente()}" type="button"
+                                    class="btn btn-danger"
+                                    th:onclick="'if(confirm(\'Êtes-vous sûr de vouloir annuler la vente ?\')) { window.location.href = \'/detailVente/' + ${noArticle} + '?delete\'; }'">
+                                Annuler la vente
+                            </button>
 
-            </table>
+
+
+
+                            <p class="error" th:unless="${articles.isEtatVente()}">VENTE ANNULEE</p>
+
+                        </td>
+                    </tr>
+
+                </table>
             </form>
         </div>
     </div>
-
 
 </main>
 <footer th:replace="~{fragments/footer :: footer}"></footer>

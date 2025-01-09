@@ -42,7 +42,9 @@
                         <option th:each="categorie : ${categories}"
                                 th:value="${categorie.noCategorie}"
                                 th:text="${categorie.libelle}"
-                        ></option>
+                                th:selected="${categorie.noCategorie == articleVendu.getCategorieArticle().getNoCategorie()}"
+                        >
+                        </option>
                     </select>
                     <br/><span class="error" th:if="${#fields.hasErrors('categorieArticle')}"
                                th:errors="*{categorieArticle}"></span>
@@ -62,7 +64,6 @@
                     <label for="dateDebutEncheres">Début de l'enchère :</label>
                     <input required type="datetime-local" id="dateDebutEncheres"
                            th:field="*{dateDebutEncheres}" />
-<!--                           th:value="${articleVendu.dateDebutEncheres != null ? #dates.format(articleVendu.dateDebutEncheres, 'yyyy-MM-dd') : ''}"-->
 
                     <br/><span class="error" th:if="${#fields.hasErrors('dateDebutEncheres')}" th:errors="*{dateDebutEncheres}"></span>
                 </p>

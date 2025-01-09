@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ArticleVendu {
@@ -20,10 +19,10 @@ public class ArticleVendu {
     private String description;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateDebutEncheres;
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateFinEncheres;
 
     @Min(value=100)
