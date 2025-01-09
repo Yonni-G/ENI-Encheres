@@ -17,6 +17,7 @@ public class EnchereDTO {
     private String vendeur;
     private int montantEnchere;
     private LocalDateTime dateEnchere;
+    private boolean etatVente;
 
     public EnchereDTO(
             int noArticle,
@@ -74,6 +75,39 @@ public class EnchereDTO {
         this.dateEnchere = localDateTime;
     }
 
+    public EnchereDTO(int noArticle, String lienImage, String nomArticle, String description, String categorie, int miseAPrix, LocalDateTime dateFinEnchere, String retrait, String vendeur, int noUtilisateur, int montantEnchere, boolean etatVente, LocalDateTime localDateTime) {
+        this.noArticle = noArticle;
+        this.lien_image = lienImage;
+        this.nomArticle = nomArticle;
+        this.description = description;
+        this.categorie = categorie;
+        this.miseAPrix = miseAPrix;
+        this.dateFinEnchere = dateFinEnchere;
+        this.retrait = retrait;
+        this.vendeur = vendeur;
+        this.noUtilisateur = noUtilisateur;
+        this.montantEnchere = montantEnchere;
+        this.etatVente = etatVente;
+        this.dateEnchere = localDateTime;
+    }
+
+    public EnchereDTO(int noArticle, String lienImage, String nomArticle, String description, String categorie, int miseAPrix, LocalDateTime dateFinEnchere, String retrait, String vendeur, int noUtilisateur, int montantEnchere, LocalDateTime localDateTime, boolean etatVente) {
+        this.noArticle = noArticle;
+        this.lien_image = lienImage;
+        this.nomArticle = nomArticle;
+        this.description = description;
+        this.categorie = categorie;
+        this.miseAPrix = miseAPrix;
+        this.dateFinEnchere = dateFinEnchere;
+        this.retrait = retrait;
+        this.vendeur = vendeur;
+        this.noUtilisateur = noUtilisateur;
+        this.montantEnchere = montantEnchere;
+        this.dateEnchere = localDateTime;
+        this.etatVente = etatVente;
+
+    }
+
     // Getters & Setters
 
     public int getNoArticle() {
@@ -110,6 +144,14 @@ public class EnchereDTO {
 
     public String getCategorie() {
         return categorie;
+    }
+
+    public boolean isEtatVente() {
+        return etatVente;
+    }
+
+    public void setEtatVente(boolean etatVente) {
+        this.etatVente = etatVente;
     }
 
     public void setCategorie(String categorie) {

@@ -94,20 +94,20 @@ public class ArticleController {
             return "pages/articles/formAjoutArticle";
         }
 
-        // On ajoute l'image (upload)
-        try {
-            // Sauvegarde de l'image et récupérer chemin du fichier
-            String filePath = fileStorageService.saveFile(file);
-            System.out.println("Chemin de l'image sauvegardée : " + filePath);
-
-            // On affecte à l'objet ArticleVendu
-            articleVendu.setLien_image(filePath);
-            model.addAttribute("message", "Image uploadé avec succès!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            model.addAttribute("message", "Impossible de sauver le fichier"  + e.getMessage());
-            return "pages/articles/formAjoutArticle";
-        }
+//        // On ajoute l'image (upload)
+//        try {
+//            // Sauvegarde de l'image et récupérer chemin du fichier
+//            String filePath = fileStorageService.saveFile(file);
+//            System.out.println("Chemin de l'image sauvegardée : " + filePath);
+//
+//            // On affecte à l'objet ArticleVendu
+//            articleVendu.setLien_image(filePath);
+//            model.addAttribute("message", "Image uploadé avec succès!");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            model.addAttribute("message", "Impossible de sauver le fichier"  + e.getMessage());
+//            return "pages/articles/formAjoutArticle";
+//        }
 
         // on insere le nouvel article
         articleVenduService.ajouter(articleVendu);
@@ -153,5 +153,6 @@ public class ArticleController {
         return "redirect:/modifierVente/" + noArticle + "?success";
 
     }
+
 
 }

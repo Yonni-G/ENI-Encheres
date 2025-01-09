@@ -276,7 +276,8 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 "a.description, c.libelle AS categorie, a.prix_initial AS miseAPrix, " +
                 "a.date_fin_encheres AS dateFinEnchere," +
                 " CONCAT(r.rue, ', ', r.code_postal, ' ', r.ville) AS retrait," +
-                " u.pseudo AS vendeur, e.no_utilisateur as noUtilisateur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere" +
+                " u.pseudo AS vendeur, e.no_utilisateur as noUtilisateur, e.montant_enchere AS montantEnchere, e.date_enchere AS dateEnchere," +
+                " a.etat_vente AS etatVente" +
                 " FROM articles_vendus a" +
                 " LEFT JOIN categories c ON c.no_categorie = a.no_categorie" +
                 " LEFT JOIN retraits r ON r.no_article = a.no_article" +
@@ -299,7 +300,8 @@ public class EnchereRepositoryImpl implements EnchereRepository {
                 rs.getString("vendeur"),
                 rs.getInt("noUtilisateur"),
                 rs.getInt("montantEnchere"),
-                rs.getTimestamp("dateEnchere") != null ? rs.getTimestamp("dateEnchere").toLocalDateTime() : null
+                rs.getTimestamp("dateEnchere") != null ? rs.getTimestamp("dateEnchere").toLocalDateTime() : null,
+                rs.getInt("etatVente") == 0
         );
 
         try {

@@ -110,15 +110,21 @@ public class EnchereController {
     }
 
     @GetMapping("/detailVente/{noArticle}")
-    public String detailVente(@PathVariable("noArticle") Integer noArticle, @RequestParam(value = "success", required = false) String success, Model model) {
+    public String detailVente(@PathVariable("noArticle") Integer noArticle, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "desactivate", required = false) String desactivate, Model model) {
 
         if(success != null) model.addAttribute("success", "success");
+
+        // si c'est une desactivation qui est demandée, on effectue les controles nécessaires
+        if(desactivate != null) {
+            // est-ce que l'utilisateur connecté est en droit de desactiver cet article ?
+            // est-ce le sien ?
+            // l'objet est-il en cours de vente ?
+            
+        }
 
         //model.addAttribute("enchere", new Enchere());
         model.addAttribute("articles", service.getDetailsVente(noArticle));
         model.addAttribute("utilEnchere", service.getWinner(noArticle));
-
-        System.out.println(service.getWinner(noArticle));
 
         // Afficher si la vente est remportée
         Optional<Utilisateur> utilisateurConnecte = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -142,12 +148,12 @@ public class EnchereController {
         model.addAttribute("aRemporteLaVente", aRemporteLaVente);
         model.addAttribute("credits", utilisateurConnecte.map(Utilisateur::getCredit).orElse(0));
 
+        model.addAttribute("isVenteTerminee", articleVendu.getDateFinEncheres().isBefore(dateActuelle));
 
-        if(articleVendu.getDateFinEncheres().isBefore(dateActuelle))
-            model.addAttribute("isVenteTerminee", true);
+        model.addAttribute("isProprietaire", utilisateurConnecte
+                .map(utilisateur -> articleVendu.getVendeur().getNoUtilisateur() == utilisateur.getNoUtilisateur())
+                .orElse(false));  // Si utilisateurConnecte est vide, "isProprietaire" sera false
 
-        if(articleVendu.getVendeur().getNoUtilisateur() == utilisateurConnecte.get().getNoUtilisateur())
-            model.addAttribute("isProprietaire", true);
 
         return "pages/encheres/detailVente";
     }

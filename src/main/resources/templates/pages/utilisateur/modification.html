@@ -19,7 +19,7 @@
                 <div class="modif-container">
                     <div class="modif-box">
                         <label for="pseudo">Pseudo : </label>
-                        <input disabled required id="pseudo" th:field="*{pseudo}"/><br />
+                        <input readonly required id="pseudo" th:field="*{pseudo}" style="background-color: gray"/><br />
                         <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
 
                         <label for="prenom">*Prénom : </label>

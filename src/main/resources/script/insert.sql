@@ -57,7 +57,7 @@ CREATE TABLE ENCHERES (
                           no_enchere   INTEGER IDENTITY(1,1) NOT NULL,
                           no_utilisateur   INTEGER NOT NULL,
                           no_article       INTEGER NOT NULL,
-                          date_enchere     DATETIME NOT NULL,
+                          date_enchere     DATETIME2 NOT NULL,
                           montant_enchere  INTEGER NOT NULL
 );
 ALTER TABLE ENCHERES ADD constraint enchere_pk PRIMARY KEY (no_enchere);
@@ -94,13 +94,14 @@ CREATE TABLE ARTICLES_VENDUS (
                                  no_article        INTEGER IDENTITY(1,1) NOT NULL,
                                  nom_article       VARCHAR(30) NOT NULL,
                                  description       VARCHAR(300) NOT NULL,
-                                 date_debut_encheres DATE NOT NULL,
-                                 date_fin_encheres DATE NOT NULL,
+                                 date_debut_encheres DATETIME2 NOT NULL,
+                                 date_fin_encheres DATETIME2 NOT NULL,
                                  prix_initial      INTEGER,
                                  prix_vente        INTEGER,
                                  no_utilisateur    INTEGER NOT NULL,
                                  no_categorie      INTEGER NOT NULL,
-                                 lien_image        VARCHAR(100)
+                                 lien_image        VARCHAR(100),
+                                 etat_vente        BIT NOT NULL DEFAULT 0, -- Valeur par défaut pour etat_vente (false)
 );
 ALTER TABLE ARTICLES_VENDUS ADD constraint articles_vendus_pk PRIMARY KEY (no_article);
 
@@ -164,17 +165,17 @@ INSERT INTO articles_vendus
 (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie, lien_image)
 VALUES
     -- Catégorie : Informatique
-    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2025-12-10', '2024-12-20', 3000, 3000, 1, 1, '/images/ordinateur_port.jpg'),
-    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2025-12-12', '2024-12-18', 800, 800, 2, 1, '/images/clavier_mec.jpg'),
+    ('Ordinateur portable', 'Laptop performant avec SSD 512 Go', '2025-12-10 00:00:00', '2024-12-20 00:00:00', 3000, 3000, 1, 1, '/images/ordinateur_port.jpg'),
+    ('Clavier mécanique', 'Clavier gaming RGB avec switches rouges', '2025-12-12 00:00:00', '2024-12-18 00:00:00', 800, 800, 2, 1, '/images/clavier_mec.jpg'),
     -- Catégorie : Ameublement
-    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11', '2024-12-22', 1500, 1500, 3, 2, '/images/canape.webp'),
-    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13', '2024-12-23', 1000, 1000, 4, 2, '/images/table_basse.avif'),
+    ('Canapé 3 places', 'Canapé confortable en tissu gris', '2024-12-11 00:00:00', '2024-12-22 00:00:00', 1500, 1500, 3, 2, '/images/canape.webp'),
+    ('Table basse', 'Table en bois massif, style scandinave', '2024-12-13 00:00:00', '2024-12-23 00:00:00', 1000, 1000, 4, 2, '/images/table_basse.avif'),
     -- Catégorie : Vêtements
-    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10', '2024-12-15', 1200, 1200, 5, 3, '/images/veste_cuir.jpg'),
-    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09', '2024-12-19', 700, 700, 6, 3, '/images/sneakers.webp'),
+    ('Veste en cuir', 'Veste en cuir véritable, taille L', '2024-12-10 00:00:00', '2024-12-15 00:00:00', 1200, 1200, 5, 3, '/images/veste_cuir.jpg'),
+    ('Sneakers', 'Baskets blanches unisexes, taille 42', '2024-12-09 00:00:00', '2024-12-19 00:00:00', 700, 700, 6, 3, '/images/sneakers.webp'),
     -- Catégorie : Sports & Loisirs
-    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08', '2024-12-18', 500, 500, 7, 4, '/images/raquette_de_tennis.avif'),
-    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07', '2024-12-17', 5000, 5000, 8, 4, '/images/velo_route.jpg');
+    ('Raquette de tennis', 'Raquette légère pour débutants', '2024-12-08 00:00:00', '2024-12-18 00:00:00', 500, 500, 7, 4, '/images/raquette_de_tennis.avif'),
+    ('Vélo de route', 'Vélo de route en aluminium, idéal pour randonnées', '2024-12-07 00:00:00', '2024-12-17 00:00:00', 5000, 5000, 8, 4, '/images/velo_route.jpg');
 
 
 INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere)

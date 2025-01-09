@@ -44,6 +44,7 @@
                         <option th:each="categorie : ${categories}"
                                 th:value="${categorie.noCategorie}"
                                 th:text="${categorie.libelle}"
+                                th:selected="${categorie.noCategorie == (articleVendu.categorieArticle != null ? articleVendu.categorieArticle.noCategorie : null)}"
                         ></option>
                     </select>
                     <br/><span class="error" th:if="${#fields.hasErrors('categorieArticle')}"
@@ -51,7 +52,7 @@
                 </p>
                 <p>
                     <label for="file">Photo de l'article : </label>
-                    <input type="file" id="file" name="file" accept=".jpg, .jpeg" required/>
+                    <input type="file" id="file" name="file" accept=".jpg, .jpeg" />
                     <span th:text="${message}"></span>
                 </p>
                 <p>
