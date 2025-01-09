@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class Retrait {
     private int noArticle;
-    //TODO définir les contraintes exactes de validation
 
     @NotNull
     @NotEmpty
