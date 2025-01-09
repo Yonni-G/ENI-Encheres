@@ -1,12 +1,12 @@
 <!-- src/main/resources/templates/index.html -->
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>ENI-Encheres - Inscription</title>
-    <link rel="stylesheet" href="/css/styles.css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
 </head>
 <body>
 <!-- Inclure le fragment header -->
@@ -20,16 +20,16 @@
 <main>
 
     <!-- Formulaire de connexion -->
-    <form th:action="@{/connexion}" method="post">
+    <form method="post" th:action="@{/connexion}">
 
         <p>
-            <label for="username">*Pseudo : </label><input name="username" placeholder="Votre pseudo ?" required
-                                                           id="username"/>
+            <label for="username">*Pseudo : </label><input id="username" name="username" placeholder="Votre pseudo ?"
+                                                           required/>
         </p>
         <p>
-            <label for="password">*Mot de passe : </label><input maxlength="8" type="password" name="password"
+            <label for="password">*Mot de passe : </label><input id="password" maxlength="8" name="password"
                                                                  placeholder="Votre mot de passe ?" required
-                                                                 id="password"/>
+                                                                 type="password"/>
         </p>
         <p>
             <button type="submit">Connexion</button>
@@ -38,7 +38,7 @@
 
     <!-- Lien vers l'inscription -->
     <p>
-        <a th:href="@{/inscription}" class="btn-inscription">Créer un compte</a>
+        <a class="btn-inscription" th:href="@{/inscription}">Créer un compte</a>
     </p>
 
 </main>

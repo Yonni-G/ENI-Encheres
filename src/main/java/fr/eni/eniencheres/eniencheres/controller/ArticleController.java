@@ -67,27 +67,26 @@ public class ArticleController {
     }
 
     @PostMapping("/vendre")
-    public String vendrePost(@Valid ArticleVendu articleVendu, BindingResult controleArticleVendu, MultipartFile file, Model model){
+    public String vendrePost(@Valid ArticleVendu articleVendu, BindingResult controleArticleVendu, MultipartFile file, Model model) {
 
         // il faut également injecter les catégories
         model.addAttribute("categories", enchereService.findAllCategories());
 
-        if(controleArticleVendu.hasErrors()) {
+        if (controleArticleVendu.hasErrors()) {
 
             return "pages/articles/formAjoutArticle";
         }
 
         // ici on controle que la date de fin des encheres est postérieure à la date de debut des encheres
-        if(articleVendu.getDateFinEncheres().isBefore(articleVendu.getDateDebutEncheres())) {
+        if (articleVendu.getDateFinEncheres().isBefore(articleVendu.getDateDebutEncheres())) {
             model.addAttribute("errorMessage", "La date de fin des enchères doit être plus tard que la date de début des enchères !");
             return "pages/articles/formAjoutArticle";
         }
         // on ajoute le vendeur (qui est donc l'utilisateur connecté) à l'article
         Optional<Utilisateur> vendeur = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        if(vendeur.isPresent()) {
+        if (vendeur.isPresent()) {
             articleVendu.setVendeur(vendeur.get());
-        }
-        else {
+        } else {
             model.addAttribute("errorMessage", "Impossible de trouver cet utilisateur");
             return "pages/articles/formAjoutArticle";
         }
@@ -102,7 +101,7 @@ public class ArticleController {
             model.addAttribute("message", "Image uploadé avec succès!");
         } catch (IOException e) {
             e.printStackTrace();
-            model.addAttribute("message", "Impossible de sauver le fichier"  + e.getMessage());
+            model.addAttribute("message", "Impossible de sauver le fichier" + e.getMessage());
             return "pages/articles/formAjoutArticle";
         }
 

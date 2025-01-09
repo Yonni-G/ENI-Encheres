@@ -10,11 +10,13 @@ public interface UtilisateurRepository {
     void add(Utilisateur utilisateur);
 
     Utilisateur getUtilisateur(String pseudo);
+
     Optional<Utilisateur> getUtilisateurById(int noUtilisateur);
 
     List<Utilisateur> findAll();
 
     void update(Utilisateur utilisateur);
+
     void delete(String pseudo);
 
     void encherir(Enchere enchere);
