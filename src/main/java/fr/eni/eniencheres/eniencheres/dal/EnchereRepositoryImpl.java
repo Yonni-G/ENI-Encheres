@@ -167,7 +167,6 @@ public class EnchereRepositoryImpl implements EnchereRepository {
         }, no_utilisateur);
     }
 
-    // TODO: Problème dans la requête: ne récupère pas les enchères remportées (0 ligne)
     @Override
     public List<ArticleVendu> findArticleByEncheresRemportees(Integer no_utilisateur) {
         String sql = "SELECT a.no_article AS noArticle, a.lien_image, a.nom_article AS nomArticle, a.date_fin_encheres AS dateFinEnchere, " +
