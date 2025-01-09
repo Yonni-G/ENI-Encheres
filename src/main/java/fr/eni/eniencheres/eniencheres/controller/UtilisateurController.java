@@ -10,9 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -38,6 +35,8 @@ public class UtilisateurController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
+    private final String FORM_USER_PROFIL_UPDATE_URL = "pages/utilisateur/modification";
+
     public UtilisateurController(UtilisateurService utilisateurService, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
         this.authenticationManager = authenticationManager;
@@ -59,17 +58,17 @@ public class UtilisateurController {
         Optional<Utilisateur> utilisateurConnecteExiste;
         try {
             utilisateurConnecteExiste = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+        } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
             return "redirect:/erreurCompte";
         }
 
         model.addAttribute("utilisateur", utilisateurService.getUtilisateur(pseudo).get());
 
-        if(utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
+        if (utilisateurService.getUtilisateur(pseudo).get().getNoUtilisateur() == utilisateurConnecteExiste.get().getNoUtilisateur()) {
             model.addAttribute("estAutorise", "true");
         }
 
-        if(success != null) {
+        if (success != null) {
             model.addAttribute("successMessage", "Votre profil a bien été mis à jour.");
         }
         return "pages/utilisateur/profil";
@@ -79,76 +78,87 @@ public class UtilisateurController {
     public String modificationGet(@RequestParam(value = "delete", required = false) String delete, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         // on recupere le pseudo (username) de la session
-        String utilisateurConnectePseudo =  SecurityContextHolder.getContext().getAuthentication().getName();
+        String utilisateurConnectePseudo = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Optional<Utilisateur> utilisateurConnecteExiste;
         try {
             utilisateurConnecteExiste = utilisateurService.getUtilisateur(utilisateurConnectePseudo);
-        } catch(UtilisateurExceptions.UtilisateurNonTrouve e) {
+        } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
             return "redirect:/erreurCompte";
         }
 
         /* ===================== SUPPRESSION DE COMPTE ===================================== */
         model.addAttribute("utilisateur", utilisateurConnecteExiste.get());
-        if(delete != null) {
+        if (delete != null) {
             try {
                 utilisateurService.delete(utilisateurConnectePseudo);
             } catch (UtilisateurExceptions.UtilisateurNonTrouve e) {
                 model.addAttribute("errorMessage", "Impossible de trouver le compte utilisateur de la session en cours !");
-                return "pages/utilisateur/modification";
+                return FORM_USER_PROFIL_UPDATE_URL;
             }
             // Déconnecter l'utilisateur après l'inscription
             new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
             // Rediriger vers la page d'accueil
             return "redirect:/";  // Page de connexion après la déconnexion
         }
-        return "pages/utilisateur/modification";
+        return FORM_USER_PROFIL_UPDATE_URL;
     }
 
     @PostMapping("/modification")
-    public String modificationPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("NouveauMotDePasse") String NouveauMotDePasse, @RequestParam("NouveauMotDePasseConfirmation") String NouveauMotDePasseConfirmation, Model model) {
-
+    public String modificationPost(@Valid Utilisateur utilisateur, BindingResult controlUser,
+                                   @RequestParam("NouveauMotDePasse") String NouveauMotDePasse, @RequestParam("NouveauMotDePasseConfirmation") String NouveauMotDePasseConfirmation,
+                                   Model model) {
+        /*
+            ON VÉRIFIE SI TOUTES LES CONTRAINTES DE VALIDATION
+            DE NOTRE OBJET UTILISATEUR SONT VÉRIFIÉES OU NON
+         */
         if (controlUser.hasErrors()) {
-            return "pages/utilisateur/modification";
+            return FORM_USER_PROFIL_UPDATE_URL;
         }
-
-        // on vérifie que le mdp saisi est correct
+        /*
+            ON VÉRIFIE QUE LE MOT DE PASSE SAISI CORRESPOND BIEN
+            À CELUI ENREGISTRÉ EN BASE DE DONNÉES
+         */
         Optional<Utilisateur> utilisateurData = utilisateurService.getUtilisateur(SecurityContextHolder.getContext().getAuthentication().getName());
-        if(utilisateurData.isPresent()) {
-            String mdpData = utilisateurData.get().getMotDePasse();
-
-            if (!passwordEncoder.matches(utilisateur.getMotDePasse(), mdpData)) {
+        if (utilisateurData.isPresent()) {
+            // Fonction importante qui se charge de comparer le nouveau mot de passe "en clair" avec celui "crypté" en BDD
+            if (!passwordEncoder.matches(utilisateur.getMotDePasse(), utilisateurData.get().getMotDePasse())) {
                 model.addAttribute("errorMessage", "Votre mot de passe actuel est incorrect !");
-                return "pages/utilisateur/modification";
+                return FORM_USER_PROFIL_UPDATE_URL;
             }
-        }else {
-            throw new UtilisateurExceptions.UtilisateurNonTrouve();
-        }
-
-        // on controle que les 2 nouveaux mots de passe coincident
+        } else throw new UtilisateurExceptions.UtilisateurNonTrouve();
+        /*
+            ARRIVÉ ICI, ON SAIT QUE L'UTILISATEUR A SAISI
+            CORRECTEMENT SON MOT DE PASSE ACTUEL
+         */
+        // On vérifie que le nouveau mot de passe et sa vérification coincident
         if (!NouveauMotDePasse.equals(NouveauMotDePasseConfirmation)) {
             model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
-            return "pages/utilisateur/modification";
+            return FORM_USER_PROFIL_UPDATE_URL;
         }
-
-        //  arrivé ici, tout est bon =>
-        //  1. on met à jour :
-        //      1.1 le mot de passe de l'utilisateur avec un encode du nouveau mdp
+        /*
+            LES DONNÉES DU FORMULAIRE SONT CORRECTES ET
+            PEUVENT DONC ÊTRE ENVOYÉES DANS LES COUCHES SUIVANTES
+         */
+        // On "set" le nouveau mot de passe encodé dans notre objet utilisateur
         utilisateur.setMotDePasse(passwordEncoder.encode(NouveauMotDePasse));
-        //      1.2 l'id de l'utilisateur
+        // On "set" l'ID utilisateur dans notre objet utilisateur
         utilisateur.setNoUtilisateur(utilisateurData.get().getNoUtilisateur());
-
-        //  2. on tente de valider l'update des données
+        /*
+            ON ESSAIE D'EFFECTUER LA MISE À JOUR DU PROFIL DE L'UTILISATEUR
+         */
         try {
             utilisateurService.update(utilisateur);
         } catch (UtilisateurExceptions.EmailDejaExistant e) {
+            // On gère l'unicité de l'email avec une exception dédiée
             model.addAttribute("errorMessage", "Cette adresse email est déjà utilisée.");
-            return "pages/utilisateur/modification";
+            return FORM_USER_PROFIL_UPDATE_URL;
         }
-
-        model.addAttribute("successMessage", "OK");
+        /*
+            LE PROFIL A ÉTÉ MODIFIÉ AVEC SUCCÈS => ON ORIENTE L'UTILISATEUR
+            VERS SON PROFIL EN GET EN SPÉCIFIANT UN FLAG DE SUCCÈS
+         */
         return "redirect:profil/" + utilisateur.getPseudo() + "?success";
-
     }
 
     @GetMapping("/connexion")
@@ -187,12 +197,12 @@ public class UtilisateurController {
     public String UtilisateurInscriptionPost(@Valid Utilisateur utilisateur, BindingResult controlUser, @RequestParam("motDePasseConfirmation") String motDePasseConfirmation, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 
 
-        if(controlUser.hasErrors()) {
+        if (controlUser.hasErrors()) {
             return "pages/utilisateur/inscription";
         }
 
         // on controle que les 2 mots de passe coincident
-        if(!utilisateur.getMotDePasse().equals(motDePasseConfirmation)) {
+        if (!utilisateur.getMotDePasse().equals(motDePasseConfirmation)) {
             model.addAttribute("errorMessage", "Les 2 mots de passe ne coincident pas !");
             return "pages/utilisateur/inscription";
         }

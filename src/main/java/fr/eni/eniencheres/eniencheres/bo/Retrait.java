@@ -2,7 +2,6 @@ package fr.eni.eniencheres.eniencheres.bo;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
@@ -27,14 +26,6 @@ public class Retrait {
     public Retrait() {
     }
 
-    public int getNoArticle() {
-        return noArticle;
-    }
-
-    public void setNoArticle(int noArticle) {
-        this.noArticle = noArticle;
-    }
-
     public Retrait(int noArticle, String rue, String codePostal, String ville) {
         this.noArticle = noArticle;
         this.rue = rue;
@@ -46,6 +37,14 @@ public class Retrait {
         this.rue = rue;
         this.codePostal = codePostal;
         this.ville = ville;
+    }
+
+    public int getNoArticle() {
+        return noArticle;
+    }
+
+    public void setNoArticle(int noArticle) {
+        this.noArticle = noArticle;
     }
 
     public String getRue() {

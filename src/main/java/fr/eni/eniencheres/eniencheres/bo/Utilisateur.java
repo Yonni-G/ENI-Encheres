@@ -1,6 +1,7 @@
 package fr.eni.eniencheres.eniencheres.bo;
 
 import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
@@ -16,12 +17,12 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=2)
+    @Size(min = 2)
     private String nom;
 
     @NotNull
     @NotEmpty
-    @Size(min=2)
+    @Size(min = 2)
     private String prenom;
 
     @NotNull
@@ -33,20 +34,21 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=8)
+    @Size(min = 8)
     private String rue;
 
     @NotNull
     @NotEmpty
+    @Length(min = 5, max = 5, message = "Le code postal doit obligatoirement comporté 5 caractères.")
     private String codePostal;
 
     @NotNull
     @NotEmpty
-    @Size(min=5)
+    @Size(min = 5)
     private String ville;
 
     @NotNull
-    @Size(min=5, max=20)
+    @Size(min = 5, max = 20)
     private String motDePasse;
 
     private int credit;

@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EnchereRepository {
     public List<Categorie> findAllCategories();
+
     public List<ArticleVendu> findAllArticleVendu();
 
     // Récupérer les détails d'un article en fonction de l'id
@@ -21,7 +22,7 @@ public interface EnchereRepository {
     List<ArticleVendu> findArticleByNomAndCategorieId(Integer noCategorie, String nom);
 
     // --------------------- Méthodes FILTRES pour tous les utilisateurs ------------------------------------------------------------------------
-        // Récupérer la liste des articles en fonction de 'Enchères ouvertes ?'
+    // Récupérer la liste des articles en fonction de 'Enchères ouvertes ?'
     List<ArticleVendu> findArticleByEncheresOuvertes();
 
     // Récupérer la liste des articles en fonction de 'Enchères en cours ?'

@@ -16,7 +16,6 @@ public class UtilisateurExceptions {
         }
     }
 
-
     // Exception pour un utilisateur inexistant
     public static class UtilisateurNonTrouve extends RuntimeException {
         public UtilisateurNonTrouve() {
