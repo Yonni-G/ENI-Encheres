@@ -25,8 +25,8 @@ public class ArticleVendu {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateFinEncheres;
 
-    @Min(value=100)
-    @Max(value=100000)
+    @Min(value = 100)
+    @Max(value = 100000)
     private int miseAPrix;
 
     private Integer prixVente;
@@ -43,7 +43,7 @@ public class ArticleVendu {
     public ArticleVendu() {
     }
 
-    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente, String lien_image , Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
+    public ArticleVendu(int noArticle, String nomArticle, String description, LocalDateTime dateDebutEncheres, LocalDateTime dateFinEncheres, int miseAPrix, int prixVente, boolean etatVente, String lien_image, Utilisateur acheteur, Utilisateur vendeur, Retrait lieuRetrait, Categorie categorieArticle) {
         this.noArticle = noArticle;
         this.nomArticle = nomArticle;
         this.description = description;
@@ -58,7 +58,6 @@ public class ArticleVendu {
         this.lieuRetrait = lieuRetrait;
         this.categorieArticle = categorieArticle;
     }
-
 
 
     public int getNoArticle() {

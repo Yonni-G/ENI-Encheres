@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Enchères ENI</title>
-    <link rel="stylesheet" href="/css/styles.css"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
@@ -19,11 +19,11 @@
 
     <div class="details-container">
         <div class="details-image">
-            <img th:src="${articles.lien_image}" alt="image de l'article en vente" id="imageArticle" />
+            <img alt="image de l'article en vente" id="imageArticle" th:src="${articles.lien_image}"/>
         </div>
         <div class="details-texts">
             <h2 th:text="${articles.nomArticle}"></h2>
-            <form th:action="@{/detailVente/{id}(id=${noArticle})}" th:object="${enchere}" method="post">
+            <form method="post" th:action="@{/detailVente/{id}(id=${noArticle})}" th:object="${enchere}">
                 <table>
                     <tr>
                         <td>Description :</td>
@@ -65,10 +65,10 @@
                                 <td>Ma proposition :<br>
                                     <p>(Vous disposez de <strong><span th:text="${credits}"></span></strong> points)</p>
                                 </td>
-                                <td><input min="100" step="100" placeholder="Votre enchère ?" type="number"
-                                           th:field="*{montantEnchere}"/>
-                                    <br/><span class="error" th:if="${#fields.hasErrors('montantEnchere')}"
-                                               th:errors="*{montantEnchere}"></span>
+                                <td><input min="100" placeholder="Votre enchère ?" step="100" th:field="*{montantEnchere}"
+                                           type="number"/>
+                                    <br/><span class="error" th:errors="*{montantEnchere}"
+                                               th:if="${#fields.hasErrors('montantEnchere')}"></span>
                                     <span class="error" th:if="${erreurEnchere}" th:text="${erreurEnchere}"></span>
                                     <button type="submit">Enchérir</button>
                                 </td>
@@ -79,19 +79,17 @@
                         </th:block>
                     </th:block>
                     <tr th:if="${isProprietaire}">
-                        <td colspan="2">La vente n'ayant pas débuté, vous pouvez<br />
-                            <button type="button"
+                        <td colspan="2">La vente n'ayant pas débuté, vous pouvez<br/>
+                            <button class="btn btn-primary me-2"
                                     th:attr="onclick='window.location.href=\'/modifierVente/'+ ${noArticle} + '\''"
-                                    class="btn btn-primary me-2">
+                                    type="button">
                                 Modifier votre article
                             </button>
-                            <button th:if="${articles.isEtatVente()}" type="button"
-                                    class="btn btn-danger"
-                                    th:onclick="'if(confirm(\'Êtes-vous sûr de vouloir annuler la vente ?\')) { window.location.href = \'/detailVente/' + ${noArticle} + '?delete\'; }'">
+                            <button class="btn btn-danger" th:if="${articles.isEtatVente()}"
+                                    th:onclick="'if(confirm(\'Êtes-vous sûr de vouloir annuler la vente ?\')) { window.location.href = \'/detailVente/' + ${noArticle} + '?delete\'; }'"
+                                    type="button">
                                 Annuler la vente
                             </button>
-
-
 
 
                             <p class="error" th:unless="${articles.isEtatVente()}">VENTE ANNULEE</p>

@@ -16,12 +16,12 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=2)
+    @Size(min = 2)
     private String nom;
 
     @NotNull
     @NotEmpty
-    @Size(min=2)
+    @Size(min = 2)
     private String prenom;
 
     @NotNull
@@ -33,7 +33,7 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=8)
+    @Size(min = 8)
     private String rue;
 
     @NotNull
@@ -42,11 +42,11 @@ public class Utilisateur {
 
     @NotNull
     @NotEmpty
-    @Size(min=5)
+    @Size(min = 5)
     private String ville;
 
     @NotNull
-    @Size(min=5, max=20)
+    @Size(min = 5, max = 20)
     private String motDePasse;
 
     private int credit;
