@@ -108,6 +108,10 @@ main button {
     color: var(--yellow);
 }
 
+#file {
+    color: var(--yellow);
+}
+
 /* Vendre un article ('formAjoutArticle.html')  */
 #vendre-article {
     display: flex;
