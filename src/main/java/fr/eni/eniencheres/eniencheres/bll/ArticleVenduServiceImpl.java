@@ -27,5 +27,10 @@ public class ArticleVenduServiceImpl implements ArticleVenduService {
         return articleVenduRepository.modifier(articleVendu);
     }
 
+    @Override
+    public void desactiver(ArticleVendu articleVendu) {
+        articleVenduRepository.desactiver(articleVendu);
+    }
+
 
 }

@@ -176,5 +176,13 @@ public class ArticleVenduRepositoryImpl implements ArticleVenduRepository {
         }
     }
 
+    @Override
+    public void desactiver(ArticleVendu articleVendu) {
+        String sqlDesactiver = "UPDATE ARTICLES_VENDUS SET" +
+                " etat_vente = 0" +
+                " WHERE no_article = :noArticle";
+        jdbcTemplate.update(sqlDesactiver, new BeanPropertySqlParameterSource(articleVendu));
+    }
+
 
 }

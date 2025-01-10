@@ -33,6 +33,8 @@ public class EnchereController {
     private UtilisateurService utilisateurService;
     @Autowired
     private ArticleVenduService articleVenduService;
+    @Autowired
+    private EnchereService enchereService;
 
     @GetMapping({"/", "/encheres"})
     public String accueil(
@@ -106,7 +108,8 @@ public class EnchereController {
     }
 
     @GetMapping("/detailVente/{noArticle}")
-    public String detailVente(@PathVariable("noArticle") Integer noArticle, @RequestParam(value = "success", required = false) String success, @RequestParam(value = "desactivate", required = false) String desactivate, Model model) {
+    public String detailVente(@PathVariable("noArticle") Integer noArticle, @RequestParam(value = "success", required = false) String success,
+                              @RequestParam(value = "desactivate", required = false) String desactivate, Model model) {
 
         if (success != null) model.addAttribute("success", "success");
 
@@ -141,7 +144,11 @@ public class EnchereController {
                     model.addAttribute("errorMessage", "Vous ne pouvez pas demander la désactivation d'un article en cours de vente.");
                     return "pages/encheres/detailVente";
                 }
-                System.out.println("on procede à la desactvation");
+
+                articleVendu.setEtatVente(false);
+                articleVenduService.desactiver(articleVendu);
+                return "redirect:/detailVente/{noArticle}";
+
             } else throw new UtilisateurExceptions.UtilisateurNonTrouve();
 
         }

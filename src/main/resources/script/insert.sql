@@ -154,7 +154,7 @@ CREATE TABLE ARTICLES_VENDUS
     no_utilisateur      INTEGER                NOT NULL,
     no_categorie        INTEGER                NOT NULL,
     lien_image          VARCHAR(100),
-    etat_vente          BIT                    NOT NULL DEFAULT 0, -- Valeur par défaut pour etat_vente (false)
+    etat_vente          BIT                    NOT NULL DEFAULT 1, -- Valeur par défaut pour etat_vente (true)
 );
 ALTER TABLE ARTICLES_VENDUS
     ADD constraint articles_vendus_pk PRIMARY KEY (no_article);

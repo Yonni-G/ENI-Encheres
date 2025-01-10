@@ -9,4 +9,6 @@ public interface ArticleVenduRepository {
 
 
     boolean modifier(ArticleVendu articleVendu);
+
+    void desactiver(ArticleVendu articleVendu);
 }
